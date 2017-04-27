@@ -1,0 +1,79 @@
+@import '../../theme.scss';
+
+#progressButton {
+  position: relative;
+  display: block;
+  background-color: $colorAccent;
+  color: $colorForeground;
+  padding: 8px 10px;
+  border-radius: 2px;
+  font-size: 1.2em;
+  text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.5);
+  cursor: pointer;
+  transition: transform $animationFuncDefault $animationTimeBlink, box-shadow $animationFuncDefault $animationTimeBlink;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px 1px rgba(0,0,0,.4);
+  }
+
+  span {
+    opacity: 1;
+    transition: opacity $animationFuncDefault $animationTimeDefault;
+
+    &.hide {
+      opacity: .00000001;
+    }
+  }
+
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 2px;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: opacity $animationFuncDefault $animationTimeDefault;
+
+    svg {
+      width: 30px;
+      // animation: rotate 5s linear forwards running infinite;
+      animation: rotate 2s linear forwards running infinite;
+
+      path {
+        fill: none;
+        stroke-width: 20;
+        stroke-dasharray: 629;
+        stroke: $colorPrimary;
+        animation: load 2s linear forwards running infinite;
+      }
+    }
+
+    &.hide {
+      opacity: .00000001;
+    }
+  }
+}
+
+@keyframes load {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 1260;
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(-90deg);
+  }
+
+  100% {
+    transform: rotateZ(270deg);;
+  }
+}
