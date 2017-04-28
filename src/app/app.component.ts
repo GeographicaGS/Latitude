@@ -8,7 +8,7 @@ import { ProgressButtonComponent } from './progress-button/progress-button.compo
 })
 export class AppComponent {
   title = 'Latitude';
-  private toogleValue = false;
+  private toogleValue = true;
   @ViewChild(ProgressButtonComponent)
   private progressButton: ProgressButtonComponent;
 
@@ -25,6 +25,7 @@ export class AppComponent {
 
       setTimeout(() => {
         this.progressButton.reset();
+        this.toogleValue = false;
       }, 5000);
     }, 2000);
   }
