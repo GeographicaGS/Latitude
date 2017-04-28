@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { ProgressButtonComponent } from './progress-button/progress-button.component';
 import { ToggleComponent } from './toggle/toggle.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProgressButtonComponent,
-    ToggleComponent
+    ToggleComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

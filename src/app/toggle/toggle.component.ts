@@ -28,6 +28,8 @@ export class ToggleComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() { }
 
+  toggleChecked() { this.checked = !this.checked; this.change.emit(this.checked); }
+
   writeValue(value: any): void {
     this._checked = value;
   }
@@ -40,8 +42,8 @@ export class ToggleComponent implements OnInit, ControlValueAccessor {
     this.onTouchedCallback = fn;
   }
 
-  private onTouchedCallback = () => { }
+  private onTouchedCallback = () => { /* Placeholder */ }
 
-  private onChangeCallback = (_: any) => { }
+  private onChangeCallback = (_: any) => { /* Placeholder */ }
 
 }

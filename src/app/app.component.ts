@@ -7,14 +7,16 @@ import { ProgressButtonComponent } from './progress-button/progress-button.compo
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Latitude';
+  private title = 'Latitude';
+  private buttonLabel = 'Find tropopause';
   private toogleValue = true;
+  private showSidebar = false;
   @ViewChild(ProgressButtonComponent)
   private progressButton: ProgressButtonComponent;
 
 
   onToggleChange($event) {
-    console.log(`Toggle event value is ${$event.target.checked}`);
+    console.log(`Toggle event value is ${$event}`);
     console.log(`Toggle object value is ${this.toogleValue}`);
   }
 
@@ -28,5 +30,9 @@ export class AppComponent {
         this.toogleValue = false;
       }, 5000);
     }, 2000);
+  }
+
+  onSidebarToggle($event) {
+    this.showSidebar = $event;
   }
 }

@@ -1,0 +1,11 @@
+@import '../../theme.scss';
+
+.wrapper {
+  max-width: 320px;
+  transform: translateX(0);
+  transition: transform $animationFuncDefault $animationTimeFast;
+
+  &.hide {
+    transform: translateX(calc(-100% - 20px));
+  }
+}
