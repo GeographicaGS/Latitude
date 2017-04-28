@@ -1,17 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, forwardRef, EventEmitter, OnInit } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+
+const CHECKBOX_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => ProgressButtonComponent),
+  multi: true
+}
 
 @Component({
   selector: 'progress-button',
-  inputs: ['label', 'msgSuccess', 'msgError'],
   templateUrl: './progress-button.component.html',
   styleUrls: ['./progress-button.component.scss']
 })
 export class ProgressButtonComponent implements OnInit {
   isLoading: boolean;
   message: string;
-  label: string;
-  msgSuccess: string;
-  msgError: string;
+
+  @Input() label: string;
+  @Input() msgSuccess: string;
+  @Input() msgError: string;
+  @Output() click = new EventEmitter();
 
   constructor() {
     this.isLoading = false;
@@ -22,13 +30,21 @@ export class ProgressButtonComponent implements OnInit {
   }
 
   onClick() {
+    // this.click.emit(); // Commented because double click event
     this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      this.message = this.msgSuccess;
-      setTimeout(() => {
-        this.message = this.label;
-      }, 2000);
-    }, 2000);
+  }
+
+  showSuccess() {
+    this.isLoading = false;
+    this.message = this.msgSuccess;
+  }
+
+  showError() {
+    this.isLoading = false;
+    this.message = this.msgError;
+  }
+
+  reset() {
+    this.message = this.label;
   }
 }

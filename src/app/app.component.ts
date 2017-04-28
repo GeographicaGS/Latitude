@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ProgressButtonComponent } from './progress-button/progress-button.component';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,24 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Latitude';
+  private toogleValue = false;
+  @ViewChild(ProgressButtonComponent)
+  private progressButton: ProgressButtonComponent;
+
+
+  onToggleChange($event) {
+    console.log(`Toggle event value is ${$event.target.checked}`);
+    console.log(`Toggle object value is ${this.toogleValue}`);
+  }
+
+  onProgressButtonClick() {
+    setTimeout(() => {
+      this.progressButton.showSuccess();
+      console.log(`Show icing level is ${this.toogleValue}`);
+
+      setTimeout(() => {
+        this.progressButton.reset();
+      }, 5000);
+    }, 2000);
+  }
 }
