@@ -1,0 +1,201 @@
+$colorPrimary: var(--color-primary, #17944D);
+$colorAccent: var(--color-accent, #B24DAE);
+$colorSecondary: var(--color-secondary, #4BB48D);
+$colorSecondaryLighter: var(--color-secondaryLighter, #6FC4A4);
+$colorSecondaryLightest: var(--color-secondaryLightest, #B7E1D1);
+
+$colorRelationOne: var(--color-relationOne, #FF9E00);
+$colorRelationTwo: var(--color-relationTwo, #FFB134);
+$colorRelationThree: var(--color-relationThree, #FFC467);
+$colorRelationFour: var(--color-relationFour, #FFD89B);
+$colorRelationFive: var(--color-relationFive, #FFEBCE);
+
+$colorAlert: var(--color-alert, #F24440);
+
+$colorCountryRisk: var(--color-countryRisk, #DB0702);
+$colorCountryRiskAlt: var(--color-countryRiskAlt, #FD4141);
+
+$colorMapWater: var(--color-mapWater, #122330);
+$colorMapLand: var(--color-mapLand, #09101D);
+$colorMapNatural: var(--color-mapNatural, #09101D);
+$colorMapBoundary: var(--color-mapBoundary, #11223A);
+
+$colorBlack: #000;
+$colorN100: #1A1E29;
+$colorN90: #292D3A;
+$colorN80: #383D4C;
+$colorN70: #4B505F;
+$colorN60: #626775;
+$colorN50: #787D8B;
+$colorN40: #9397A2;
+$colorN30: #AEB1B9;
+$colorN20: #C9CBD1;
+$colorN10: #E4E5E8;
+$colorN05: #F2F2F4;
+$colorN02: #FCFCFC;
+$colorWhite: #FFF;
+
+$animationTimeSlow: 2s;
+$animationTimeNormal: 1s;
+$animationTimeFast: .5s;
+$animationTimeBlink: .1s;
+$animationFuncDefault: ease-out;
+$animationFuncAlt: linear;
+
+@mixin font($weight: normal) {
+  @if $weight == extra-light {
+    font-weight: 200;
+  } @else if $weight == light {
+    font-weight: 300;
+  } @else if $weight == normal {
+    font-weight: 400;
+  } @else if $weight == medium {
+    font-weight: 600;
+  } @else if $weight == bold {
+    font-weight: 700;
+  }
+}
+
+
+@keyframes tranlateInAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%);
+  }
+  1% {
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftOutAnimation {
+  0% {
+    opacity: inherit;
+    visibility: inherit;
+    transform: translateX(0);
+  }
+  99% {
+    visibility: inherit;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideLeftInAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+  }
+  1% {
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
+@keyframes dropdownInAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-18px);
+  }
+  1% {
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dropdownOutAnimation {
+  0% {
+    opacity: inherit;
+    visibility: inherit;
+    transform: translateY(0);
+  }
+  99% {
+    visibility: inherit;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-18px);
+  }
+}
+
+@keyframes tooltipInAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -8px);
+  }
+  1% {
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes tooltipOutAnimation {
+  0% {
+    opacity: inherit;
+    visibility: inherit;
+    transform: translate(-50%, 0);
+  }
+  99% {
+    visibility: inherit;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -8px);
+  }
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  1% {
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: inherit;
+    visibility: inherit;
+  }
+  99% {
+    visibility: inherit;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
