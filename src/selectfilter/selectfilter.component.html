@@ -1,0 +1,20 @@
+<div class="inputWrapper"
+    [attr.style]="arrowIcon"
+    (click)="open()"
+>
+  <input #search
+      class="search" type="text"
+      (focus)="open()" (blur)="close()" (keyup)="filter($event)"
+      placeholder="{{ title }}" value="{{getPlaceholder()}}"
+  />
+</div>
+<div
+    class="filter"
+    [attr.style]="optTextColor"
+>
+  <ul>
+    <li *ngFor="let item of filteredItems" (click)="selectitem($event, item)" [attr.data-value]="item.value">
+      {{ item.label | translate }}
+    </li>
+  </ul>
+</div>

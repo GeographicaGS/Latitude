@@ -1,0 +1,142 @@
+@import '../theme.scss';
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &.disabled {
+    .search,
+    .inputWrapper {
+      cursor: default;
+    }
+    .inputWrapper {
+      &:hover, &.active {
+        background-color: $colorN10;
+
+        .search {
+          &::placeholder {
+            opacity: .5;
+          }
+        }
+        &:after {
+          opacity: .5;
+        }
+      }
+    }
+  }
+
+  .inputWrapper {
+    position: relative;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 12px;
+    width: inherit;
+    cursor: pointer;
+    transition: background-color $animationFuncDefault $animationTimeBlink;
+
+    .search {
+      border: none;
+      font-size: inherit;
+      line-height: inherit;
+      font-family: inherit;
+      font-weight: inherit;
+      color: inherit;
+      background-color: transparent;
+      outline: none;
+      width: inherit;
+      cursor: inherit;
+
+      &::placeholder {
+        color: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        font-style: inherit;
+        opacity: .5;
+        transition: opacity $animationFuncDefault $animationTimeBlink;
+      }
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      height: 12px;
+      width: 12px;
+      background-image: var(--opt-arrow-icon);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    &:hover, &.active {
+      background-color: transparentize($colorWhite, .85);
+
+      .search {
+        &::placeholder {
+          opacity: 1;
+        }
+      }
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+
+  .filter {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-18px);
+    color: var(--opt-text-color);
+    background-color: $colorWhite;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border-top: 2px solid $colorAccent;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.1);
+    overflow-y: auto;
+    z-index: 1;
+
+    animation: dropdownOutAnimation $animationTimeBlink $animationFuncDefault 0s 1 normal none running;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0;
+      text-align: left;
+
+      li {
+        display: block;
+        padding: .5em;
+        color: var(--opt-text-color);
+
+        &:hover {
+          background-color: $colorAccent;
+          color: $colorWhite;
+        }
+      }
+    }
+  }
+
+  &.open {
+    .filter {
+      animation: dropdownInAnimation $animationTimeBlink $animationFuncDefault 0s 1 normal forwards running;
+    }
+  }
+}
