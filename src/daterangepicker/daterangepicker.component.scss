@@ -1,0 +1,231 @@
+@import '../theme.scss';
+
+.date-range-picker {
+  position: relative;
+
+  & > span {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    cursor: pointer;
+
+    &.clock {
+      background-image: url('/assets/time-hour-s.svg');
+      background-repeat: no-repeat;
+      background-position: right center;
+      padding-right: 16px;
+    }
+  }
+
+  & > .selector {
+    width: 305px;
+    position: absolute;
+    z-index: 1;
+    top: calc(100% + 10px);
+    left: 0;
+    background-color: $colorWhite;
+    box-shadow: 0 0 10px 0 rgba(26,30,41,0.1);
+    border: 1px solid $colorN10;
+    border-radius: 6px;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+
+    animation: dropdownOutAnimation $animationTimeBlink $animationFuncDefault 0s 1 normal none running;
+
+    &.show {
+      pointer-events: all;
+      animation: dropdownInAnimation $animationTimeBlink $animationFuncDefault 0s 1 normal forwards running;
+    }
+
+    .mydrp * {
+      font-family: inherit;
+    }
+
+    .mydrp {
+      width: auto !important;
+
+      .selector {
+        height: auto !important;
+        width: 304px !important;
+        border-radius: 0;
+        border: none;
+      }
+      .headerclearbtn, .headerokbtn, .titleareatxt{
+        display: none;
+      }
+      .headerlabelbtn{
+        font-size: 14px;
+        line-height: 18px;
+        color: inherit;
+      }
+      .header{
+        height: 48px;
+        border-radius: 0;
+        background-color: transparent;
+
+        td:nth-child(1){
+          padding-left: 22px;
+        }
+        td:nth-child(3){
+          padding-right: 22px;
+        }
+      }
+      .caltable{
+        border-radius: 0;
+        border-spacing: 0 4px;
+        border-collapse: separate;
+      }
+      .inline{
+        margin: 0;
+      }
+      .icon-mydrpleft:before, .icon-mydrpright:before{
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background-image: url('/assets/icons/arrow-simple.svg');
+          background-repeat: no-repeat;
+          background-position: center;
+          position: relative;
+          top: 2px;
+      }
+      .icon-mydrpleft:before{
+        transform: rotate(180deg);
+      }
+      .weekdaytitle{
+        background-color: transparent;
+        border-top: 1px solid $colorN10;
+        border-bottom: 1px solid $colorN10;
+        font-size: 12px;
+        color: $colorN40;
+        height: 30px;
+      }
+      .currmonth{
+        color: inherit;
+
+        &:not(.range){
+          background-color: transparent;
+        }
+      }
+      .range {
+        background: transparent;
+
+        .datevalue {
+          background: $colorAccent;
+        }
+      }
+      .daycell{
+        padding: 0px;
+        vertical-align: middle;
+        &:focus{
+          outline: none;
+        }
+      }
+      .datevalue {
+        line-height: 36px;
+
+        &.selecteddaybegin, &.selecteddayend{
+          background-color: $colorAccent;
+          border-radius: 8px 0 0 8px;
+          color: $colorWhite;
+        }
+
+        &.selecteddayend {
+          border-radius: 0 8px 8px 0;
+        }
+      }
+      .nextmonth, .prevmonth, .sunday{
+        color: $colorN20;
+        @include font(normal);
+      }
+
+      .daycell:hover, .monthcell:hover, .yearcell:hover{
+        background-color: $colorN05;
+      }
+
+      .markcurrday, .markcurrmonth, .markcurryear {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.time{
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 18px;
+  margin-top: -2px;
+  border-top: 1px solid $colorN10;
+
+  h4{
+    font-size: 14px;
+    color: $colorN50;
+    font-style: italic;
+    flex: 1 1 100%;
+    text-align: right;
+    margin-right: 10px;
+  }
+  >div{
+    display: flex;
+    align-items: center;
+    &.switch{
+      flex:  0 0 auto;
+      span{
+        font-size: 14px;
+        color: inherit;
+        margin-left: 12px;
+      }
+    }
+    &.content{
+      flex: 1 1 auto;
+      width: 0;
+      display: flex;
+      justify-content: flex-end;
+      >span{
+        flex: 0 0 auto;
+        font-size: 12px;
+        color: $colorN40;
+        margin: 0 6px;
+      }
+      >div{
+        display: flex;
+        align-items: center;
+        color: inherit;
+        &:first-child{
+          justify-content: flex-end;
+        }
+        &:hover{
+          input[type="text"], span{
+            background-color: #F2F2F4;
+          }
+        }
+        input[type="text"], span{
+          height: 32px;
+          transition: background-color $animationTimeFast $animationFuncAlt;
+        }
+        span{
+          display: flex;
+          align-items: center;
+        }
+        input[type="text"]{
+          padding: 0;
+          width: 24px;
+          font-size: 14px;
+          color: inherit;
+          border: none;
+          &:first-child{
+            text-align: right;
+            border-radius:  2px 0 0 2px;
+          }
+          &:last-child{
+            border-radius:  0 2px 2px 0;
+          }
+        }
+      }
+    }
+  }
+}

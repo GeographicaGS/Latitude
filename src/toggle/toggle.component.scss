@@ -1,0 +1,51 @@
+@import '../theme.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  input[type=checkbox] {
+    display: none;
+
+    & + .toggle {
+      position: relative;
+      display: inline-block;
+      height: .8em;
+      width: 1.6em;
+      padding: 2px;
+      border-radius: .8em;
+      background-color: $colorDisabled;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color $animationFuncDefault $animationTimeFast;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        display: block;
+        width: .8em;
+        height: .8em;
+        border-radius: 50%;
+        background-color: $colorPrimary;
+        transform: translateX(0%);
+        transition: transform $animationFuncDefault $animationTimeFast;
+      }
+    }
+
+    &:checked + .toggle {
+      background-color: $colorAccent;
+
+      &:after {
+        transform: translateX(100%);
+      }
+    }
+  }
+
+  .label {
+    display: inline-block;
+    margin-left: 5px;
+  }
+}

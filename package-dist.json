@@ -1,0 +1,42 @@
+{
+	"name": "@geographica/latitude",
+	"version": "1.0.0",
+  "description": "GeographicaGS Angular 4 modules",
+	"main": "bundles/latitude.umd.min.js",
+	"module": "index.js",
+	"typings": "index.d.ts",
+	"keywords": [
+		"angular",
+		"angular2",
+		"angular 2",
+		"angular4",
+		"angular 4"
+	],
+	"author": {
+		"name": "Geographica",
+		"email": "npm@geographica.gs"
+	},
+	"license": "",
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"homepage": "",
+	"bugs": {
+		"url": ""
+	},
+	"peerDependencies": {
+    "@angular/common": "^4.2.4",
+    "@angular/core": "^4.2.4",
+    "@angular/forms": "^4.2.4",
+    "@angular/http": "^4.2.4",
+    "@angular/platform-browser": "^4.2.4",
+    "@angular/platform-browser-dynamic": "^4.2.4",
+    "mydaterangepicker": "^4.1.11",
+    "moment": "^2.19.1",
+    "ng2-translate": "^5.0.0",
+    "rxjs": "^5.1.0",
+		"reflect-metadata": "^0.1.8",
+    "zone.js": "^0.8.4"
+	}
+}

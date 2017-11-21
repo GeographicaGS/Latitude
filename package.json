@@ -1,46 +1,51 @@
 {
-  "name": "latitude",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "@geographica/latitude",
+  "version": "1.0.0",
+  "description": "GeographicaGS Angular 4 modules",
+  "keywords": [
+    "angular 4"
+  ],
+  "main": "index.js",
+  "types": "index.d.js",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets",
+    "assets": "mkdir ./dist/assets && cp -R ./src/assets/* dist/assets"
   },
-  "private": true,
-  "dependencies": {
-    "@angular/common": "^4.0.0",
-    "@angular/compiler": "^4.0.0",
-    "@angular/core": "^4.0.0",
-    "@angular/forms": "^4.0.0",
-    "@angular/http": "^4.0.0",
-    "@angular/platform-browser": "^4.0.0",
-    "@angular/platform-browser-dynamic": "^4.0.0",
-    "@angular/router": "^4.0.0",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4"
+  "license": "MIT",
+  "homepage": "https://github.com/GeographicaGS/latitude",
+  "bugs": {
+    "url": "https://github.com/GeographicaGS/latitude/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GeographicaGS/latitude.git"
+  },
+  "author": {
+    "name": "Geographica",
+    "email": "npm@geographica.gs"
   },
   "devDependencies": {
-    "@angular/cli": "1.0.1",
+    "@angular/compiler": "^4.0.0",
     "@angular/compiler-cli": "^4.0.0",
-    "@types/jasmine": "2.5.38",
-    "@types/node": "~6.0.60",
-    "codelyzer": "~2.0.0",
-    "jasmine-core": "~2.5.2",
-    "jasmine-spec-reporter": "~3.2.0",
-    "karma": "~1.4.1",
-    "karma-chrome-launcher": "~2.0.0",
-    "karma-cli": "~1.0.1",
-    "karma-jasmine": "~1.1.0",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-coverage-istanbul-reporter": "^0.2.0",
-    "protractor": "~5.1.0",
-    "ts-node": "~2.0.0",
-    "tslint": "~4.5.0",
-    "typescript": "~2.2.0"
+    "angular-library-builder": "^1.6.3",
+    "cpx": "^1.5.0",
+    "renamer": "^0.6.1",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.41.4",
+    "typescript": "~2.2.0",
+    "uglify-js": "^2.7.5"
+  },
+  "dependencies": {
+    "@angular/common": "^4.2.4",
+    "@angular/core": "^4.2.4",
+    "@angular/forms": "^4.2.4",
+    "@angular/http": "^4.2.4",
+    "@angular/platform-browser": "^4.2.4",
+    "@angular/platform-browser-dynamic": "^4.2.4",
+    "moment": "^2.19.1",
+    "mydaterangepicker": "^4.1.11",
+    "ng2-translate": "^5.0.0",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.8.4"
   }
 }
