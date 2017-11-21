@@ -1,7 +1,0 @@
-<h1>{{title}}</h1>
-
-<toggle label="Show sidebar" (change)="onSidebarToggle($event)"></toggle>
-<sidebar [show]="showSidebar">
-  <progress-button [label]="buttonLabel" msgSuccess="Done" msgError="Error" (click)="onProgressButtonClick()"></progress-button>
-  <toggle label="Show icing level" [(ngModel)]="toogleValue" name="toogleValue" (change)="onToggleChange($event)"></toggle>
-</sidebar>

@@ -13,7 +13,7 @@ export class SelectfilterComponent implements OnInit, OnChanges {
   @ViewChild('search') searchInput: ElementRef;
 
   @Input() optTextColor: any = '#000';
-  @Input() arrowIcon: any = 'url(/assets/img/icons/negative/arrow_down-xs.svg)';
+  @Input() arrowIcon: any = 'url(/assets/icons/arrow-simple.svg)';
   @Input() title = '';
   @Input() items: Array<any>;
   @Input() filterValue: any;

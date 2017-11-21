@@ -8,7 +8,7 @@ const CHECKBOX_VALUE_ACCESSOR = {
 }
 
 @Component({
-  selector: 'toggle',
+  selector: 'latitude-toggle',
   inputs: ['label'],
   providers: [CHECKBOX_VALUE_ACCESSOR],
   templateUrl: './toggle.component.html',

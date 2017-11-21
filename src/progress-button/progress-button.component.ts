@@ -1,7 +1,7 @@
 import { Component, Input, Output, forwardRef, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'progress-button',
+  selector: 'latitude-progress-button',
   templateUrl: './progress-button.component.html',
   styleUrls: ['./progress-button.component.scss']
 })

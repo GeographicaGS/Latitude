@@ -6,7 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 
-import { DateRangePickerComponent, SelectfilterComponent, SwitcherComponent } from './index';
+import {
+  DateRangePickerComponent,
+  SelectfilterComponent,
+  SwitcherComponent,
+  ToggleComponent,
+  SidebarComponent,
+  ProgressButtonComponent
+ } from './index';
 
 export function createTranslateLoader(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -30,7 +37,10 @@ const modules = [
 const components = [
   DateRangePickerComponent,
   SelectfilterComponent,
-  SwitcherComponent
+  SwitcherComponent,
+  ToggleComponent,
+  SidebarComponent,
+  ProgressButtonComponent
 ];
 
 @NgModule({

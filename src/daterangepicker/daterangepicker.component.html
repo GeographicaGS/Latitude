@@ -1,5 +1,5 @@
 <div class="date-range-picker">
-  <span (click)="toggleSelector()" [class.clock]="showTime" >{{title}}</span>
+  <span (click)="toggleSelector()" [class.clock]="showTime" >{{ title | translate }}</span>
   <div class="selector" [class.show]="show">
     <my-date-range-picker
       [options]="myDatePickerOptions"
@@ -10,7 +10,7 @@
     <div class="time" *ngIf="time">
       <div class="switch">
         <latitude-switcher (onChange)="switchTime($event)" class="medium"></latitude-switcher>
-        <span>Horario</span>
+        <span>{{ 'Schedule' | translate }}</span>
       </div>
       <div class="content" *ngIf="showTime">
         <div>
@@ -25,7 +25,7 @@
           <input appOnlyNumber="59" maxlength="2" type="text" value="{{end.format('mm')}}" #endMinutes>
         </div>
       </div>
-      <h4 *ngIf="!showTime">{{'All day'}}</h4>
+      <h4 *ngIf="!showTime">{{ 'All day' | translate }}</h4>
     </div>
   </div>
 </div>

@@ -8,7 +8,8 @@
   "main": "index.js",
   "types": "index.d.js",
   "scripts": {
-    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json"
+    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets",
+    "assets": "mkdir ./dist/assets && cp -R ./src/assets/* dist/assets"
   },
   "license": "MIT",
   "homepage": "https://github.com/GeographicaGS/latitude",
@@ -19,10 +20,10 @@
     "type": "git",
     "url": "https://github.com/GeographicaGS/latitude.git"
   },
-	"author": {
-		"name": "Geographica",
-		"email": "npm@geographica.gs"
-	},
+  "author": {
+    "name": "Geographica",
+    "email": "npm@geographica.gs"
+  },
   "devDependencies": {
     "@angular/compiler": "^4.0.0",
     "@angular/compiler-cli": "^4.0.0",
@@ -43,8 +44,8 @@
     "@angular/platform-browser-dynamic": "^4.2.4",
     "moment": "^2.19.1",
     "mydaterangepicker": "^4.1.11",
-    "rxjs": "^5.1.0",
     "ng2-translate": "^5.0.0",
+    "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   }
 }
