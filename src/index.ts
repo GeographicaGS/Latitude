@@ -1,8 +1,10 @@
-export { DateRangePickerComponent } from './daterangepicker/daterangepicker.component';
-export { SelectfilterComponent } from './selectfilter/selectfilter.component';
-export { SwitcherComponent } from './switcher/switcher.component';
-export { ToggleComponent } from './toggle/toggle.component';
-export { SidebarComponent } from './sidebar/sidebar.component';
-export { ProgressButtonComponent } from './progress-button/progress-button.component';
+export { DateRangePickerComponent } from './components/ui/daterangepicker/daterangepicker.component';
+export { SelectfilterComponent } from './components/ui/selectfilter/selectfilter.component';
+export { SwitcherComponent } from './components/ui/switcher/switcher.component';
+export { ToggleComponent } from './components/ui/toggle/toggle.component';
+export { SidebarComponent } from './components/ui/sidebar/sidebar.component';
+export { ProgressButtonComponent } from './components/ui/progress-button/progress-button.component';
+
+export { AuthenticationService } from './services/authentication/authentication.service';
 
 export { LatitudeModule } from './latitude.module';

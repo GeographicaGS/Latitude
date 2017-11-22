@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Http } from '@angular/http';
 import { CommonModule as NGCommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate';
+import { TranslateModule } from 'ng2-translate';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 
-import { WidgetCategoryComponent } from './widgets';
-
+import { WidgetCategoryComponent } from './components/widgets';
 import {
+  AuthenticationService,
   DateRangePickerComponent,
   SelectfilterComponent,
   SwitcherComponent,
@@ -15,10 +15,6 @@ import {
   SidebarComponent,
   ProgressButtonComponent
  } from './index';
-
-export function createTranslateLoader(http: Http) {
-    return new TranslateStaticLoader(http, './assets/i18n', '.json');
-}
 
 /**
  * Exported Modules
@@ -51,4 +47,11 @@ const components = [
   declarations: components,
   exports: [...modules, ...components]
 })
-export class LatitudeModule { }
+export class LatitudeModule {
+  static forRoot(config: any): ModuleWithProviders {
+    return {
+      ngModule: LatitudeModule,
+      providers: [AuthenticationService, {provide: 'config', useValue: config}]
+    };
+  }
+}

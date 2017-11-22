@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
 
 @Component({
   selector: 'latitude-widget-category',
@@ -17,7 +18,7 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
 
   @Output() disabledCategories = new EventEmitter<Array<string>>();
 
-  constructor() { }
+  constructor(private authService: AuthenticationService) { }
 
   ngOnInit() { }
 
@@ -46,7 +47,7 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
     if (this.colors[d.category_id]) {
       bgColor = this.colors[d.category_id];
     }
-    return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' }
+    return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' };
   }
 
   private formatData(data) {
