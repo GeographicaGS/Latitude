@@ -1,6 +1,6 @@
 {
 	"name": "@geographica/latitude",
-	"version": "1.0.0",
+	"version": "1.0.3",
   "description": "GeographicaGS Angular 4 modules",
 	"main": "bundles/latitude.umd.min.js",
 	"module": "index.js",
