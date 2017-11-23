@@ -1,0 +1,75 @@
+@import '../../theme.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  > h3 {
+    font-size: 18px;
+    line-height: 18px;
+    @include font('bold');
+    margin-top: 24px;
+  }
+
+  > h4 {
+    font-size: 14px;
+    line-height: 16px;
+    @include font('regular');
+    margin-top: 6px;
+    margin-bottom: 26px;
+  }
+
+  > div {
+    cursor: pointer;
+
+    &:not(.active) {
+      .label {
+
+        span {
+          color: $colorN20;
+        }
+      }
+      .bar {
+        > div {
+
+          .progress {
+            background-color: $colorN20 !important;
+          }
+        }
+      }
+    }
+    & + div {
+      margin-top: 14px;
+    }
+    .label {
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        font-size: 14px;
+        line-height: 14px;
+        transition: color $animationFuncAlt $animationTimeFast;
+      }
+    }
+
+    .bar {
+
+      > div {
+        height: 6px;
+        border-radius: 2px;
+        background-color: $colorN05;
+        margin-top: 8px;
+        position: relative;
+
+        .progress {
+          border-radius: 2px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          transition: background-color $animationFuncAlt $animationTimeFast;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<h3>{{title}}</h3>
+
+<h4 *ngIf="disabledList.length === 0">{{ 'ALL Selected' | translate }}</h4>
+<h4 *ngIf="disabledList.length !== 0">{{ data.length - disabledList.length }} {{ 'Selected' | translate }}</h4>
+
+<ng-container *ngIf="data && data.length > 0">
+  <div *ngFor="let d of data" (click)="toggleCategory(d.category_id)" [class.active]="disabledList.indexOf(d.category_id) < 0">
+    <div class="label">
+      <span>{{ d.category | translate }}</span>
+      <span>{{ d.value }}</span>
+    </div>
+    <div class="bar">
+      <div>
+        <div [ngStyle]="getBarStyle(d)" class="progress"></div>
+      </div>
+    </div>
+  </div>
+</ng-container>
