@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular/core';
-// import { environment } from '../../../environments/environment';
 import * as mapstyle from '../../assets/mapstyle/style';
 import * as mapboxgl from 'mapbox-gl';
 import * as turf from '@turf/turf';
