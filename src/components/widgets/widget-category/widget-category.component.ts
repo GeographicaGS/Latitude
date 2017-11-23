@@ -46,7 +46,7 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
     if (this.colors[d.category_id]) {
       bgColor = this.colors[d.category_id];
     }
-    return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' }
+    return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' };
   }
 
   private formatData(data) {
