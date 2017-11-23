@@ -8,4 +8,6 @@ export { ProgressButtonComponent } from './components/ui/progress-button/progres
 export { AuthenticationService } from './services/authentication/authentication.service';
 export { AuthGuard } from './services/authentication/authentication.guard';
 
+export { MapComponent } from './components/map/map.component';
+
 export { LatitudeModule } from './latitude.module';

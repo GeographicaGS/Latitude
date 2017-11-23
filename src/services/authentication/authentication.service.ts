@@ -13,12 +13,20 @@ export class AuthenticationService {
   _renewGapSeconds = 200;
   apiBaseUrl: string;
   interval: any;
+  userHeader = 'x-auth-email';
+  passwordHeader = 'x-auth-password';
 
   constructor(
     @Inject('config') private config: any,
     private http: Http,
     private router: Router
   ) {
+    if (config.authHeaders && config.authHeaders.user) {
+      this.userHeader = config.authHeaders.user;
+    }
+    if (config.authHeaders && config.authHeaders.password) {
+      this.passwordHeader = config.authHeaders.password;
+    }
     if (config.apiBaseUrl) {
       this.apiBaseUrl = config.apiBaseUrl;
       if (this.isLoggedIn()) {
@@ -36,8 +44,8 @@ export class AuthenticationService {
     }
 
     const headers = new Headers();
-    headers.append('x-auth-email', username);
-    headers.append('x-auth-password', this.password);
+    headers.append(this.userHeader, username);
+    headers.append(this.passwordHeader, this.password);
     const options = new RequestOptions({ headers: headers });
     return this.http.get(`${this.apiBaseUrl}/auth/token`, options)
       .map((response: Response) => {

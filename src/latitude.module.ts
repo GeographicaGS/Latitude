@@ -7,6 +7,7 @@ import { MyDateRangePickerModule } from 'mydaterangepicker';
 
 import { WidgetCategoryComponent } from './components/widgets';
 import {
+  MapComponent,
   AuthenticationService,
   AuthGuard,
   DateRangePickerComponent,
@@ -39,7 +40,8 @@ const components = [
   ToggleComponent,
   SidebarComponent,
   ProgressButtonComponent,
-  WidgetCategoryComponent
+  WidgetCategoryComponent,
+  MapComponent
 ];
 
 @NgModule({

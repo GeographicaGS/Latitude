@@ -1,6 +1,6 @@
 {
   "name": "@geographica/latitude",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "GeographicaGS Angular modules",
   "keywords": [
     "angular 4"
@@ -9,7 +9,7 @@
   "types": "index.d.js",
   "scripts": {
     "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets",
-    "assets": "mkdir ./dist/assets && cp -R ./src/assets/* dist/assets"
+    "assets": "cp -R ./src/assets/* dist/assets"
   },
   "license": "MIT",
   "homepage": "https://github.com/GeographicaGS/latitude",
@@ -32,7 +32,7 @@
     "renamer": "^0.6.1",
     "rimraf": "^2.5.4",
     "rollup": "^0.41.4",
-    "typescript": "~2.2.0",
+    "typescript": "~2.4.0",
     "uglify-js": "^2.7.5"
   },
   "dependencies": {
@@ -43,6 +43,9 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "@types/geojson": "^1.0.6",
+    "@turf/turf": "^5.0.4",
+    "mapbox-gl": "^0.41.0",
     "moment": "^2.19.1",
     "mydaterangepicker": "^4.1.11",
     "ng2-translate": "^5.0.0",
