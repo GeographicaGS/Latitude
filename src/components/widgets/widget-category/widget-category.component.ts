@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
-import { AuthenticationService } from '../../../services/authentication/authentication.service';
 
 @Component({
   selector: 'latitude-widget-category',
@@ -18,7 +17,7 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
 
   @Output() disabledCategories = new EventEmitter<Array<string>>();
 
-  constructor(private authService: AuthenticationService) { }
+  constructor() { }
 
   ngOnInit() { }
 
