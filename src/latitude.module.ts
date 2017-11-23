@@ -8,6 +8,7 @@ import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { WidgetCategoryComponent } from './components/widgets';
 import {
   AuthenticationService,
+  AuthGuard,
   DateRangePickerComponent,
   SelectfilterComponent,
   SwitcherComponent,
@@ -51,7 +52,7 @@ export class LatitudeModule {
   static forRoot(config: any): ModuleWithProviders {
     return {
       ngModule: LatitudeModule,
-      providers: [AuthenticationService, {provide: 'config', useValue: config}]
+      providers: [AuthenticationService, AuthGuard, {provide: 'config', useValue: config}]
     };
   }
 }

@@ -6,5 +6,6 @@ export { SidebarComponent } from './components/ui/sidebar/sidebar.component';
 export { ProgressButtonComponent } from './components/ui/progress-button/progress-button.component';
 
 export { AuthenticationService } from './services/authentication/authentication.service';
+export { AuthGuard } from './services/authentication/authentication.guard';
 
 export { LatitudeModule } from './latitude.module';

@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Headers, Response, RequestOptions, Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { Md5 } from 'ts-md5/dist/md5';
 
@@ -13,9 +14,17 @@ export class AuthenticationService {
   apiBaseUrl: string;
   interval: any;
 
-  constructor(@Inject('config') private config: any, private http: Http) {
+  constructor(
+    @Inject('config') private config: any,
+    private http: Http,
+    private router: Router
+  ) {
     if (config.apiBaseUrl) {
       this.apiBaseUrl = config.apiBaseUrl;
+      if (this.isLoggedIn()) {
+        this.data = this.getUser();
+        this.setRenewer();
+      }
     } else {
       throw new Error('LatitudeModule -> AuthenticationService needs to get an apiBaseUrl in the config object');
     }
@@ -43,9 +52,14 @@ export class AuthenticationService {
     options.headers.set('Authorization', this.getUser().token);
     this.http.get(`${this.apiBaseUrl}/auth/renew`, options)
       .map((res: Response) => res.json())
-        .subscribe(res => {
-          return this.initUser(res);
-        });
+        .subscribe(
+          (res) => {
+            return this.initUser(res);
+          },
+          (error) => {
+            this.router.navigate(['/login']);
+          }
+        );
   }
 
   initUser(response: Response) {

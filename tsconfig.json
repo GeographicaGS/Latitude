@@ -18,6 +18,9 @@
 			"@angular/forms": [
 				"node_modules/@angular/forms"
 			],
+			"@angular/router": [
+				"node_modules/@angular/router"
+			],
 			"@angular/http": [
 				"node_modules/@angular/http"
 			],
