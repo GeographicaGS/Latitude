@@ -8,8 +8,7 @@
   "main": "index.js",
   "types": "index.d.js",
   "scripts": {
-    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets && npm run testt",
-    "testt": "cp -R dist/* ../reveal-www/node_modules/@geographica/latitude",
+    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets",
     "assets": "cp -R ./src/assets/* dist/assets"
   },
   "license": "MIT",
