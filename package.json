@@ -8,7 +8,8 @@
   "main": "index.js",
   "types": "index.d.js",
   "scripts": {
-    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets",
+    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets && npm run testt",
+    "testt": "cp -R dist/* ../reveal-www/node_modules/@geographica/latitude",
     "assets": "cp -R ./src/assets/* dist/assets"
   },
   "license": "MIT",
@@ -45,6 +46,7 @@
     "@angular/router": "^4.2.4",
     "@types/geojson": "^1.0.6",
     "@turf/turf": "^5.0.4",
+    "d3-ng2-service": "^1.12.0",
     "mapbox-gl": "^0.41.0",
     "moment": "^2.19.1",
     "mydaterangepicker": "^4.1.11",
