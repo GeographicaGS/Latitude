@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { D3Service, D3 } from 'd3-ng2-service';
 
 @Component({
@@ -6,15 +6,15 @@ import { D3Service, D3 } from 'd3-ng2-service';
   templateUrl: './widget-index.component.html',
   styleUrls: ['./widget-index.component.scss']
 })
-export class WidgetIndexComponent implements OnInit {
+export class WidgetIndexComponent implements OnInit, OnChanges {
 
   @Input() defaultValues: any = false;
   @Output() indexChanged: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('svgWrapper') svgWrapper;
 
   private d3: D3;
-  private width: number = 300;
-  private height: number = 300;
+  private width: number = 300; // TODO: this could be coming from an @Input()
+  private height: number = 300; // TODO: this could be coming from an @Input()
   private resizePointHandlerSize = 12;
   private min = (this.width / 2) - this.resizePointHandlerSize;
   private step = this.min / 10;
@@ -41,26 +41,43 @@ export class WidgetIndexComponent implements OnInit {
 
   constructor(d3Service: D3Service) {
     this.d3 = d3Service.getD3();
-    this.setDragPoints();
   }
 
   ngOnInit() {
+    this.setDragPoints();
+    this.drawRhombus();
+  }
+
+  ngOnChanges(changes) {
+    if (changes.defaultValues && !changes.defaultValues.firstChange) {
+      this.drawRhombus(true);
+    }
+  }
+
+  private drawRhombus(reset = false) {
+    if (reset) {
+      this.d3.select(this.svgWrapper.nativeElement).empty();
+    }
+
+    // Append an svg with the width and height, add padding based on the pointHandlerSize.
     this.svg = this.d3.select(this.svgWrapper.nativeElement).append('svg')
       .attr('width', this.width + (this.resizePointHandlerSize * 2))
       .attr('height', this.height + (this.resizePointHandlerSize * 2));
 
+    // Append a polygon (rhombus)
     this.newg = this.svg.append('g');
     this.newg.append('polygon')
       .attr('points', `${(this.width/ 2) + this.resizePointHandlerSize}, ${this.resizePointHandlerSize} ${this.width + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${this.width + this.resizePointHandlerSize}, ${0 + this.resizePointHandlerSize} ${(this.width/ 2) + this.resizePointHandlerSize}`)
       .attr('fill-opacity', 0)
-      .attr('stroke', '#9397A2')
+      .attr('stroke', '#9397A2') // TODO: color
       .attr('stroke-width', 2);
 
+    // Draw polygon (rhombus) grid
     for (var i = 1; i < 5; i++) {
       this.newg.append('polygon')
           .attr('points', `${(this.width / 2) + this.resizePointHandlerSize}, ${((this.step * 2) * i) + this.resizePointHandlerSize} ${(this.width - ((this.step * 2) * i)) + this.resizePointHandlerSize}, ${(this.width / 2) + this.resizePointHandlerSize}, ${(this.width / 2) + this.resizePointHandlerSize}, ${(this.width - ((this.step * 2) * i)) + this.resizePointHandlerSize}, ${((this.step * 2) * i) + this.resizePointHandlerSize} ${(this.width / 2) + this.resizePointHandlerSize}`)
           .attr('fill-opacity', 0)
-          .attr('stroke', '#9397A2')
+          .attr('stroke', '#9397A2') // TODO: color
           .attr('stroke-width', 1)
           .attr('stroke-opacity', .2);
     }
@@ -71,20 +88,23 @@ export class WidgetIndexComponent implements OnInit {
     const mask = defs.append('mask').attr('id', 'masking');
     const gradient = defs.append('radialGradient').attr('id', 'gradientPolygon').attr('gradientUnits', "userSpaceOnUse");
     gradient.append('stop').attr('offset', '0%').attr('stop-opacity', .1).attr('stop-color', 'white');
-    gradient.append('stop').attr('offset', '100%').attr('stop-opacity', 1).attr('stop-color', '#0066CC');
-
+    gradient.append('stop').attr('offset', '100%').attr('stop-opacity', 1).attr('stop-color', '#0066CC'); // TODO: color to be received by input or this one by default
+    // Append a polygon to the mask, this will be the one that gets the previously created gradient
     mask.append('polygon')
       .attr('points', `${(this.width/ 2) + this.resizePointHandlerSize}, ${this.resizePointHandlerSize} ${this.width + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${this.width + this.resizePointHandlerSize}, ${0 + this.resizePointHandlerSize} ${(this.width/ 2) + this.resizePointHandlerSize}`)
       .attr('fill', "url(#gradientPolygon)");
 
+    // Let's create the polygon (rhombus) that we will actually be dragging, it has the previously created mask
     this.draggablePolygon = this.newg.append('polygon')
       .attr('points', `${this.width / 2 + this.resizePointHandlerSize}, ${this.pointPositions.one} ${this.pointPositions.two}, ${this.width / 2 + this.resizePointHandlerSize}, ${this.width / 2 + this.resizePointHandlerSize}, ${this.pointPositions.three}, ${this.pointPositions.four} ${this.width / 2 + this.resizePointHandlerSize}`)
-      .attr('fill', '#0066CC')
+      .attr('fill', '#0066CC') // TODO: color
       .attr('mask', 'url(#masking)');
 
+    // Let's call the method that will drag the circles that will be used to drag the indexes
     this.setHandlers();
   }
 
+  // Dragging events for each pointHandler
   private setDragPoints() {
     const self = this;
     this.dragPointOne = this.d3.drag()
@@ -163,6 +183,7 @@ export class WidgetIndexComponent implements OnInit {
     });
   }
 
+  // Check if the are some defined values, in that case we need to recalculate the point positions
   private setDefaultValues() {
     if (this.defaultValues) {
       if (this.defaultValues.one !== undefined && this.defaultValues.one >= 0 && this.defaultValues.one <= 10) {
@@ -180,6 +201,7 @@ export class WidgetIndexComponent implements OnInit {
     }
   }
 
+  // Drag the circles handlers that will be used to drag the indexes
   private setHandlers() {
     this.handlerPointOne = this.newg.append('rect')
       .attr('x', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize })
@@ -187,7 +209,7 @@ export class WidgetIndexComponent implements OnInit {
       .attr('height', this.resizePointHandlerSize)
       .attr('width', this.resizePointHandlerSize)
       .attr('id', 'dragtop')
-      .attr('fill', '#EAC349')
+      .attr('fill', '#EAC349') // TODO: color
       .attr('fill-opacity', .9)
       .attr('stroke-width', 2)
       .attr('stroke', 'white')
@@ -198,59 +220,60 @@ export class WidgetIndexComponent implements OnInit {
       .data([{x: (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize, y: this.pointPositions.one - (this.resizePointHandlerSize / 2)}])
       .call(this.dragPointOne);
 
-      this.handlerPointTwo = this.newg.append('rect')
-        .attr('x', (d) => { return this.pointPositions.two - (this.resizePointHandlerSize / 2); })
-        .attr('y', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize; })
-        .attr('height', this.resizePointHandlerSize)
-        .attr('width', this.resizePointHandlerSize)
-        .attr('id', 'dragright')
-        .attr('fill', '#094FA4')
-        .attr('fill-opacity', .9)
-        .attr('stroke-width', 2)
-        .attr('stroke', 'white')
-        .attr('stroke-opacity', 1)
-        .attr('ry', this.resizePointHandlerSize)
-        .attr('rx', this.resizePointHandlerSize)
-        .attr('cursor', 'ew-resize')
-        .data([{x: this.pointPositions.two - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize, y: (this.width / 2) - (this.resizePointHandlerSize / 2)}])
-        .call(this.dragPointTwo);
+    this.handlerPointTwo = this.newg.append('rect')
+      .attr('x', (d) => { return this.pointPositions.two - (this.resizePointHandlerSize / 2); })
+      .attr('y', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize; })
+      .attr('height', this.resizePointHandlerSize)
+      .attr('width', this.resizePointHandlerSize)
+      .attr('id', 'dragright')
+      .attr('fill', '#094FA4') // TODO: color
+      .attr('fill-opacity', .9)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'white')
+      .attr('stroke-opacity', 1)
+      .attr('ry', this.resizePointHandlerSize)
+      .attr('rx', this.resizePointHandlerSize)
+      .attr('cursor', 'ew-resize')
+      .data([{x: this.pointPositions.two - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize, y: (this.width / 2) - (this.resizePointHandlerSize / 2)}])
+      .call(this.dragPointTwo);
 
-      this.handlerPointThree = this.newg.append('rect')
-        .attr('x', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize; })
-        .attr('y', (d) => { return this.pointPositions.three - (this.resizePointHandlerSize / 2); })
-        .attr('height', this.resizePointHandlerSize)
-        .attr('width', this.resizePointHandlerSize)
-        .attr('id', 'dragbottom')
-        .attr('fill', '#F24440')
-        .attr('fill-opacity', .9)
-        .attr('stroke-width', 2)
-        .attr('stroke', 'white')
-        .attr('stroke-opacity', 1)
-        .attr('ry', this.resizePointHandlerSize)
-        .attr('rx', this.resizePointHandlerSize)
-        .attr('cursor', 'ns-resize')
-        .data([{x: (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize, y: this.pointPositions.three - (this.resizePointHandlerSize / 2)}])
-        .call(this.dragPointThree);
+    this.handlerPointThree = this.newg.append('rect')
+      .attr('x', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize; })
+      .attr('y', (d) => { return this.pointPositions.three - (this.resizePointHandlerSize / 2); })
+      .attr('height', this.resizePointHandlerSize)
+      .attr('width', this.resizePointHandlerSize)
+      .attr('id', 'dragbottom')
+      .attr('fill', '#F24440') // TODO: color
+      .attr('fill-opacity', .9)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'white')
+      .attr('stroke-opacity', 1)
+      .attr('ry', this.resizePointHandlerSize)
+      .attr('rx', this.resizePointHandlerSize)
+      .attr('cursor', 'ns-resize')
+      .data([{x: (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize, y: this.pointPositions.three - (this.resizePointHandlerSize / 2)}])
+      .call(this.dragPointThree);
 
-      this.handlerPointFour = this.newg.append('rect')
-        .attr('x', (d) => { return this.pointPositions.four - (this.resizePointHandlerSize / 2); })
-        .attr('y', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize; })
-        .attr('height', this.resizePointHandlerSize)
-        .attr('width', this.resizePointHandlerSize)
-        .attr('id', 'dragleft')
-        .attr('fill', '#B24DAE')
-        .attr('fill-opacity', .9)
-        .attr('stroke-width', 2)
-        .attr('stroke', 'white')
-        .attr('stroke-opacity', 1)
-        .attr('ry', this.resizePointHandlerSize)
-        .attr('rx', this.resizePointHandlerSize)
-        .attr('cursor', 'ew-resize')
-        .data([{x: this.pointPositions.four - (this.resizePointHandlerSize / 2), y: (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize}])
-        .call(this.dragPointFour);
+    this.handlerPointFour = this.newg.append('rect')
+      .attr('x', (d) => { return this.pointPositions.four - (this.resizePointHandlerSize / 2); })
+      .attr('y', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize; })
+      .attr('height', this.resizePointHandlerSize)
+      .attr('width', this.resizePointHandlerSize)
+      .attr('id', 'dragleft')
+      .attr('fill', '#B24DAE') // TODO: color
+      .attr('fill-opacity', .9)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'white')
+      .attr('stroke-opacity', 1)
+      .attr('ry', this.resizePointHandlerSize)
+      .attr('rx', this.resizePointHandlerSize)
+      .attr('cursor', 'ew-resize')
+      .data([{x: this.pointPositions.four - (this.resizePointHandlerSize / 2), y: (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize}])
+      .call(this.dragPointFour);
   }
 
-  calculateStep(pointPosition, calcType, pointNumber) {
+  // Based on the point position, calculate the actual step (from 1 to 10)
+  private calculateStep(pointPosition, calcType, pointNumber) {
     let response: any = {};
     if (calcType === 1) {
       let max = 0;
