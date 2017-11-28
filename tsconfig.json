@@ -30,6 +30,9 @@
 			"@turf/turf": [
 				"node_modules/@turf/turf"
 			],
+      "d3-ng2-service": [
+        "node_modules/d3-ng2-service/*"
+      ],
 			"rxjs/*": [
 				"node_modules/rxjs/*"
 			],
