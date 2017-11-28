@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular/core';
 import * as mapstyle from '../../assets/mapstyle/style';
 import * as mapboxgl from 'mapbox-gl';
-import * as turf from '@turf/turf';
+import { default as centroid } from '@turf/centroid';
+import { default as bboxPolygon } from '@turf/bbox-polygon';
 
 @Component({
   selector: 'latitude-map',
@@ -60,7 +61,14 @@ export class MapComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes) {
+    if (changes.disabled && !changes.disabled.firstChange && changes.disabled.currentValue !== changes.disabled.previousValue) {
+      // this.map._interactive = !changes.disabled.currentValue;
+    }
+  }
+
   addSource(id: string, data: any) {
+    console.log('data', data);
     const sourceData = {
       type: 'geojson',
       data: data
@@ -145,6 +153,10 @@ export class MapComponent implements OnInit {
     }
   }
 
+  addLayer(layer: any) {
+    this.map.addLayer(layer);
+  }
+
   private loadLayer(layerInfo: any, before: string = null) {
     if (this.isMapLoaded) {
       this.map.addLayer(layerInfo, before);
@@ -176,7 +188,7 @@ export class MapComponent implements OnInit {
         if (features[0].geometry.type === 'Point') {
           latlng = features[0];
         } else {
-          latlng = turf.centroid(features[0].geometry);
+          latlng = centroid(features[0].geometry);
         }
         this.popupHover.setLngLat(latlng.geometry.coordinates)
               .setHTML(await content(features[0]))
@@ -210,7 +222,7 @@ export class MapComponent implements OnInit {
         if (features[0].geometry.type === 'Point') {
           latlng = features[0];
         } else {
-          latlng = turf.centroid(features[0].geometry);
+          latlng = centroid(features[0].geometry);
         }
         if (this.popupHover) {
           this.popupHover.remove();
@@ -250,7 +262,7 @@ export class MapComponent implements OnInit {
     const bounds = this.map.getBounds(),
       sw = bounds.getSouthWest(),
       ne = bounds.getNorthEast();
-    return turf.bboxPolygon([sw.lng, sw.lat, ne.lng, ne.lat]);
+    return bboxPolygon([sw.lng, sw.lat, ne.lng, ne.lat]);
   }
 
   getMapPosition() {
@@ -260,6 +272,10 @@ export class MapComponent implements OnInit {
       pitch: this.map.getPitch(),
       bearing: this.map.getBearing()
     };
+  }
+
+  resize() {
+    this.map.resize();
   }
 
 }
