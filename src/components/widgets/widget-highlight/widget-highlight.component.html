@@ -1,0 +1,16 @@
+<div class="widgetWrapper">
+  <div class="widgetTitle">
+    {{ title | translate }}
+  </div>
+  <div class="text" *ngIf="text && data.length > 1" [innerHTML]="getFormattedText()+'.'"></div>
+  <div class="noDataFound" *ngIf="loading === false && (!data || data === undefined)">
+    {{ 'No data found' | translate }}
+  </div>
+
+  <latitude-loading
+    [color]="loadingColor"
+    [width]="22"
+    [show]="loading === true"
+    *ngIf="loading === true"
+  ></latitude-loading>
+</div>
