@@ -1,0 +1,44 @@
+:host{
+  svg {
+    width: 30px;
+    height: 30px;
+    animation: rotate 2s linear forwards paused infinite;
+
+    path {
+      fill: none;
+      stroke: black;
+      stroke-width: 20;
+      stroke-dasharray: 629;
+      animation: load 2s linear forwards paused infinite;
+    }
+  }
+
+  &.show {
+    svg, svg path {
+      animation-play-state: running;
+    }
+  }
+}
+
+
+@keyframes load {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 1260;
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(-90deg);
+  }
+
+  100% {
+    transform: rotateZ(270deg);;
+  }
+}
