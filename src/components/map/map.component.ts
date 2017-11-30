@@ -60,14 +60,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  ngOnChanges(changes) {
-    if (changes.disabled && !changes.disabled.firstChange && changes.disabled.currentValue !== changes.disabled.previousValue) {
-      // this.map._interactive = !changes.disabled.currentValue;
-    }
-  }
-
   addSource(id: string, data: any) {
-    console.log('data', data);
     const sourceData = {
       type: 'geojson',
       data: data
