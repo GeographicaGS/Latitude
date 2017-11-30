@@ -37,8 +37,7 @@ export class MapComponent implements OnInit {
     if (this.customStyle) {
       this.mapStyle = this.customStyle;
     }
-    this.mapStyle['sprite'] = this.mapStyle['sprite'].indexOf('http') !== -1 ? this.mapStyle['sprite'] : window.location.origin;
-
+    this.mapStyle['sprite'] = this.mapStyle['sprite'].indexOf('http') !== -1 ? this.mapStyle['sprite'] : window.location.origin + this.mapStyle['sprite']
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.mapStyle,
