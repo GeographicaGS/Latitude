@@ -14,7 +14,7 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
   @Input() labels: any = false;
   @Input() text: string;
   @Input() doubleHistogram = false;
-  @Input() tokens: any;
+  @Input() tokens: number = 2;
 
   @HostBinding('class.loading') @Input() loading = false;
 
@@ -42,9 +42,19 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
   getFormattedText() {
     this.text = this.translate.instant(this.text);
     if (this.doubleHistogram) {
-      return this.text.replace('{0}', this.data[0].target).replace('{1}', this.data[0].label)
+      if (this.tokens === 2) {
+        return this.text.replace('{0}', this.data[0].target).replace('{1}', this.data[0].label);
+      } else {
+        return this.text.replace('{0}', this.data[0].target);
+      }
     } else {
-      return this.text.replace('{0}', this.data[0].category).replace('{1}', this.data[1].category)
+      let text = this.text;
+      for (let i = 0; i < this.tokens; i++) {
+        if (this.data[i]) {
+          text = text.replace(`{${i}}`, this.data[i].category);
+        }
+      }
+      return text;
     }
   }
 
@@ -53,8 +63,9 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
       this.sortAndGetMax(data);
     } else {
       this.data = data.map(c => {
-        const label = this.labels[c.id] ? this.labels[c.id] : c.label ? c.label : c.id;
-        return {category_id: c.id, value: c.value, category: this.translate.instant(label)};
+        const id = c.id ? c.id : c.category;
+        const label = this.labels[id] ? this.labels[id] : c.label ? c.label : id;
+        return {category_id: id, value: c.value, category: this.translate.instant(label)};
       }).sort((a, b) => {
         return a.value + b.value;
       }).splice(0, this.number);
@@ -78,7 +89,6 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
       const targetLabel = this.labels[maxKey] ? this.labels[maxKey] : maxKey;
       return {label: this.translate.instant(c.Label), target: this.translate.instant(targetLabel), value: maxVal};
     });
-
     this.data = this.data.sort((a, b) => {
       return a.value + b.value;
     });

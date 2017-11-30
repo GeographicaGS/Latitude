@@ -30,16 +30,17 @@
     color: $colorN80;
   }
 
+  .text /deep/ span,
+  .text ::ng-deep span {
+    color: $colorPrimary;
+  }
+
   .text {
     @include font('light');
     font-size: 20px;
     line-height: 28px;
     margin-top: 5px;
     color: $colorN60;
-
-    span {
-      color: $colorPrimary;
-    }
   }
 
   latitude-loading {
