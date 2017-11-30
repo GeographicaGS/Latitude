@@ -6,17 +6,26 @@ import { TranslateModule } from 'ng2-translate';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { D3Service } from 'd3-ng2-service';
 
-import { WidgetCategoryComponent, WidgetIndexComponent } from './components/widgets';
+import {
+  WidgetCategoryComponent,
+  WidgetIndexComponent,
+  WidgetVariableComponent,
+  WidgetHighlightComponent
+} from './components/widgets';
+
 import {
   MapComponent,
   AuthenticationService,
   AuthGuard,
+  DataSourceHistogram,
   DateRangePickerComponent,
   SelectfilterComponent,
   SwitcherComponent,
   ToggleComponent,
   SidebarComponent,
-  ProgressButtonComponent
+  ProgressButtonComponent,
+  TabNavigationComponent,
+  LoadingComponent
  } from './index';
 
 /**
@@ -42,8 +51,12 @@ const components = [
   SidebarComponent,
   ProgressButtonComponent,
   WidgetCategoryComponent,
+  WidgetVariableComponent,
   WidgetIndexComponent,
-  MapComponent
+  WidgetHighlightComponent,
+  MapComponent,
+  LoadingComponent,
+  TabNavigationComponent
 ];
 
 @NgModule({
