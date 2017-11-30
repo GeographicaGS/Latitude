@@ -109,15 +109,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     const self = this;
     this.dragPointOne = this.d3.drag()
       .on('drag', (d: any) => {
-        d.y = d.y + self.d3.event.dy;
-        if (d.y >= (self.width / 2) - self.resizePointHandlerSize) {
-          console.log('pointPossitionOne min reached', (self.width / 2) - self.resizePointHandlerSize);
+        if (d.y + self.d3.event.dy >= (self.width / 2) - self.resizePointHandlerSize) {
           return;
-        } else if (d.y <= 0) {
-          console.log('pointPossitionOne max reached', 0);
+        } else if (d.y + self.d3.event.dy <= 0) {
           return;
         }
-
+        d.y = d.y + self.d3.event.dy;
         self.pointPositions.one = d.y;
         self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
         self.handlerPointOne
@@ -128,15 +125,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
       });
 
     this.dragPointTwo = this.d3.drag().on('drag', (d: any) => {
-      d.x = d.x + self.d3.event.dx;
-      if (d.x <= (self.width / 2) + self.resizePointHandlerSize) {
-        console.log('pointPossitionTwo min reached', (self.width / 2) + self.resizePointHandlerSize);
+      if ((d.x + self.d3.event.dx) <= (self.width / 2) + (self.resizePointHandlerSize * 3)) { // self.resizePointHandlerSize * 3 because left and right margin
         return;
-      } else if (d.x === (self.width + 1)) {
-        console.log('pointPossitionTwo max reached dragx', self.width, d.x);
+      } else if ((d.x + self.d3.event.dx) >= (self.width + 1) + self.resizePointHandlerSize) {
         return;
       }
-
+      d.x = d.x + self.d3.event.dx;
       self.pointPositions.two = d.x;
       self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
       self.handlerPointTwo
@@ -147,14 +141,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     });
 
     this.dragPointThree = this.d3.drag().on('drag', (d: any) => {
-      d.y = d.y + self.d3.event.dy;
-       if (d.y <= (self.width / 2) + self.resizePointHandlerSize) {
-         console.log('pointPossitionThree min reached', (self.width / 2) + self.resizePointHandlerSize);
+       if ((d.y + self.d3.event.dy) <= (self.width / 2) + (self.resizePointHandlerSize * 3)) { // self.resizePointHandlerSize * 3 because left and right margin
          return;
-       } else if (d.y === this.width) {
-         console.log('pointPossitionThree max reached', self.width);
+       } else if ((d.y + self.d3.event.dy) >= (self.width + 1) + self.resizePointHandlerSize) {
          return;
        }
+       d.y = d.y + self.d3.event.dy;
        self.pointPositions.three = d.y;
        self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
        self.handlerPointThree
@@ -165,14 +157,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     });
 
     this.dragPointFour = this.d3.drag().on('drag', (d: any) => {
-      d.x = d.x + self.d3.event.dx;
-      if (d.x >= (self.width / 2) - self.resizePointHandlerSize) {
-        console.log('pointPossitionFour min reached', (self.width / 2) - self.resizePointHandlerSize);
+      if ((d.x + self.d3.event.dx) >= (self.width / 2) - self.resizePointHandlerSize) {
         return;
-      } else if (d.x <= 0) {
-        console.log('pointPossitionFour max reached', 0);
+      } else if ((d.x + self.d3.event.dx) <= 0) {
         return;
       }
+      d.x = d.x + self.d3.event.dx;
       self.pointPositions.four = d.x;
       self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
       self.handlerPointFour
@@ -296,7 +286,6 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
       let max = this.width;
       let min = (this.width / 2) + this.resizePointHandlerSize;
       let step = (max - min) / 10;
-
       if (pointNumber) {
         if (pointNumber === 2) {
           this.pointPositions.two = pointPosition - (pointPosition % step) + this.resizePointHandlerSize;
