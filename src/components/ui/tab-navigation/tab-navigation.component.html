@@ -1,0 +1,1 @@
+<div *ngFor="let tab of tabs; let i = index;" (click)="changeTab(i)" [ngClass]="{'active':i===activeTab}">{{ tab | translate }}</div>

@@ -15,6 +15,8 @@ export class AuthenticationService {
   interval: any;
   userHeader = 'x-auth-email';
   passwordHeader = 'x-auth-password';
+  renewUrl = '/auth/token/renew';
+  authUrl = '/auth/token';
 
   constructor(
     @Inject('config') private config: any,
@@ -26,6 +28,9 @@ export class AuthenticationService {
     }
     if (config.authHeaders && config.authHeaders.password) {
       this.passwordHeader = config.authHeaders.password;
+    }
+    if (config.renewUrl && config.renewUrl) {
+      this.renewUrl = config.renewUrl;
     }
     if (config.apiBaseUrl) {
       this.apiBaseUrl = config.apiBaseUrl;
@@ -47,7 +52,7 @@ export class AuthenticationService {
     headers.append(this.userHeader, username);
     headers.append(this.passwordHeader, this.password);
     const options = new RequestOptions({ headers: headers });
-    return this.http.get(`${this.apiBaseUrl}/auth/token`, options)
+    return this.http.get(`${this.apiBaseUrl}${this.authUrl}`, options)
       .map((response: Response) => {
         return this.initUser(response.json());
       });
@@ -58,7 +63,7 @@ export class AuthenticationService {
     const headers = new Headers();
     const options = new RequestOptions({headers: headers});
     options.headers.set('Authorization', this.getUser().token);
-    this.http.get(`${this.apiBaseUrl}/auth/renew`, options)
+    this.http.get(`${this.apiBaseUrl}${this.renewUrl}`, options)
       .map((res: Response) => res.json())
         .subscribe(
           (res) => {

@@ -1,0 +1,52 @@
+@import '../../../theme.scss';
+
+:host {
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 100%;
+
+  &.loading {
+    min-height: 90px;
+  }
+
+  .widgetWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1 1 auto;
+    padding: 16px 0;
+    // border-bottom: 1px solid $colorN10;
+  }
+
+  .widgetTitle {
+    @include font('bold');
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: flex-start;
+    color: $colorN80;
+  }
+
+  .text /deep/ span,
+  .text ::ng-deep span {
+    color: $colorPrimary;
+  }
+
+  .text {
+    @include font('light');
+    font-size: 20px;
+    line-height: 28px;
+    margin-top: 5px;
+    color: $colorN60;
+  }
+
+  latitude-loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+  }
+}

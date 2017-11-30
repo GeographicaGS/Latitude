@@ -7,14 +7,14 @@ import { D3Service, D3 } from 'd3-ng2-service';
   styleUrls: ['./widget-index.component.scss']
 })
 export class WidgetIndexComponent implements OnInit, OnChanges {
-
-  @Input() defaultValues: any = false;
-  @Output() indexChanged: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('svgWrapper') svgWrapper;
+  @Input() defaultValues: any = false;
+  @Input() width: number = 300;
+  @Input() height: number = 300;
+  @Input() readOnly = false;
+  @Output() indexChanged: EventEmitter<any> = new EventEmitter<any>();
 
   private d3: D3;
-  private width: number = 300; // TODO: this could be coming from an @Input()
-  private height: number = 300; // TODO: this could be coming from an @Input()
   private resizePointHandlerSize = 12;
   private min = (this.width / 2) - this.resizePointHandlerSize;
   private step = this.min / 10;
@@ -44,8 +44,23 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    if (this.width !== 300 || this.height !== 300) {
+      this.recalculationDueCustomSizes();
+    }
     this.setDragPoints();
     this.drawRhombus();
+  }
+
+  private recalculationDueCustomSizes() {
+    this.min = (this.width / 2) - this.resizePointHandlerSize;
+    this.step = this.min / 10;
+    this.startMin = this.step * 5;
+    this.pointPositions = {
+      one: this.startMin - 0,
+      two: this.width - this.startMin,
+      three: this.width - this.startMin,
+      four: this.startMin - 0
+    };
   }
 
   ngOnChanges(changes) {
@@ -109,15 +124,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     const self = this;
     this.dragPointOne = this.d3.drag()
       .on('drag', (d: any) => {
-        d.y = d.y + self.d3.event.dy;
-        if (d.y >= (self.width / 2) - self.resizePointHandlerSize) {
-          console.log('pointPossitionOne min reached', (self.width / 2) - self.resizePointHandlerSize);
+        if (d.y + self.d3.event.dy >= (self.width / 2) - self.resizePointHandlerSize) {
           return;
-        } else if (d.y <= 0) {
-          console.log('pointPossitionOne max reached', 0);
+        } else if (d.y + self.d3.event.dy <= 0) {
           return;
         }
-
+        d.y = d.y + self.d3.event.dy;
         self.pointPositions.one = d.y;
         self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
         self.handlerPointOne
@@ -128,15 +140,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
       });
 
     this.dragPointTwo = this.d3.drag().on('drag', (d: any) => {
-      d.x = d.x + self.d3.event.dx;
-      if (d.x <= (self.width / 2) + self.resizePointHandlerSize) {
-        console.log('pointPossitionTwo min reached', (self.width / 2) + self.resizePointHandlerSize);
+      if ((d.x + self.d3.event.dx) <= ((self.width + (self.resizePointHandlerSize * 2)) / 2) + (self.resizePointHandlerSize / 2)) { // self.resizePointHandlerSize * 3 because left and right margin
         return;
-      } else if (d.x === (self.width + 1)) {
-        console.log('pointPossitionTwo max reached dragx', self.width, d.x);
+      } else if ((d.x + self.d3.event.dx) >= (self.width + 1) + self.resizePointHandlerSize) {
         return;
       }
-
+      d.x = d.x + self.d3.event.dx;
       self.pointPositions.two = d.x;
       self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
       self.handlerPointTwo
@@ -147,14 +156,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     });
 
     this.dragPointThree = this.d3.drag().on('drag', (d: any) => {
-      d.y = d.y + self.d3.event.dy;
-       if (d.y <= (self.width / 2) + self.resizePointHandlerSize) {
-         console.log('pointPossitionThree min reached', (self.width / 2) + self.resizePointHandlerSize);
+       if ((d.y + self.d3.event.dy) <= ((self.width + (self.resizePointHandlerSize * 2)) / 2) + (self.resizePointHandlerSize / 2)) { // self.resizePointHandlerSize * 3 because left and right margin
          return;
-       } else if (d.y === this.width) {
-         console.log('pointPossitionThree max reached', self.width);
+       } else if ((d.y + self.d3.event.dy) >= (self.width + 1) + self.resizePointHandlerSize) {
          return;
        }
+       d.y = d.y + self.d3.event.dy;
        self.pointPositions.three = d.y;
        self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
        self.handlerPointThree
@@ -165,14 +172,12 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     });
 
     this.dragPointFour = this.d3.drag().on('drag', (d: any) => {
-      d.x = d.x + self.d3.event.dx;
-      if (d.x >= (self.width / 2) - self.resizePointHandlerSize) {
-        console.log('pointPossitionFour min reached', (self.width / 2) - self.resizePointHandlerSize);
+      if ((d.x + self.d3.event.dx) >= (self.width / 2) - self.resizePointHandlerSize) {
         return;
-      } else if (d.x <= 0) {
-        console.log('pointPossitionFour max reached', 0);
+      } else if ((d.x + self.d3.event.dx) <= 0) {
         return;
       }
+      d.x = d.x + self.d3.event.dx;
       self.pointPositions.four = d.x;
       self.draggablePolygon.attr('points', `${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.one} ${self.pointPositions.two}, ${(self.width / 2) + self.resizePointHandlerSize}, ${(self.width / 2) + self.resizePointHandlerSize}, ${self.pointPositions.three}, ${self.pointPositions.four} ${(self.width / 2) + self.resizePointHandlerSize}`);
       self.handlerPointFour
@@ -203,6 +208,7 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
 
   // Drag the circles handlers that will be used to drag the indexes
   private setHandlers() {
+    if (this.readOnly) { return; };
     this.handlerPointOne = this.newg.append('rect')
       .attr('x', (d) => { return (this.width / 2) - (this.resizePointHandlerSize / 2) + this.resizePointHandlerSize })
       .attr('y', (d) => { return this.pointPositions.one - (this.resizePointHandlerSize / 2); })
@@ -279,36 +285,51 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
       let max = 0;
       let min = (this.width / 2) - this.resizePointHandlerSize;
       let step = min / 10;
-      if (pointNumber) {
-        if (pointNumber === 1) {
-          this.pointPositions.one = pointPosition - (pointPosition % step) + this.resizePointHandlerSize;
-          this.handlerPointOne
-            .attr('y', this.pointPositions.one - (this.resizePointHandlerSize / 2));
-        } else if (pointNumber === 4) {
-          this.pointPositions.four = pointPosition - (pointPosition % step) + this.resizePointHandlerSize;
-          this.handlerPointFour
-            .attr('x', this.pointPositions.four - (this.resizePointHandlerSize / 2));
-        }
+      let level = parseInt((10 - ((pointPosition - (pointPosition % step)) / this.step)).toFixed(0), 10);
+      let increaseBy = 0;
+      let decreaseBy = 0;
+      if (level === 0) {
+        increaseBy = step;
+        level = 1;
+      } else if (level > 10) {
+        decreaseBy = step;
+        level = 10;
       }
-      response = {step: (10 - ((pointPosition - (pointPosition % step)) / this.step)).toFixed(0), closestAnchor: pointPosition - (pointPosition % step) + this.resizePointHandlerSize};
+      if (pointNumber === 1) {
+        this.pointPositions.one = pointPosition - (pointPosition % step) + this.resizePointHandlerSize + increaseBy - decreaseBy;
+        this.handlerPointOne
+          .attr('y', this.pointPositions.one - (this.resizePointHandlerSize / 2));
+      } else if (pointNumber === 4) {
+        this.pointPositions.four = pointPosition - (pointPosition % step) + this.resizePointHandlerSize + increaseBy - decreaseBy;
+        this.handlerPointFour
+          .attr('x', this.pointPositions.four - (this.resizePointHandlerSize / 2));
+      }
+      response = {step: level, closestAnchor: pointPosition - (pointPosition % step) + this.resizePointHandlerSize};
 
     } else {
       let max = this.width;
       let min = (this.width / 2) + this.resizePointHandlerSize;
       let step = (max - min) / 10;
-
-      if (pointNumber) {
-        if (pointNumber === 2) {
-          this.pointPositions.two = pointPosition - (pointPosition % step) + this.resizePointHandlerSize;
-          this.handlerPointTwo
-            .attr('x', this.pointPositions.two - (this.resizePointHandlerSize/2));
-        } else if (pointNumber === 3) {
-          this.pointPositions.three = pointPosition - (pointPosition % step) + this.resizePointHandlerSize;
-          this.handlerPointThree
-            .attr('y', this.pointPositions.three - (this.resizePointHandlerSize/2));
-        }
+      let level = parseInt((((pointPosition - (pointPosition % step)) - min) / this.step).toFixed(0), 10);
+      let increaseBy = 0;
+      let decreaseBy = 0;
+      if (level === 0) {
+        increaseBy = step;
+        level = 1;
+      } else if (level > 10) {
+        decreaseBy = step;
+        level = 10;
       }
-      response = {step: (((pointPosition - (pointPosition % step)) - min) / this.step).toFixed(0), closestAnchor: pointPosition - (pointPosition % step) + this.resizePointHandlerSize};
+      if (pointNumber === 2) {
+        this.pointPositions.two = pointPosition - (pointPosition % step) + this.resizePointHandlerSize + increaseBy - decreaseBy;
+        this.handlerPointTwo
+          .attr('x', this.pointPositions.two - (this.resizePointHandlerSize/2));
+      } else if (pointNumber === 3) {
+        this.pointPositions.three = pointPosition - (pointPosition % step) + this.resizePointHandlerSize + increaseBy - decreaseBy;
+        this.handlerPointThree
+          .attr('y', this.pointPositions.three - (this.resizePointHandlerSize/2));
+      }
+      response = {step: level, closestAnchor: pointPosition - (pointPosition % step) + this.resizePointHandlerSize};
     }
     this.draggablePolygon.attr('points', `${this.width / 2 + this.resizePointHandlerSize}, ${this.pointPositions.one} ${this.pointPositions.two}, ${this.width / 2 + this.resizePointHandlerSize}, ${this.width / 2 + this.resizePointHandlerSize}, ${this.pointPositions.three}, ${this.pointPositions.four} ${this.width / 2 + this.resizePointHandlerSize}`);
     this.indexChanged.emit({index: pointNumber, step: response.step});

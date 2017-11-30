@@ -1,0 +1,21 @@
+@import '../../../theme.scss';
+
+:host{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $colorN20;
+    margin-bottom: -1px;
+    div{
+        flex:1;
+        cursor: pointer;
+        color: $colorN20;
+        font-size: 14px;
+        line-height: 16px;
+        padding: 12px 0;
+        text-align: center;
+        &.active{
+            color: $colorN80;
+            border-bottom: 4px solid $colorSecondary;
+        }
+    }
+}
