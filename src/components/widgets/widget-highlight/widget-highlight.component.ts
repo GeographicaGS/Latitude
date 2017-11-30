@@ -50,7 +50,7 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
 
   private formatData(data) {
     if (this.doubleHistogram) {
-      this.formatDataForStackedBar(data);
+      this.sortAndGetMax(data);
     } else {
       this.data = data.map(c => {
         const label = this.labels[c.id] ? this.labels[c.id] : c.label ? c.label : c.id;
@@ -59,29 +59,6 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
         return a.value + b.value;
       }).splice(0, this.number);
     }
-  }
-
-  private formatDataForStackedBar(data) {
-    if (data === null) { return; }
-    let formattedData = [];
-    for (const row of data) {
-      if (row.category === 'Unknown') {
-        continue;
-      }
-      const obj = {};
-      obj['Label'] = row.category;
-      if (this.ranges.indexOf(row.category) === -1) {
-        this.ranges.push(row.category);
-      }
-      for (const value of row.value) {
-        obj[value.category] = value.value;
-        if (this.status.indexOf(value.category) === -1) {
-          this.status.push(value.category);
-        }
-      }
-      formattedData.push(obj);
-    }
-    this.sortAndGetMax(formattedData);
   }
 
   private sortAndGetMax(formattedData) {

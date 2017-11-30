@@ -14,15 +14,18 @@ export class DataSourceHistogram {
   bbox: any;
 
   histogram: any;
+  doubleHistogram: boolean;
 
   constructor(
     filters: any = false,
     data: any = {stream: null, property: 'id', agg: {operation: 'count', property: null}},
     format = 'geojson',
-    results: any = false
+    results: any = false,
+    doubleHistogram = false
   ) {
     this.data = data;
     this.format = format;
+    this.doubleHistogram = doubleHistogram;
     if (filters && filters.bbox) {
       this.bbox = polygon(filters.bbox);
     }
@@ -44,6 +47,9 @@ export class DataSourceHistogram {
         // TODO: This would be a service call
       } else if (this.format === 'json') {
         data = this.histogram;
+        if (this.doubleHistogram) {
+          data = this.formatDataForStackedBar(data);
+        }
       }
       resolve(data);
     });
@@ -89,6 +95,23 @@ export class DataSourceHistogram {
       response = intersect(polygon(feature.geometry.coordinates), this.bbox);
     }
     return response;
+  }
+
+  private formatDataForStackedBar(data) {
+    if (data === null) { return; }
+    let formattedData = [];
+    for (const row of data) {
+      if (row.category === 'Unknown') {
+        continue;
+      }
+      const obj = {};
+      obj['Label'] = row.category;
+      for (const value of row.value) {
+        obj[value.category] = value.value;
+      }
+      formattedData.push(obj);
+    }
+    return formattedData;
   }
 
 };
