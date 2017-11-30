@@ -88,9 +88,11 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
       .attr('stroke-width', 2);
 
     // Draw polygon (rhombus) grid
-    for (var i = 1; i < 5; i++) {
+    const lines = this.readOnly ? 3 : 5;
+    const stepAlt = this.readOnly ? this.step * 2 : this.step;
+    for (var i = 1; i < lines; i++) {
       this.newg.append('polygon')
-          .attr('points', `${(this.width / 2) + this.resizePointHandlerSize}, ${((this.step * 2) * i) + this.resizePointHandlerSize} ${(this.width - ((this.step * 2) * i)) + this.resizePointHandlerSize}, ${(this.width / 2) + this.resizePointHandlerSize}, ${(this.width / 2) + this.resizePointHandlerSize}, ${(this.width - ((this.step * 2) * i)) + this.resizePointHandlerSize}, ${((this.step * 2) * i) + this.resizePointHandlerSize} ${(this.width / 2) + this.resizePointHandlerSize}`)
+          .attr('points', `${(this.width / 2) + this.resizePointHandlerSize}, ${((stepAlt * 2) * i) + this.resizePointHandlerSize} ${(this.width - ((stepAlt * 2) * i)) + this.resizePointHandlerSize}, ${(this.width / 2) + this.resizePointHandlerSize}, ${(this.width / 2) + this.resizePointHandlerSize}, ${(this.width - ((stepAlt * 2) * i)) + this.resizePointHandlerSize}, ${((stepAlt * 2) * i) + this.resizePointHandlerSize} ${(this.width / 2) + this.resizePointHandlerSize}`)
           .attr('fill-opacity', 0)
           .attr('stroke', '#9397A2') // TODO: color
           .attr('stroke-width', 1)
@@ -107,7 +109,20 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     // Append a polygon to the mask, this will be the one that gets the previously created gradient
     mask.append('polygon')
       .attr('points', `${(this.width/ 2) + this.resizePointHandlerSize}, ${this.resizePointHandlerSize} ${this.width + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${this.width + this.resizePointHandlerSize}, ${0 + this.resizePointHandlerSize} ${(this.width/ 2) + this.resizePointHandlerSize}`)
-      .attr('fill', "url(#gradientPolygon)");
+      .attr('fill-opacity', () => {
+        if (this.readOnly) {
+          return '0.9';
+        } else {
+          return '1';
+        }
+      })
+      .attr('fill', () => {
+        if (this.readOnly) {
+          return '#0066CC';
+        } else {
+          return "url(#gradientPolygon)";
+        }
+      });
 
     // Let's create the polygon (rhombus) that we will actually be dragging, it has the previously created mask
     this.draggablePolygon = this.newg.append('polygon')
