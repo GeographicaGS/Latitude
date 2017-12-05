@@ -10,6 +10,7 @@ import {
   WidgetCategoryComponent,
   WidgetIndexComponent,
   WidgetVariableComponent,
+  WidgetStackedBarsComponent,
   WidgetHighlightComponent
 } from './components/widgets';
 
@@ -53,6 +54,7 @@ const components = [
   WidgetCategoryComponent,
   WidgetVariableComponent,
   WidgetIndexComponent,
+  WidgetStackedBarsComponent,
   WidgetHighlightComponent,
   MapComponent,
   LoadingComponent,

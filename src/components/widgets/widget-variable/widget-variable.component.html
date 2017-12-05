@@ -2,10 +2,10 @@
   <div class="widgetTitle">
     {{ title | translate }}
   </div>
-  <div class="text" *ngIf="text">{{ text | translate }}</div>
   <div class="numberTotal" *ngIf="data !== undefined && !loading">
     {{ formatNumber(data) }} <span class="units">{{ units | translate }}</span>
   </div>
+  <div class="text" *ngIf="text">{{ text | translate }}</div>
   <div class="noDataFound" *ngIf="loading === false && (!data || data === undefined)">
     {{ 'No data found' | translate }}
   </div>

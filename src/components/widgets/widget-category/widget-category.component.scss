@@ -3,15 +3,17 @@
 :host {
   display: flex;
   flex-direction: column;
+  flex: 1 1 100%;
+  padding: $widgetCategoryPadding;
 
-  > h3 {
-    font-size: 18px;
-    line-height: 18px;
+  .widgetTitle {
     @include font('bold');
-    margin-top: 24px;
+    font-size: 14px;
+    line-height: 18px;
+    color: $colorN80;
   }
 
-  > h4 {
+  .selectedInfo {
     font-size: 14px;
     line-height: 16px;
     @include font('regular');
@@ -19,7 +21,7 @@
     margin-bottom: 26px;
   }
 
-  > div {
+  .categoryWrapper {
     cursor: pointer;
 
     &:not(.active) {

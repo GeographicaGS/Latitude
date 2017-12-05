@@ -49,10 +49,15 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
     return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' };
   }
 
+  formatValue(value) {
+    return value && !isNaN(value) ? value.toFixed(2) : value;
+  }
+
   private formatData(data) {
     this.data = data.map(c => {
-      const label = this.labels[c.id] ? this.labels[c.id] : c.label ? c.label : c.id;
-      return {category_id: c.id, value: c.value, category: label};
+      let id = c.category_id && !c.id ? c.category_id : c.id;
+      const label = this.labels[id] ? this.labels[id] : c.label ? c.label : id;
+      return {category_id: id, value: c.value, category: label};
     });
   }
 

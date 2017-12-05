@@ -36,6 +36,17 @@ $colorN05: #F2F2F4;
 $colorN02: #FCFCFC;
 $colorWhite: #FFF;
 
+
+// Widgets css custom variables
+$widgetVariablePadding: var(--widget-variable-padding, 16px 0);
+$widgetStackedBarPadding: var(--widget-stacked-bar-padding, 16px 10px);
+$widgetCategoryPadding: var(--widget-category-padding, 0);
+$widgetHighlightPadding: var(--widget-highlight-padding, 16px 0);
+
+// tab-navigation css custom variables
+$tabNavigationBorder: var(--tab-navigation-border, 1px solid $colorN20);
+$tabNavigationFlex: var(--tab-navigation-flex, 1);
+
 $animationTimeSlow: 2s;
 $animationTimeNormal: 1s;
 $animationTimeFast: .5s;

@@ -1,13 +1,15 @@
-<h3>{{title}}</h3>
+<div class="widgetTitle">{{title}}</div>
 
-<h4 *ngIf="disabledList.length === 0">{{ 'ALL Selected' | translate }}</h4>
-<h4 *ngIf="disabledList.length !== 0">{{ data.length - disabledList.length }} {{ 'Selected' | translate }}</h4>
+<div class="selectedInfo">
+  <ng-container *ngIf="disabledList.length === 0">{{ 'ALL Selected' | translate }}</ng-container>
+  <ng-container *ngIf="disabledList.length !== 0">{{ data.length - disabledList.length }} {{ 'Selected' | translate }}</ng-container>
+</div>
 
 <ng-container *ngIf="data && data.length > 0">
-  <div *ngFor="let d of data" (click)="toggleCategory(d.category_id)" [class.active]="disabledList.indexOf(d.category_id) < 0">
+  <div class="categoryWrapper" *ngFor="let d of data" (click)="toggleCategory(d.category_id)" [class.active]="disabledList.indexOf(d.category_id) < 0">
     <div class="label">
       <span>{{ d.category | translate }}</span>
-      <span>{{ d.value }}</span>
+      <span>{{ formatValue(d.value) }}</span>
     </div>
     <div class="bar">
       <div>
