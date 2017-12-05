@@ -318,8 +318,7 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
         tooltip.transition()
           .duration(200)
           .style('opacity', 1);
-
-        tooltip.html('<span class="type">' + d.name + '</span>' + d.range + ': ' + d.actualValue.toLocaleString());
+        tooltip.html('<span class="type">' + d.name + '</span>' + d.range + ': ' + d.actualValue.toLocaleString() + self.units);
         tooltip.style('top', (d3.event.layerY + 10) + 'px')
           .style('left', (d3.event.layerX + 10) + 'px');
 
