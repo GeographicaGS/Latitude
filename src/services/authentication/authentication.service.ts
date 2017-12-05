@@ -10,7 +10,7 @@ export class AuthenticationService {
 
   data;
   password;
-  _renewGapSeconds = 300;
+  _renewGapSeconds = 200;
   apiBaseUrl: string;
   interval: any;
   userHeader = 'x-auth-email';
@@ -90,7 +90,7 @@ export class AuthenticationService {
   }
 
   setUser()  {
-    this.data.expires = new Date().getTime() + (this.data.expiresIn) * 1000;
+    this.data.expires = new Date().getTime() + (this.data.expires_in) * 1000;
     localStorage.setItem('currentUser', JSON.stringify(this.data));
   }
 
