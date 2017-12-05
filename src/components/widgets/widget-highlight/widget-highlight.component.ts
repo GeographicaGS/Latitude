@@ -66,8 +66,6 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
         const id = c.id ? c.id : c.category;
         const label = this.labels[id] ? this.labels[id] : c.label ? c.label : id;
         return {category_id: id, value: c.value, category: this.translate.instant(label)};
-      }).sort((a, b) => {
-        return a.value + b.value;
       }).splice(0, this.number);
     }
   }

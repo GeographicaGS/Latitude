@@ -72,13 +72,16 @@ export class MapComponent implements OnInit {
     this.map.getSource(id).setData(data);
   }
 
-  addPointLayer(id: string, data: any, styles: any, filter: any[] = null, before: string = null) {
+  addPointLayer(id: string, data: any, layout: any, styles: any = null, filter: any[] = null, before: string = null) {
     const layerInfo = {
       id: id,
       type: 'symbol',
       source: data,
-      layout: styles
+      layout: layout
     };
+    if (styles) {
+      layerInfo['paint'] = styles;
+    }
     if (filter) {
       layerInfo['filter'] = filter;
     }

@@ -1,0 +1,71 @@
+@import '../../../theme.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 100%;
+  position: relative;
+
+  .widgetWrapper {
+    padding: $widgetStackedBarPadding;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1 1 auto;
+
+    &.loading {
+      min-height: 90px;
+      svg {
+        display: none;
+      }
+    }
+    svg {
+      position: relative;
+    }
+  }
+
+  latitude-ui-loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+  }
+
+  .svgWrapper {
+    position: relative;
+    display: block;
+    padding-top: 10px;
+  }
+
+  .widgetTitle {
+    @include font('bold');
+    font-size: 14px;
+    line-height: 18px;
+    color: $colorN80;
+  }
+
+  .svgLegendWrapper {
+    width: 200px;
+    word-break: normal;
+    margin: 0 auto;
+    padding: 4px 0;
+    text-align: center;
+    .category {
+      @include font('light');
+      margin-right: 8px;
+      font-size: 12px;
+      line-height: 12px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: capitalize;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity .3s;
+      &.disabled {
+        opacity: .4;
+      }
+    }
+  }
+}

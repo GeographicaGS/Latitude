@@ -1,0 +1,26 @@
+<div class="widgetWrapper" [ngClass]="{'loading': loading}">
+  <div class="widgetTitle">
+      {{ title }}
+  </div>
+
+  <latitude-loading
+    [color]="'red'"
+    [width]="22"
+    [show]="loading === true"
+    *ngIf="loading === true"
+  ></latitude-loading>
+
+  <div class="noDataFound" *ngIf="loading === false && (!data || (data && data.length === 0))">
+    {{ 'No data found' | translate }}
+  </div>
+
+  <div class="svgLegendWrapper" *ngIf="loading === false && data && data.length > 0">
+    <div class="category" *ngFor="let cat of categoriesColors" [ngClass]="{'disabled': isStatusHidden(cat.category)}" (click)="hiddeCategory(cat.category)">
+      {{ cat.category }}
+      <span class="square" [ngStyle]="getSquareStyle(cat.color)"></span>
+    </div>
+  </div>
+  <div class="svgWrapper" #svgWrapper>
+    <svg class="stackedBar" width="280" height="200" #svgContainer></svg>
+  </div>
+</div>

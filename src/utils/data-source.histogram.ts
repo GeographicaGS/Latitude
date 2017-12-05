@@ -38,7 +38,7 @@ export class DataSourceHistogram {
   // It should always return a valid format, [{id: --, value: --}, ...] ---- this is done in the last step (this.applyOperation)
   fetch() {
     return new Promise((resolve, reject) => {
-      let data = [];
+      let data: any = [];
       if (this.format === 'geojson') {
         data = this.applyFilters(); // Apply filters (bbox for now)
         data = this.groupBy(data); // Group by this.data.property
@@ -49,6 +49,14 @@ export class DataSourceHistogram {
         data = this.histogram;
         if (this.doubleHistogram) {
           data = this.formatDataForStackedBar(data);
+        } else {
+          data = data.map((c) => {
+            if (c.category && !c.id) {
+              return {id: c.category, value: c.value};
+            } else {
+              return {id: c.id, value: c.value};
+            }
+          });
         }
       }
       resolve(data);

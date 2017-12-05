@@ -3,10 +3,10 @@
 :host{
     display: flex;
     align-items: center;
-    border-bottom: 1px solid $colorN20;
+    border-bottom: $tabNavigationBorder;
     margin-bottom: -1px;
     div{
-        flex:1;
+        flex: $tabNavigationFlex;
         cursor: pointer;
         color: $colorN20;
         font-size: 14px;
