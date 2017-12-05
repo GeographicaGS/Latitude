@@ -84,9 +84,10 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(change: any) {
-    if (change.data && change.data.currentValue !== undefined) {
+    this.dataSource.fetch().then((data) => {
+      this.data = data;
       this.refresh();
-    }
+    });
   }
 
   private setTranslations() {
