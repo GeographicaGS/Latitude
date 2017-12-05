@@ -21,8 +21,17 @@
     margin-bottom: 26px;
   }
 
+  &.filter {
+    .categoryWrapper {
+      cursor: pointer;
+    }
+  }
+  &:not(.filter) {
+    .categoryWrapper {
+      cursor: default;
+    }
+  }
   .categoryWrapper {
-    cursor: pointer;
 
     &:not(.active) {
       .label {

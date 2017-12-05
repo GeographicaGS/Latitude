@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, HostBinding, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'latitude-widget-category',
@@ -14,6 +14,9 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
   @Input() colors: any = false;
   @Input() labels: any = false;
   @Input() title: string;
+  @Input() barsDefaultColor = 'black';
+
+  @HostBinding('class.filter') @Input() filter = true;
 
   @Output() disabledCategories = new EventEmitter<Array<string>>();
 
@@ -33,6 +36,7 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
   }
 
   toggleCategory(d) {
+    if (!this.filter) { return; }
     if (this.disabledList.indexOf(d) < 0) {
       this.disabledList.push(d);
     }else {
@@ -42,7 +46,7 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
   }
 
   getBarStyle(d) {
-    let bgColor = 'black';
+    let bgColor = this.barsDefaultColor;
     if (this.colors[d.category_id]) {
       bgColor = this.colors[d.category_id];
     }

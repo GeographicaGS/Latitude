@@ -45,6 +45,22 @@
     color: $colorN80;
   }
 
+
+  &.filter {
+    .svgLegendWrapper {
+      .category {
+        cursor: pointer;
+      }
+    }
+  }
+  &:not(.filter) {
+    .categoryWrapper {
+      .category {
+        cursor: default;
+      }
+    }
+  }
+
   .svgLegendWrapper {
     width: 200px;
     word-break: normal;
@@ -60,7 +76,6 @@
       justify-content: center;
       align-items: center;
       text-transform: capitalize;
-      cursor: pointer;
       opacity: 1;
       transition: opacity .3s;
       &.disabled {

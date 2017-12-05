@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Input, Output, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, OnChanges, ViewChild } from '@angular/core';
 // import { Colors } from '../../../common/cons';
 import { DataSourceHistogram } from '../../../utils/data-source.histogram';
 import { TranslateService } from 'ng2-translate';
@@ -44,7 +44,10 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   @ViewChild('svgContainer') svgContainer;
   @ViewChild('svgWrapper') svgWrapper;
 
+  @HostBinding('class.filter') @Input() filter = true;
+
   @Input() title: string;
+  @Input() allowFiltering = true;
 
   @Input() data: any;
   @Input() dataSource: DataSourceHistogram;
@@ -55,7 +58,6 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
 
   @Input() units = '';
   @Input() loading = false;
-  @Input() filter = true;
 
   @Output() toggleLayer = new EventEmitter<any>(null);
   @Output() updatedData = new EventEmitter<any>(null);
@@ -224,7 +226,13 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
       .attr('transform', function (d) { return 'translate(' + xStackChart(d.Label) + ',0)'; });
 
     this.svg.selectAll('.x.axis .tick')
-      .style('cursor', 'pointer')
+      .style('cursor', () => {
+        if (this.filter) {
+          return 'pointer';
+        } else {
+          return 'default'
+        }
+      })
       .attr('class', (d, i) => {
         if (this.hiddenRanges.indexOf(d.Label) !== -1) {
           return 'tick disabled';
@@ -261,7 +269,13 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
       .data((d: any) => { return d.ages; })
       .enter().append('rect')
         .attr('width', xStackChart.bandwidth())
-        .attr('style', 'cursor: pointer;')
+        .attr('style', () => {
+          if (this.filter) {
+            return 'cursor: pointer;';
+          } else {
+            return 'cursor: default;'
+          }
+        })
         .attr('y', (d: any) => { return yStackChart(d.y1); })
         .attr('class', (d: any) => {
           let className = d.name.toLowerCase();

@@ -10,7 +10,7 @@ export class AuthenticationService {
 
   data;
   password;
-  _renewGapSeconds = 200;
+  _renewGapSeconds = 300;
   apiBaseUrl: string;
   interval: any;
   userHeader = 'x-auth-email';

@@ -1,5 +1,5 @@
 <div class="widgetWrapper">
-  <div class="widgetTitle">
+  <div class="widgetTitle" *ngIf="title">
     {{ title | translate }}
   </div>
   <div class="text" *ngIf="text && data.length > 1" [innerHTML]="getFormattedText()+'.'"></div>
