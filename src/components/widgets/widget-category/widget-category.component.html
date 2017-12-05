@@ -1,4 +1,4 @@
-<div class="widgetTitle">{{title}}</div>
+<div class="widgetTitle" *ngIf="title">{{title}}</div>
 
 <div class="selectedInfo">
   <ng-container *ngIf="disabledList.length === 0">{{ 'ALL Selected' | translate }}</ng-container>

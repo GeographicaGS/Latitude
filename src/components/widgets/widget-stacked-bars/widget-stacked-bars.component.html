@@ -1,5 +1,5 @@
 <div class="widgetWrapper" [ngClass]="{'loading': loading}">
-  <div class="widgetTitle">
+  <div class="widgetTitle" *ngIf="title">
       {{ title }}
   </div>
 
