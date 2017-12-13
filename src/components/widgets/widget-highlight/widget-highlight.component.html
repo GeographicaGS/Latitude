@@ -2,7 +2,7 @@
   <div class="widgetTitle" *ngIf="title">
     {{ title | translate }}
   </div>
-  <div class="text" *ngIf="text && data.length > 1" [innerHTML]="getFormattedText()+'.'"></div>
+  <div class="text" *ngIf="text && data.length >= 1" [innerHTML]="getFormattedText()+'.'"></div>
   <div class="noDataFound" *ngIf="loading === false && (!data || data === undefined)">
     {{ 'No data found' | translate }}
   </div>
