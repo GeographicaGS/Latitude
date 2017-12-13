@@ -12,6 +12,7 @@ export { AuthGuard } from './services/authentication/authentication.guard';
 export { DataSourceHistogram } from './utils/data-source.histogram';
 
 export { MapComponent } from './components/map/map.component';
+export { MapService } from './components/map/map.service';
 export { WidgetStackedBarsComponent } from './components/widgets/widget-stacked-bars/widget-stacked-bars.component';
 
 export { LatitudeModule } from './latitude.module';

@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from 'ng2-translate';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { D3Service } from 'd3-ng2-service';
+import { MapService } from './components/map/map.service';
 
 import {
   WidgetCategoryComponent,
@@ -71,7 +72,7 @@ export class LatitudeModule {
   static forRoot(config: any): ModuleWithProviders {
     return {
       ngModule: LatitudeModule,
-      providers: [AuthenticationService, AuthGuard, D3Service, {provide: 'config', useValue: config}]
+      providers: [AuthenticationService, AuthGuard, D3Service, MapService, {provide: 'config', useValue: config}]
     };
   }
 }
