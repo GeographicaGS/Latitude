@@ -19,7 +19,7 @@ export class WidgetHighlightComponent implements OnInit, OnChanges {
   @HostBinding('class.loading') @Input() loading = false;
 
   data = [];
-  number = 2;
+  @Input() number = 2;
   loadingColor = 'blue'; // TODO: dynamic color
   ranges = [];
   status = [];
