@@ -37,7 +37,6 @@ export class DataSource {
         } else {
           reject(new Error(`Unknown type ${type}`));
         }
-
       } else if (this.type === 'https') {
         // TODO: This would be a service call
         throw Error('Not yet supported');
@@ -90,6 +89,33 @@ export class DataSource {
     } else {
       return this.localInput.stream;
     }
+  }
+
+  histogramOrderBy(data: Array<Object>, field: string='value') {
+    return _.sortBy(data, field);
+  }
+
+  histogramPercentage(data: Array<Object>) {
+    const max = _.sumBy(data, 'value');
+    return data.map((d: any) => {
+      d['perc'] = 100 * d.value / max;
+      return d;
+    });
+  }
+
+  flatternDoubleHistogram(data: Array<Object>) {
+    return _.flatMap(data, n =>
+        n.value.map(d=> {
+          d['category_1'] = n.category;
+          d['category_2'] = d.category;
+          delete d.category;
+          return d;
+        })
+      );
+  }
+
+  rankingDoubleHistogram(data: Array<Object>) {
+    return _.sortBy(this.flatternDoubleHistogram(data));
   }
 
 }
