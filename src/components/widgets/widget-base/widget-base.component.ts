@@ -14,6 +14,7 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
   moveend = this._moveend.bind(this);
   @Input() bboxFilter = true;
   @Input() formatOptions: object = null;
+  @Input() dataSource: any;
 
   constructor(private mapService: MapService) { }
 

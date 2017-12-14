@@ -13,7 +13,7 @@ export class DataSource {
   //
   // }
 
-  constructor(type: string, opts: any}) {
+  constructor(type: string, opts: any) {
     this.type = type;
     if (type === 'local') {
       this.localInput = opts.input;
@@ -23,17 +23,16 @@ export class DataSource {
   // This method handles the data (either coming from this.data.stream or from a service)
   // type: could be 'histogram' or 'variable'
   // opts: { bbox: [turf polygon], agg: 'count(*)', property: 'age'}
-  fetch(type:string , opts: any) {
+  fetch(type: string, opts: any) {
     return new Promise((resolve, reject) => {
       if (this.type === 'local') {
-        let data = this.applyFilters(opts);
+        const data = this.applyFilters(opts);
         const agg = this.parseAgg(opts.agg);
         if (type === 'histogram') {
-          resolve(this.groupBy(data, opts.property, agg););
-        } else if (type == 'variable') {
+          resolve(this.groupBy(data, opts.property, agg));
+        } else if (type === 'variable') {
           resolve(this.aggregator(data, agg));
-        }
-        else {
+        } else {
           reject(new Error(`Unknown type ${type}`));
         }
 
@@ -50,25 +49,27 @@ export class DataSource {
     return {
       op: m[1],
       prop: m[2]
-    }
+    };
   }
 
-  private groupBy(data: Array<Object>, property: string, agg: any) {
-    const data = _.groupBy(data, f => {
+  private groupBy(data: Array < Object > , property: string, agg: any) {
+    const group = _.groupBy(data, f => {
       const p = f.properties || f;
        return p && p[property] ? p[property] : 'uncategorized';
     });
 
     const resp = [];
-    for (let i in data) {
-      resp.push({
-        category: i,
-        value: this.aggregator(data[i],agg)
+    for (const i in group) {
+      if (i) {
+        resp.push({
+          category: i,
+          value: this.aggregator(group[i], agg)
+        });
       }
     }
   }
 
-  private aggregator(data: Array<Object>, agg: any){
+  private aggregator(data: Array < Object > , agg: any) {
     if (agg.op === 'sum') {
       // || is to support GEOJSON arrays
       return data.reduce((acc, v) => (v[agg.prop] || v.properties[agg.prop]) + acc);
@@ -79,7 +80,7 @@ export class DataSource {
 
   // Apply filters (only 'bbox' for now)
   private applyFilters(opts: any) {
-    if (opts.bbox && this.localInput.format==='geojson') {
+    if (opts.bbox && this.localInput.format === 'geojson') {
       return this.localInput.stream.filter(feature => {
         return intersect(polygon(feature.geometry.coordinates), this.bbox);
       });

@@ -7,12 +7,11 @@ import { WidgetBaseComponent } from '../widget-base/widget-base.component';
   // templateUrl: './widget-category.component.html',
   styles: [`@-webkit-keyframes tranlateInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translateY(-100%);transform:translateY(-100%)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translateY(0);transform:translateY(0)}}@keyframes tranlateInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translateY(-100%);transform:translateY(-100%)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translateY(0);transform:translateY(0)}}@-webkit-keyframes slideLeftOutAnimation{0%{opacity:inherit;visibility:inherit;-webkit-transform:translateX(0);transform:translateX(0)}99%{visibility:inherit;-webkit-transform:translateX(0);transform:translateX(0)}to{opacity:0;visibility:hidden;-webkit-transform:translateX(-100%);transform:translateX(-100%)}}@keyframes slideLeftOutAnimation{0%{opacity:inherit;visibility:inherit;-webkit-transform:translateX(0);transform:translateX(0)}99%{visibility:inherit;-webkit-transform:translateX(0);transform:translateX(0)}to{opacity:0;visibility:hidden;-webkit-transform:translateX(-100%);transform:translateX(-100%)}}@-webkit-keyframes slideLeftInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translateX(100%);transform:translateX(100%)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translateX(0);transform:translateX(0)}}@keyframes slideLeftInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translateX(100%);transform:translateX(100%)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translateX(0);transform:translateX(0)}}@-webkit-keyframes dropdownInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translateY(-18px);transform:translateY(-18px)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translateY(0);transform:translateY(0)}}@keyframes dropdownInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translateY(-18px);transform:translateY(-18px)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translateY(0);transform:translateY(0)}}@-webkit-keyframes dropdownOutAnimation{0%{opacity:inherit;visibility:inherit;-webkit-transform:translateY(0);transform:translateY(0)}99%{visibility:inherit;-webkit-transform:translateY(0);transform:translateY(0)}to{opacity:0;visibility:hidden;-webkit-transform:translateY(-18px);transform:translateY(-18px)}}@keyframes dropdownOutAnimation{0%{opacity:inherit;visibility:inherit;-webkit-transform:translateY(0);transform:translateY(0)}99%{visibility:inherit;-webkit-transform:translateY(0);transform:translateY(0)}to{opacity:0;visibility:hidden;-webkit-transform:translateY(-18px);transform:translateY(-18px)}}@-webkit-keyframes tooltipInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translate(-50%,-8px);transform:translate(-50%,-8px)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translate(-50%,0);transform:translate(-50%,0)}}@keyframes tooltipInAnimation{0%{opacity:0;visibility:hidden;-webkit-transform:translate(-50%,-8px);transform:translate(-50%,-8px)}1%{visibility:visible}to{opacity:1;visibility:visible;-webkit-transform:translate(-50%,0);transform:translate(-50%,0)}}@-webkit-keyframes tooltipOutAnimation{0%{opacity:inherit;visibility:inherit;-webkit-transform:translate(-50%,0);transform:translate(-50%,0)}99%{visibility:inherit;-webkit-transform:translate(-50%,0);transform:translate(-50%,0)}to{opacity:0;visibility:hidden;-webkit-transform:translate(-50%,-8px);transform:translate(-50%,-8px)}}@keyframes tooltipOutAnimation{0%{opacity:inherit;visibility:inherit;-webkit-transform:translate(-50%,0);transform:translate(-50%,0)}99%{visibility:inherit;-webkit-transform:translate(-50%,0);transform:translate(-50%,0)}to{opacity:0;visibility:hidden;-webkit-transform:translate(-50%,-8px);transform:translate(-50%,-8px)}}@-webkit-keyframes fadeInAnimation{0%{opacity:0;visibility:hidden}1%{visibility:visible}to{opacity:1;visibility:visible}}@keyframes fadeInAnimation{0%{opacity:0;visibility:hidden}1%{visibility:visible}to{opacity:1;visibility:visible}}@-webkit-keyframes fadeOutAnimation{0%{opacity:inherit;visibility:inherit}99%{visibility:inherit}to{opacity:0;visibility:hidden}}@keyframes fadeOutAnimation{0%{opacity:inherit;visibility:inherit}99%{visibility:inherit}to{opacity:0;visibility:hidden}}:host{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-flex:1;-ms-flex:1 1 100%;flex:1 1 100%;padding:var(--widget-category-padding, 0)}:host .widgetTitle{font-weight:700;font-size:14px;line-height:18px;color:#383d4c}:host .selectedInfo{font-size:14px;line-height:16px;margin-top:6px;margin-bottom:26px}:host.filter .categoryWrapper{cursor:pointer}:host:not(.filter) .categoryWrapper{cursor:default}:host .categoryWrapper:not(.active) .label span{color:#c9cbd1}:host .categoryWrapper:not(.active) .bar>div .progress{background-color:#c9cbd1!important}:host .categoryWrapper+div{margin-top:14px}:host .categoryWrapper .label{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}:host .categoryWrapper .label span{font-size:14px;line-height:14px;-webkit-transition:color linear .5s;transition:color linear .5s}:host .categoryWrapper .bar>div{height:6px;border-radius:2px;background-color:#f2f2f4;margin-top:8px;position:relative}:host .categoryWrapper .bar>div .progress{border-radius:2px;position:absolute;top:0;left:0;height:100%;-webkit-transition:background-color linear .5s;transition:background-color linear .5s}`]
 })
-export class WidgetCategoryComponent extends WidgetBaseComponent implements OnChanges {
+export class WidgetCategoryComponent extends WidgetBaseComponent {
 
   disabledList = [];
   data = [];
 
-  @Input() dataSource: any;
   @Input() colors: any = false;
   @Input() labels: any = false;
   @Input() title: string;
@@ -22,14 +21,13 @@ export class WidgetCategoryComponent extends WidgetBaseComponent implements OnCh
 
   @Output() disabledCategories = new EventEmitter<Array<string>>();
 
-  ngOnChanges(changes) {
-    if (changes.dataSource &&
-      (
-        (changes.dataSource.firstChange && changes.dataSource.currentValue !== undefined) || 
-        (!changes.dataSource.firstChange && changes.dataSource.currentValue !== changes.dataSource.previousValue)
-      )
-    ) {
-      this.dataSource.fetch().then((data) => this.formatData(data));
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.dataSource instanceof Object) {
+      this.dataSource.fetch('histogram', {
+        agg: 'count(*)',
+        property: 'age'
+      }).then(data => this.formatData(data));
     }
   }
 

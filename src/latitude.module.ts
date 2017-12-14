@@ -18,7 +18,7 @@ import {
   MapComponent,
   AuthenticationService,
   AuthGuard,
-  DataSourceHistogram,
+  DataSource,
   DateRangePickerComponent,
   SelectfilterComponent,
   SwitcherComponent,

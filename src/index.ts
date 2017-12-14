@@ -9,8 +9,7 @@ export { LoadingComponent } from './components/ui/loading/loading.component';
 
 export { AuthenticationService } from './services/authentication/authentication.service';
 export { AuthGuard } from './services/authentication/authentication.guard';
-export { DataSourceHistogram } from './utils/data-source.histogram';
-
+export { DataSource } from './datasources/data-source';
 export { MapComponent } from './components/map/map.component';
 export { MapService } from './components/map/map.service';
 export { WidgetStackedBarsComponent } from './components/widgets/widget-stacked-bars/widget-stacked-bars.component';
