@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from 'ng2-translate';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { D3Service } from 'd3-ng2-service';
-import { MapService } from './components/map/map.service';
 
 import {
   WidgetCategoryComponent,
@@ -27,7 +26,9 @@ import {
   SidebarComponent,
   ProgressButtonComponent,
   TabNavigationComponent,
-  LoadingComponent
+  LoadingComponent,
+  MapService,
+  FormatNumberPipe
  } from './index';
 
 /**
@@ -59,7 +60,8 @@ const components = [
   WidgetHighlightComponent,
   MapComponent,
   LoadingComponent,
-  TabNavigationComponent
+  TabNavigationComponent,
+  FormatNumberPipe
 ];
 
 @NgModule({

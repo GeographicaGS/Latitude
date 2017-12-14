@@ -13,6 +13,7 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
   map: any;
   moveend = this._moveend.bind(this);
   @Input() bboxFilter = true;
+  @Input() formatOptions: object = null;
 
   constructor(private mapService: MapService) { }
 
@@ -35,7 +36,7 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    if (this.bboxFilter) {
+    if (this.map && this.bboxFilter) {
       this.map.off('moveend', this.moveend);
     }
   }
