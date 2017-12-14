@@ -2,11 +2,11 @@
 
 <div class="selectedInfo">
  <ng-container *ngIf="disabledList.length === 0">{{ 'ALL Selected' | translate }}</ng-container>
- <ng-container *ngIf="disabledList.length !== 0">{{ data.length - disabledList.length }} {{ 'Selected' | translate }}</ng-container>
+ <ng-container *ngIf="disabledList.length !== 0">{{ _data.length - disabledList.length }} {{ 'Selected' | translate }}</ng-container>
 </div>
 
-<ng-container *ngIf="data && data.length > 0">
- <div class="categoryWrapper" *ngFor="let d of data" (click)="toggleCategory(d.category_id)" [class.active]="disabledList.indexOf(d.category_id) < 0">
+<ng-container *ngIf="_data && _data.length > 0">
+ <div class="categoryWrapper" *ngFor="let d of _data" (click)="toggleCategory(d.category_id)" [class.active]="disabledList.indexOf(d.category_id) < 0">
    <div class="label">
      <span>{{ d.category | translate }}</span>
      <span *ngIf="formatOptions">{{ d.value | formatNumber: formatOptions }}</span>

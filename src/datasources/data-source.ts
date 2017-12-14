@@ -31,7 +31,9 @@ export class DataSource {
         if (type === 'histogram') {
           resolve(this.groupBy(data, opts.property, agg));
         } else if (type === 'variable') {
-          resolve(this.aggregator(data, agg));
+          resolve( {
+            value: this.aggregator(data, agg)
+          });
         } else {
           reject(new Error(`Unknown type ${type}`));
         }
@@ -52,7 +54,7 @@ export class DataSource {
     };
   }
 
-  private groupBy(data: Array < Object > , property: string, agg: any) {
+  private groupBy(data: Array < Object > , property: string, agg: any): Array < Object > {
     const group = _.groupBy(data, f => {
       const p = f.properties || f;
        return p && p[property] ? p[property] : 'uncategorized';
@@ -67,12 +69,13 @@ export class DataSource {
         });
       }
     }
+    return resp;
   }
 
   private aggregator(data: Array < Object > , agg: any) {
     if (agg.op === 'sum') {
       // || is to support GEOJSON arrays
-      return data.reduce((acc, v) => (v[agg.prop] || v.properties[agg.prop]) + acc);
+      return data.reduce((acc, v: any) => (v[agg.prop] || v.properties[agg.prop]) + acc);
     } else if (agg.op === 'count') {
       return data.length;
     }
@@ -82,7 +85,7 @@ export class DataSource {
   private applyFilters(opts: any) {
     if (opts.bbox && this.localInput.format === 'geojson') {
       return this.localInput.stream.filter(feature => {
-        return intersect(polygon(feature.geometry.coordinates), this.bbox);
+        return intersect(polygon(feature.geometry.coordinates), opts.bbox);
       });
     } else {
       return this.localInput.stream;

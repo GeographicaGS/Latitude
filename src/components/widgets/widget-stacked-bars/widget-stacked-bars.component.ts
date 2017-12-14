@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, OnChanges, ViewChild } from '@angular/core';
 // import { Colors } from '../../../common/cons';
-import { DataSourceHistogram } from '../../../utils/data-source.histogram';
+import { DataSource } from '../../../datasources/data-source';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -50,7 +50,7 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   @Input() allowFiltering = true;
 
   @Input() data: any;
-  @Input() dataSource: DataSourceHistogram;
+  @Input() dataSource: DataSource;
   @Input() showYAxis = true;
 
   @Input() src: string;
@@ -77,14 +77,14 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   ngOnInit() {
     this.setTranslations();
     this.svg = this.d3.select(this.svgContainer.nativeElement);
-    this.dataSource.fetch().then((data) => {
+    this.dataSource.fetch('stacked',{}).then((data) => {
       this.data = data;
       this.refresh();
     });
   }
 
   ngOnChanges(change: any) {
-    this.dataSource.fetch().then((data) => {
+    this.dataSource.fetch('stacked',{}).then((data) => {
       this.data = data;
       this.refresh();
     });
