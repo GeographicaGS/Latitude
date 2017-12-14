@@ -1,4 +1,4 @@
-import { default as intersect } from '@turf/intersect';
+import { default as booleanDisjoint } from '@turf/boolean-disjoint';
 import { polygon } from '@turf/helpers';
 import * as _ from 'lodash';
 
@@ -85,7 +85,7 @@ export class DataSource {
   private applyFilters(opts: any) {
     if (opts.bbox && this.localInput.format === 'geojson') {
       return this.localInput.stream.filter(feature => {
-        return intersect(polygon(feature.geometry.coordinates), opts.bbox);
+        return !booleanDisjoint(feature.geometry, opts.bbox);
       });
     } else {
       return this.localInput.stream;
