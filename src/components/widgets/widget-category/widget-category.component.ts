@@ -9,8 +9,7 @@ import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 export class WidgetCategoryComponent extends WidgetBaseComponent {
 
   disabledList = [];
-
-  private _data = [];
+  private histogramData = [];
 
   @Input() colors: any = false;
   @Input() labels: any = false;
@@ -36,7 +35,7 @@ export class WidgetCategoryComponent extends WidgetBaseComponent {
     if (this.colors[d.category_id]) {
       bgColor = this.colors[d.category_id];
     }
-    return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' };
+    return {'background-color': bgColor, 'width': (( d.value / this.getMax() ) * 100) + '%' };
   }
 
   fetch(opts) {
@@ -48,14 +47,10 @@ export class WidgetCategoryComponent extends WidgetBaseComponent {
   }
 
   render(data) {
-    this._data = data.map(c => {
-      let id = c.category_id && !c.id ? c.category_id : c.id;
-      const label = this.labels[id] ? this.labels[id] : c.label ? c.label : id;
-      return {category_id: id, value: c.value, category: label};
-    });
+    this.histogramData = data.map((c) => { c.label = (this.labels[c.categery] ? this.labels[c.categery] : c.category ); return c; });
   }
 
-  private _getMax() {
-    return Math.max.apply(Math, this._data.map((d) => { return d.value }));
+  private getMax() {
+    return Math.max.apply(Math, this.histogramData.map((d) => { return d.value; }));
   }
 }
