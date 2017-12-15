@@ -2,12 +2,12 @@
   <div class="widgetTitle" *ngIf="title">
     {{ title | translate }}
   </div>
-  <div class="numberTotal" *ngIf="data !== undefined && !loading">
-    {{ formatNumber(data) }} <span class="units">{{ units | translate }}</span>
+  <div class="numberTotal" *ngIf="variableData !== undefined && !loading">
+    {{ variableData }} <span class="units">{{ units | translate }}</span>
   </div>
   <div class="text" *ngIf="text">{{ text | translate }}</div>
-  <div class="noDataFound" *ngIf="loading === false && (!data || data === undefined)">
-    {{ 'No data found' | translate }}
+  <div class="novariableDataFound" *ngIf="loading === false && (!variableData || variableData === undefined)">
+    {{ 'No variableData found' | translate }}
   </div>
 
   <latitude-loading

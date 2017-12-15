@@ -75,7 +75,9 @@ export class DataSource {
   private aggregator(data: Array < Object > , agg: any) {
     if (agg.op === 'sum') {
       // || is to support GEOJSON arrays
-      return data.reduce((acc, v: any) => (v[agg.prop] || v.properties[agg.prop]) + acc);
+      return data.reduce((acc: any, v: any) =>
+        (v[agg.prop] || v.properties[agg.prop]) + (acc[agg.prop] || (acc.properties && acc.properties[agg.prop]) || acc)
+      );
     } else if (agg.op === 'count') {
       return data.length;
     }
