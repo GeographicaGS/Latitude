@@ -72,11 +72,14 @@ export class DataSource {
   }
 
   private aggregator(data: Array < Object > , agg: any) {
+    if (!data.length) {
+      return 0;
+    }
     if (agg.op === 'sum') {
-      // || is to support GEOJSON arrays
+      // || to support GEOJSON arrays
       return data.reduce((acc: any, v: any) =>
-        (v[agg.prop] || v.properties[agg.prop]) + (acc[agg.prop] || (acc.properties && acc.properties[agg.prop]) || acc)
-      );
+        (v[agg.prop] || v.properties[agg.prop]) + acc
+      ,0);
     } else if (agg.op === 'count') {
       return data.length;
     }
@@ -93,31 +96,31 @@ export class DataSource {
     }
   }
 
-  histogramOrderBy(data: Array<Object>, field: string='value') {
-    return _.sortBy(data, field);
-  }
+}
 
-  histogramPercentage(data: Array<Object>) {
-    const max = _.sumBy(data, 'value');
-    return data.map((d: any) => {
-      d['perc'] = 100 * d.value / max;
-      return d;
-    });
-  }
+export function histogramOrderBy(data: Array<Object>, field: string='value') {
+  return _.sortBy(data, field);
+}
 
-  flatternDoubleHistogram(data: Array<Object>) {
-    return _.flatMap(data, n =>
-        n.value.map(d=> {
-          d['category_1'] = n.category;
-          d['category_2'] = d.category;
-          delete d.category;
-          return d;
-        })
-      );
-  }
+export function histogramPercentage(data: Array<Object>) {
+  const max = _.sumBy(data, 'value');
+  return data.map((d: any) => {
+    d['perc'] = 100 * d.value / max;
+    return d;
+  });
+}
 
-  rankingDoubleHistogram(data: Array<Object>) {
-    return _.sortBy(this.flatternDoubleHistogram(data));
-  }
+export function flatternDoubleHistogram(data: Array<Object>) {
+  return _.flatMap(data, n =>
+      n.value.map(d=> {
+        d['category_1'] = n.category;
+        d['category_2'] = d.category;
+        delete d.category;
+        return d;
+      })
+    );
+}
 
+export function rankingDoubleHistogram(data: Array<Object>) {
+  return _.sortBy(this.flatternDoubleHistogram(data));
 }
