@@ -34,9 +34,6 @@ export class DataSource {
           resolve( {
             value: this.aggregator(data, agg)
           });
-        } else if (type === 'stacked') {
-          //TODO group by
-          resolve(data);
         } else {
           reject(new Error(`Unknown type ${type}`));
         }
