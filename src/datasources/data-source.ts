@@ -35,7 +35,8 @@ export class DataSource {
             value: this.aggregator(data, agg)
           });
         } else if (type === 'stacked') {
-          resolve(rankingDoubleHistogram(data));
+          //TODO group by
+          resolve(data);
         } else {
           reject(new Error(`Unknown type ${type}`));
         }

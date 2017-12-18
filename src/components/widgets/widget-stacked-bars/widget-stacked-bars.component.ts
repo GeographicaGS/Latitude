@@ -72,11 +72,9 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
   }
 
   ngOnInit() {
-    super.ngOnInit();
     this.setTranslations();
     this.svg = this.d3.select(this.svgContainer.nativeElement);
-
-    this.fetch({bbox: this.getBBOX()});
+    super.ngOnInit();
   }
 
   fetch(opts: any = {}) {
