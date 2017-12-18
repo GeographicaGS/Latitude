@@ -13,7 +13,7 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   map: any;
   moveend = this._moveend.bind(this);
-  @Input() bboxFilter = true;
+  @Input() bboxFilter = false;
   @Input() formatOptions: object = null;
   @Input() data: any;
 

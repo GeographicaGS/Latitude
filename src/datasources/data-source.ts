@@ -78,8 +78,8 @@ export class DataSource {
     if (agg.op === 'sum') {
       // || to support GEOJSON arrays
       return data.reduce((acc: any, v: any) =>
-        (v[agg.prop] || v.properties[agg.prop]) + acc
-      ,0);
+        (agg.prop in v ? v[agg.prop] : v.properties[agg.prop]) + acc
+      , 0);
     } else if (agg.op === 'count') {
       return data.length;
     }

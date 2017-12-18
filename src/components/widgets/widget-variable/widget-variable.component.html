@@ -3,7 +3,9 @@
     {{ title | translate }}
   </div>
   <div class="numberTotal" *ngIf="variableData !== undefined && !loading">
-    {{ variableData }} <span class="units">{{ units | translate }}</span>
+    <span *ngIf="formatOptions">{{ variableData | formatNumber: formatOptions }}</span>
+    <span *ngIf="!formatOptions">{{ variableData }}</span>
+    <span class="units">{{ units | translate }}</span>
   </div>
   <div class="text" *ngIf="text">{{ text | translate }}</div>
   <div class="novariableDataFound" *ngIf="loading === false && (!variableData || variableData === undefined)">
