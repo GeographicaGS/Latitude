@@ -15,7 +15,17 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
   moveend = this._moveend.bind(this);
   @Input() bboxFilter = false;
   @Input() formatOptions: object = null;
-  @Input() data: any;
+
+  private widgetData;
+  @Input() set data(data) {
+    this.widgetData = data;
+    if (this.map) {
+      this.renderData();
+    }
+  }
+  get data() {
+    return this.widgetData;
+  }
 
   constructor(private mapService: MapService) { }
 
@@ -26,13 +36,17 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
         if (this.bboxFilter) {
           map.on('moveend', this.moveend);
         }
-        if (this.data instanceof Array) {
-          this.render(this.data);
-        } else {
-          this._moveend();
-        }
+        this.renderData();
       }
     });
+  }
+
+  private renderData() {
+    if (this.data instanceof Array) {
+      this.render(this.data);
+    } else {
+      this._moveend();
+    }
   }
 
   _moveend() {
