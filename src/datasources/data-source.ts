@@ -34,6 +34,8 @@ export class DataSource {
           resolve( {
             value: this.aggregator(data, agg)
           });
+        } else if (type === 'stacked') {
+          resolve(rankingDoubleHistogram(data));
         } else {
           reject(new Error(`Unknown type ${type}`));
         }
@@ -45,6 +47,7 @@ export class DataSource {
   }
 
   private parseAgg(agg) {
+    if (!agg) { return; }
     const re = /(.*)\((.*)\)/g;
     const m = re.exec(agg);
     return {
@@ -95,7 +98,6 @@ export class DataSource {
       return this.localInput.stream;
     }
   }
-
 }
 
 export function histogramOrderBy(data: Array<Object>, field: string='value') {
@@ -112,15 +114,11 @@ export function histogramPercentage(data: Array<Object>) {
 
 export function flatternDoubleHistogram(data: Array<Object>) {
   return _.flatMap(data, n =>
-      n.value.map(d=> {
-        d['category_1'] = n.category;
-        d['category_2'] = d.category;
-        delete d.category;
-        return d;
-      })
-    );
+    n.value.map(d=> {
+      return {category_1: n.category, category_2: d.category, value: d.value};
+    }));
 }
 
 export function rankingDoubleHistogram(data: Array<Object>) {
-  return _.sortBy(this.flatternDoubleHistogram(data));
+  return _.sortBy(flatternDoubleHistogram(data));
 }
