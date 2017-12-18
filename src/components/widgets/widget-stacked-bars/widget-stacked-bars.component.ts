@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 // import { Colors } from '../../../common/cons';
 import { MapService } from '../../map/map.service';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
+import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 
 import * as moment from 'moment/moment';
 import * as _ from 'lodash';
@@ -27,7 +28,7 @@ import {
   templateUrl: './widget-stacked-bars.component.html',
   styleUrls: ['./widget-stacked-bars.component.scss']
 })
-export class WidgetStackedBarsComponent extends WidgetBaseComponent implements OnInit, OnDestroy, OnChanges {
+export class WidgetStackedBarsComponent extends WidgetBaseComponent implements OnInit, OnDestroy {
 
   private d3: D3;
 
@@ -75,10 +76,6 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
     this.setTranslations();
     this.svg = this.d3.select(this.svgContainer.nativeElement);
 
-    this.fetch({bbox: this.getBBOX()});
-  }
-
-  ngOnChanges(change: any) {
     this.fetch({bbox: this.getBBOX()});
   }
 
@@ -315,7 +312,10 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
         tooltip.transition()
           .duration(200)
           .style('opacity', 1);
-        tooltip.html('<span class="type">' + d.name + '</span>' + d.range + ': ' + d.actualValue.toLocaleString() + self.units);
+        tooltip.html(`
+          <span class="type">${d.name}</span> ${d.range}
+          ${new FormatNumberPipe(self.translate).transform(d.actualValue, self.formatOptions)}${self.units}
+        `);
         tooltip.style('top', (d3.event.layerY + 10) + 'px')
           .style('left', (d3.event.layerX + 10) + 'px');
 

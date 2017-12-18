@@ -1,12 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { TranslateService } from 'ng2-translate';
 
 @Pipe({
   name: 'formatNumber'
 })
 export class FormatNumberPipe implements PipeTransform {
 
+  constructor(private translateService: TranslateService) {}
+
   transform(value, _options = {}): any {
-    const options = {units: '', places: 2, compact: false, lang: 'en'};
+    const options = {units: '', places: 2, compact: false, lang: (this.translateService.currentLang || 'en')};
 
     (<any>Object).assign(options, _options);
 
