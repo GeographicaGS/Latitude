@@ -29,7 +29,7 @@ export class DataSource {
         const data = this.applyFilters(opts);
         const agg = this.parseAgg(opts.agg);
         if (type === 'histogram') {
-          resolve(this.groupBy(data, opts.property, agg));
+          resolve(this.groupBy(data, agg));
         } else if (type === 'variable') {
           resolve( {
             value: this.aggregator(data, agg)
@@ -54,10 +54,10 @@ export class DataSource {
     };
   }
 
-  private groupBy(data: Array < Object > , property: string, agg: any): Array < Object > {
+  private groupBy(data: Array < Object > , agg: any): Array < Object > {
     const group = _.groupBy(data, f => {
       const p = f.properties || f;
-       return p && p[property] ? p[property] : 'uncategorized';
+       return p && p[agg.prop] ? p[agg.prop] : 'uncategorized';
     });
 
     const resp = [];

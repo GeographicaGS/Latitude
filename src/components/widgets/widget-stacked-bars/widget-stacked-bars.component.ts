@@ -78,16 +78,6 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
     super.ngOnInit();
   }
 
-  fetch(opts: any = {}) {
-    this.data.dataSource.fetch('doublehistogram', {
-      agg: this.data.agg,
-      property: this.data.property,
-      bbox: opts.bbox
-    }).then((data) => {
-      this.render(data);
-    });
-  }
-
   render(data) {
     this.dataFormatted = (this.formatData(rankingDoubleHistogram(data)));
     if ((!this.dataFormatted || this.dataFormatted.length === 0) && this.svg) {
