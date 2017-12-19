@@ -1,10 +1,14 @@
-import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 // import { Colors } from '../../../common/cons';
-import { DataSourceHistogram } from '../../../utils/data-source.histogram';
+import { MapService } from '../../map/map.service';
+import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
+import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
+import { rankingDoubleHistogram } from '../../../datasources/data-source';
 
 import * as moment from 'moment/moment';
+import * as _ from 'lodash';
 
 import {
   D3Service,
@@ -25,7 +29,7 @@ import {
   templateUrl: './widget-stacked-bars.component.html',
   styleUrls: ['./widget-stacked-bars.component.scss']
 })
-export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges {
+export class WidgetStackedBarsComponent extends WidgetBaseComponent implements OnInit, OnDestroy {
 
   private d3: D3;
 
@@ -38,8 +42,10 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   totalTranslationSubscription: Subscription;
   totalLabel: String;
 
+  dataFormatted: any;
   hiddenCategories = [];
   hiddenRanges = [];
+  searchingColor = 'red'; /// TODO: make it dynamic -> Colors.colorPrimary;
 
   @ViewChild('svgContainer') svgContainer;
   @ViewChild('svgWrapper') svgWrapper;
@@ -49,55 +55,32 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   @Input() title: string;
   @Input() allowFiltering = true;
 
-  @Input() data: any;
-  @Input() dataSource: DataSourceHistogram;
   @Input() showYAxis = true;
-
-  @Input() src: string;
   @Input() categoriesColors: Array<any>;
-
   @Input() units = '';
   @Input() loading = false;
-
-  @Output() toggleLayer = new EventEmitter<any>(null);
-  @Output() updatedData = new EventEmitter<any>(null);
 
   @Output() updateHiddenRanges = new EventEmitter<any>(null);
   @Output() updateHiddenCategories = new EventEmitter<any>(null);
 
-  searchingColor = 'red'; /// TODO: make it dynamic -> Colors.colorPrimary;
-
   constructor(
     d3Service: D3Service,
-    private translate: TranslateService,
+    mapService: MapService,
+    private translate: TranslateService
   ) {
+    super(mapService);
     this.d3 = d3Service.getD3();
   }
 
   ngOnInit() {
     this.setTranslations();
     this.svg = this.d3.select(this.svgContainer.nativeElement);
-    this.dataSource.fetch().then((data) => {
-      this.data = data;
-      this.refresh();
-    });
+    super.ngOnInit();
   }
 
-  ngOnChanges(change: any) {
-    this.dataSource.fetch().then((data) => {
-      this.data = data;
-      this.refresh();
-    });
-  }
-
-  private setTranslations() {
-    this.totalTranslationSubscription = this.translate.get('TOTAL', {}).subscribe((res: string) => {
-      this.totalLabel = res;
-    });
-  }
-
-  refresh() {
-    if ((!this.data || this.data.length === 0) && this.svg) {
+  render(data) {
+    this.dataFormatted = (this.formatData(rankingDoubleHistogram(data)));
+    if ((!this.dataFormatted || this.dataFormatted.length === 0) && this.svg) {
       this.svg.attr('height', 0);
       return;
     } else if (this.svg) {
@@ -148,18 +131,18 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
     colorStackChart.domain(categories);
 
     const sortedData = [];
-    for (const data of this.data) {
-      if (!data) {
+    for (const dat of this.dataFormatted) {
+      if (!dat) {
         continue;
       }
       const arr = [];
       for (const cat of categories) {
-        if (!data[cat]) {
+        if (!dat[cat]) {
           continue;
         }
         arr.push({
           name: cat,
-          value: this.hiddenCategories.indexOf(cat) !== -1 ? 0 : data[cat]
+          value: this.hiddenCategories.indexOf(cat) !== -1 ? 0 : dat[cat]
         });
       }
       arr.sort(function(a, b) { return a.value - b.value; });
@@ -176,8 +159,8 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
         max = cat.value;
         d.ages.push({
           name: cat.name,
-          range: this.formatAgeRangeLabel(this.data[index].Label),
-          hidden: this.hiddenRanges.indexOf(this.data[index].Label) !== -1,
+          range: this.formatAgeRangeLabel(this.dataFormatted[index].Label),
+          hidden: this.hiddenRanges.indexOf(this.dataFormatted[index].Label) !== -1,
           y0: sum,
           y1: sum + max,
           actualValue: max,
@@ -186,7 +169,7 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
         sum += max;
         y0 = max;
       }
-      d.Label = this.data[index].Label;
+      d.Label = this.dataFormatted[index].Label;
       index += 1;
       d.total = sum;
     });
@@ -318,7 +301,10 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
         tooltip.transition()
           .duration(200)
           .style('opacity', 1);
-        tooltip.html('<span class="type">' + d.name + '</span>' + d.range + ': ' + d.actualValue.toLocaleString() + self.units);
+        tooltip.html(`
+          <span class="type">${d.name}</span> ${d.range}
+          ${new FormatNumberPipe(self.translate).transform(d.actualValue, self.formatOptions)}${self.units}
+        `);
         tooltip.style('top', (d3.event.layerY + 10) + 'px')
           .style('left', (d3.event.layerX + 10) + 'px');
 
@@ -351,13 +337,13 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
       this.hiddenCategories.splice(this.hiddenCategories.indexOf(category), 1);
     }
     this.updateHiddenCategories.emit(this.hiddenCategories);
-    this.refresh();
+    this.fetch({bbox: this.getBBOX()});
   }
 
   hiddeRange(index) {
-    for (const row in this.data) {
+    for (const row in this.dataFormatted) {
       if (parseInt(row, 10) === index) {
-        const range = this.data[row].Label;
+        const range = this.dataFormatted[row].Label;
 
         if (this.hiddenRanges.indexOf(range) === -1) {
           this.hiddenRanges.push(range);
@@ -366,9 +352,8 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
         }
       }
     }
-
     this.updateHiddenRanges.emit(this.hiddenRanges);
-    this.refresh();
+    this.fetch({bbox: this.getBBOX()});
   }
 
   getSquareStyle(color) {
@@ -382,12 +367,30 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
     };
   }
 
-  toggleLayerEvent(event) {
-    this.toggleLayer.emit(event);
-  }
-
   isStatusHidden(status) {
     return this.hiddenCategories.indexOf(status) !== -1;
+  }
+
+  private formatData(data) {
+    const resp = [];
+    for (let d of data) {
+      let index = resp.findIndex((r) => { return r.Label == d['category_1']; });
+      if (index !== -1) {
+        resp[index][d.category_2] = d.value;
+      } else {
+        let row: any = {Label: d.category_1};
+        row[d.category_2] = d.value;
+        resp.push(row);
+      }
+    }
+
+    return resp;
+  }
+
+  private setTranslations() {
+    this.totalTranslationSubscription = this.translate.get('TOTAL', {}).subscribe((res: string) => {
+      this.totalLabel = res;
+    });
   }
 
   private formatAgeRangeLabel(label) {
@@ -407,6 +410,7 @@ export class WidgetStackedBarsComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     if (this.totalTranslationSubscription) {
       this.totalTranslationSubscription.unsubscribe();
     }

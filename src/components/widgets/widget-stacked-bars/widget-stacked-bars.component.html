@@ -10,11 +10,11 @@
     *ngIf="loading === true"
   ></latitude-loading>
 
-  <div class="noDataFound" *ngIf="loading === false && (!data || (data && data.length === 0))">
+  <div class="noDataFound" *ngIf="loading === false && (!dataFormatted || (dataFormatted && dataFormatted.length === 0))">
     {{ 'No data found' | translate }}
   </div>
 
-  <div class="svgLegendWrapper" *ngIf="loading === false && data && data.length > 0">
+  <div class="svgLegendWrapper" *ngIf="loading === false && dataFormatted && dataFormatted.length > 0">
     <div class="category" *ngFor="let cat of categoriesColors" [ngClass]="{'disabled': isStatusHidden(cat.category)}" (click)="hiddeCategory(cat.category)">
       {{ cat.category }}
       <span class="square" [ngStyle]="getSquareStyle(cat.color)"></span>

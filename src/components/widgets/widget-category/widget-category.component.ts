@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, OnChanges, HostBinding, EventEmitter, Output } from '@angular/core';
+import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 
 @Component({
   selector: 'latitude-widget-category',
   templateUrl: './widget-category.component.html',
   styleUrls: ['./widget-category.component.scss']
 })
-export class WidgetCategoryComponent implements OnInit, OnChanges {
+export class WidgetCategoryComponent extends WidgetBaseComponent {
 
   disabledList = [];
-  data = [];
+  private histogramData = [];
 
-  @Input() dataSource: any;
   @Input() colors: any = false;
   @Input() labels: any = false;
   @Input() title: string;
@@ -19,21 +19,6 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
   @HostBinding('class.filter') @Input() filter = true;
 
   @Output() disabledCategories = new EventEmitter<Array<string>>();
-
-  constructor() { }
-
-  ngOnInit() { }
-
-  ngOnChanges(changes) {
-    if (changes.dataSource &&
-      (
-        (changes.dataSource.firstChange && changes.dataSource.currentValue !== undefined) || 
-        (!changes.dataSource.firstChange && changes.dataSource.currentValue !== changes.dataSource.previousValue)
-      )
-    ) {
-      this.dataSource.fetch().then((data) => this.formatData(data));
-    }
-  }
 
   toggleCategory(d) {
     if (!this.filter) { return; }
@@ -50,22 +35,21 @@ export class WidgetCategoryComponent implements OnInit, OnChanges {
     if (this.colors[d.category_id]) {
       bgColor = this.colors[d.category_id];
     }
-    return {'background-color': bgColor, 'width': (( d.value/ this._getMax() ) * 100) + '%' };
+    return {'background-color': bgColor, 'width': (( d.value / this.getMax() ) * 100) + '%' };
   }
 
-  formatValue(value) {
-    return value && !isNaN(value) ? value.toFixed(2) : value;
+  fetch(opts) {
+    this.data.dataSource.fetch('histogram', {
+      agg: this.data.agg,
+      bbox: opts.bbox
+    }).then(data => this.render(data));
   }
 
-  private formatData(data) {
-    this.data = data.map(c => {
-      let id = c.category_id && !c.id ? c.category_id : c.id;
-      const label = this.labels[id] ? this.labels[id] : c.label ? c.label : id;
-      return {category_id: id, value: c.value, category: label};
-    });
+  render(data) {
+    this.histogramData = data.map((c) => { c.label = (this.labels[c.categery] ? this.labels[c.categery] : c.category ); return c; });
   }
 
-  private _getMax() {
-    return Math.max.apply(Math, this.data.map((d) => { return d.value }));
+  private getMax() {
+    return Math.max.apply(Math, this.histogramData.map((d) => { return d.value; }));
   }
 }

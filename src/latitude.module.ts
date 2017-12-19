@@ -18,7 +18,7 @@ import {
   MapComponent,
   AuthenticationService,
   AuthGuard,
-  DataSourceHistogram,
+  DataSource,
   DateRangePickerComponent,
   SelectfilterComponent,
   SwitcherComponent,
@@ -26,7 +26,9 @@ import {
   SidebarComponent,
   ProgressButtonComponent,
   TabNavigationComponent,
-  LoadingComponent
+  LoadingComponent,
+  MapService,
+  FormatNumberPipe
  } from './index';
 
 /**
@@ -58,7 +60,8 @@ const components = [
   WidgetHighlightComponent,
   MapComponent,
   LoadingComponent,
-  TabNavigationComponent
+  TabNavigationComponent,
+  FormatNumberPipe
 ];
 
 @NgModule({
@@ -71,7 +74,7 @@ export class LatitudeModule {
   static forRoot(config: any): ModuleWithProviders {
     return {
       ngModule: LatitudeModule,
-      providers: [AuthenticationService, AuthGuard, D3Service, {provide: 'config', useValue: config}]
+      providers: [AuthenticationService, AuthGuard, D3Service, MapService, {provide: 'config', useValue: config}]
     };
   }
 }

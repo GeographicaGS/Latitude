@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, Inject, EventEmitter, OnDestroy } from '@angular/core';
 import * as mapstyle from '../../assets/mapstyle/style';
 import * as mapboxgl from 'mapbox-gl';
 import { default as centroid } from '@turf/centroid';
 import { default as bboxPolygon } from '@turf/bbox-polygon';
+import { MapService } from './map.service';
 
 @Component({
   selector: 'latitude-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   map: any;
 
   private mapStyle: any = mapstyle.style;
@@ -25,7 +26,7 @@ export class MapComponent implements OnInit {
   @Output() mapLoaded = new EventEmitter();
   @Output() bboxChanged = new EventEmitter();
 
-  constructor(@Inject('config') private config: any) {
+  constructor(@Inject('config') private config: any, private mapService: MapService) {
     if (!config.mapbox || (config.mapbox && config.mapbox.accessToken)) {
       mapboxgl.accessToken = config.mapbox.accessToken;
     } else {
@@ -49,6 +50,7 @@ export class MapComponent implements OnInit {
     this.map.on('load', () => {
       this.isMapLoaded = true;
       this.mapLoaded.emit();
+      this.mapService.setMap(this.map);
       while (this.layersQueue.length) {
         const layer = this.layersQueue.pop();
         this.map.addLayer(layer);
@@ -271,6 +273,12 @@ export class MapComponent implements OnInit {
 
   resize() {
     this.map.resize();
+  }
+
+  ngOnDestroy() {
+    if (this.map) {
+      this.map.remove();
+    }
   }
 
 }
