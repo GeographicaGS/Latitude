@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, Inject, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, Inject, EventEmitter, OnDestroy } from '@angular/core';
 import * as mapstyle from '../../assets/mapstyle/style';
 import * as mapboxgl from 'mapbox-gl';
 import { default as centroid } from '@turf/centroid';
@@ -10,7 +10,7 @@ import { MapService } from './map.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   map: any;
 
   private mapStyle: any = mapstyle.style;
@@ -273,6 +273,12 @@ export class MapComponent implements OnInit {
 
   resize() {
     this.map.resize();
+  }
+
+  ngOnDestroy() {
+    if (this.map) {
+      this.map.remove();
+    }
   }
 
 }
