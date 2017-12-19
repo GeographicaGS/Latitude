@@ -255,7 +255,7 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  getBBOX() {
+  getBBOX(): any {
     const bounds = this.map.getBounds(),
       sw = bounds.getSouthWest(),
       ne = bounds.getNorthEast();

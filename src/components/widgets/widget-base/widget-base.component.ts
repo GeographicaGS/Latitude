@@ -53,7 +53,7 @@ export class WidgetBaseComponent implements OnInit, OnDestroy {
     this.fetch({bbox: this.getBBOX() });
   }
 
-  getBBOX() {
+  getBBOX(): any {
     if (!this.bboxFilter || !this.map) {
       return null;
     } else {
