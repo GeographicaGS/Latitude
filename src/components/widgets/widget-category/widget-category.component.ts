@@ -41,7 +41,6 @@ export class WidgetCategoryComponent extends WidgetBaseComponent {
   fetch(opts) {
     this.data.dataSource.fetch('histogram', {
       agg: this.data.agg,
-      property: this.data.property,
       bbox: opts.bbox
     }).then(data => this.render(data));
   }
