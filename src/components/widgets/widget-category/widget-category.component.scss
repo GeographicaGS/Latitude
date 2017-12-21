@@ -18,7 +18,10 @@
     line-height: 16px;
     @include font('regular');
     margin-top: 6px;
-    margin-bottom: 26px;
+  }
+
+  .categories {
+    margin-top: 26px;
   }
 
   &.filter {
