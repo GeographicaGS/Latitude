@@ -1,11 +1,11 @@
 <div class="widgetTitle" *ngIf="title">{{title}}</div>
 
-<div class="selectedInfo">
+<div class="selectedInfo" *ngIf="filter">
  <ng-container *ngIf="disabledList.length === 0">{{ 'ALL Selected' | translate }}</ng-container>
  <ng-container *ngIf="disabledList.length !== 0">{{ histogramData.length - disabledList.length }} {{ 'Selected' | translate }}</ng-container>
 </div>
 
-<ng-container *ngIf="histogramData && histogramData.length > 0">
+<div class="categories" *ngIf="histogramData && histogramData.length > 0">
  <div class="categoryWrapper" *ngFor="let d of histogramData" (click)="toggleCategory(d.category)" [class.active]="disabledList.indexOf(d.category) < 0">
    <div class="label">
      <span>{{ d.label | translate }}</span>
@@ -18,4 +18,4 @@
     </div>
    </div>
  </div>
-</ng-container>
+</div>
