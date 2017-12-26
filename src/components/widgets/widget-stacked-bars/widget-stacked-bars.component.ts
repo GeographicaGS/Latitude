@@ -295,9 +295,6 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
         if (d.hidden) {
           return;
         }
-        const yPosition = d3.event.layerY - 26;
-        const xPosition = d3.event.layerX + 8;
-
         tooltip.transition()
           .duration(200)
           .style('opacity', 1);
@@ -305,24 +302,29 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
           <span class="type">${d.name}</span> ${d.range}
           ${new FormatNumberPipe(self.translate).transform(d.actualValue, self.formatOptions)}${self.units}
         `);
-        tooltip.style('top', (d3.event.layerY + 10) + 'px')
-          .style('left', (d3.event.layerX + 10) + 'px');
+      })
+      .on('click', function(d) {
+        if (self.filter) {
+          self.hiddeRange(d.positionIndex);
+        }
+      });
+
+      this.svg.on('mousemove', function(d) {
+        const xPosition = d3.mouse(this)[0] + 10;
+        const yPosition = d3.mouse(this)[1] - 10;
+
+        tooltip.style('top', (d3.mouse(this)[1] + 10) + 'px')
+          .style('left', (d3.mouse(this)[0] + 10) + 'px');
 
         const parentWidth = tooltip.node().parentElement.offsetWidth;
         const tooltipWidth = tooltip.node().offsetWidth;
         const tooltipLeft = tooltip.node().offsetLeft;
         const dist = tooltipWidth + tooltipLeft;
-
         if (dist >= parentWidth) {
           const newLeftPosition = xPosition - (dist - parentWidth);
           tooltip.style('left', newLeftPosition + 'px').style('top', yPosition + 'px');
         } else {
           tooltip.style('left', xPosition + 'px').style('top', yPosition + 'px');
-        }
-      })
-      .on('click', function(d) {
-        if (self.filter) {
-          self.hiddeRange(d.positionIndex);
         }
       });
   }
