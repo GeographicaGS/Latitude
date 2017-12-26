@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, Inject, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, Inject, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import * as mapstyle from '../../assets/mapstyle/style';
 import * as mapboxgl from 'mapbox-gl';
 import { default as centroid } from '@turf/centroid';
@@ -11,6 +11,7 @@ import { MapService } from './map.service';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnDestroy {
+  @ViewChild('mapContainer') mapContainer;
   map: any;
 
   private mapStyle: any = mapstyle.style;
@@ -40,7 +41,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     this.mapStyle['sprite'] = this.mapStyle['sprite'].indexOf('http') !== -1 ? this.mapStyle['sprite'] : window.location.origin + this.mapStyle['sprite']
     this.map = new mapboxgl.Map({
-      container: 'map',
+      container: this.mapContainer.nativeElement,
       style: this.mapStyle,
       center: this.center,
       zoom: this.zoom,

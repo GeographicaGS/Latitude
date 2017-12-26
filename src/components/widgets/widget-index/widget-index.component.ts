@@ -71,7 +71,7 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
 
   private drawRhombus(reset = false) {
     if (reset) {
-      this.d3.select(this.svgWrapper.nativeElement).empty();
+      this.d3.select(this.svgWrapper.nativeElement).selectAll("*").remove();
     }
 
     // Append an svg with the width and height, add padding based on the pointHandlerSize.
