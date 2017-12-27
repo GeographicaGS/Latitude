@@ -50,7 +50,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map.on('load', () => {
       this.isMapLoaded = true;
-      this.mapLoaded.emit();
+      this.mapLoaded.emit(this.map);
       this.mapService.setMap(this.map);
       while (this.layersQueue.length) {
         const layer = this.layersQueue.pop();
