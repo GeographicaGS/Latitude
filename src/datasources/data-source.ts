@@ -2,6 +2,12 @@ import { default as booleanDisjoint } from '@turf/boolean-disjoint';
 import { polygon } from '@turf/helpers';
 import * as _ from 'lodash';
 
+export interface IDataSourceObj {
+  category: String;
+  value: any;
+  properties: any;
+}
+
 export class DataSource {
   // Type could be local, in the future could be 'https'
   type: string;
@@ -54,10 +60,10 @@ export class DataSource {
     };
   }
 
-  private groupBy(data: Array < Object > , agg: any): Array < Object > {
+  private groupBy(data: Array <IDataSourceObj> , agg: any): Array <IDataSourceObj> {
     const group = _.groupBy(data, f => {
       const p = f.properties || f;
-       return p && p[agg.prop] ? p[agg.prop] : 'uncategorized';
+      return p && p[agg.prop] ? p[agg.prop] : 'uncategorized';
     });
 
     const resp = [];
@@ -72,7 +78,7 @@ export class DataSource {
     return resp;
   }
 
-  private aggregator(data: Array < Object > , agg: any) {
+  private aggregator(data: Array <IDataSourceObj> , agg: any) {
     if (!data.length) {
       return 0;
     }
@@ -98,25 +104,25 @@ export class DataSource {
   }
 }
 
-export function histogramOrderBy(data: Array<Object>, field: string='value') {
+export function histogramOrderBy(data: Array<IDataSourceObj>, field: string='value') {
   return _.sortBy(data, field);
 }
 
-export function histogramPercentage(data: Array<Object>) {
+export function histogramPercentage(data: Array<IDataSourceObj>) {
   const max = _.sumBy(data, 'value');
-  return data.map((d: any) => {
+  return data.map((d) => {
     d['perc'] = 100 * d.value / max;
     return d;
   });
 }
 
-export function flatternDoubleHistogram(data: Array<Object>) {
+export function flatternDoubleHistogram(data: Array<IDataSourceObj>) {
   return _.flatMap(data, n =>
     n.value.map(d=> {
       return {category_1: n.category, category_2: d.category, value: d.value};
     }));
 }
 
-export function rankingDoubleHistogram(data: Array<Object>) {
+export function rankingDoubleHistogram(data: Array<IDataSourceObj>) {
   return _.sortBy(flatternDoubleHistogram(data));
 }
