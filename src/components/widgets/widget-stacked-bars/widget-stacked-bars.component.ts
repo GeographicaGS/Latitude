@@ -5,7 +5,7 @@ import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
-import { rankingDoubleHistogram } from '../../../datasources/data-source';
+import { flatternDoubleHistogram } from '../../../datasources/data-source';
 
 import * as moment from 'moment/moment';
 import * as _ from 'lodash';
@@ -79,7 +79,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
   }
 
   render(data) {
-    this.dataFormatted = (this.formatData(rankingDoubleHistogram(data)));
+    this.dataFormatted = (this.formatData(flatternDoubleHistogram(data)));
     if ((!this.dataFormatted || this.dataFormatted.length === 0) && this.svg) {
       this.svg.attr('height', 0);
       return;
