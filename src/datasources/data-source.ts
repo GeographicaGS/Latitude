@@ -123,6 +123,6 @@ export function flatternDoubleHistogram(data: Array<IDataSourceObj>) {
     }));
 }
 
-export function rankingDoubleHistogram(data: Array<IDataSourceObj>) {
-  return _.sortBy(flatternDoubleHistogram(data));
+export function rankingDoubleHistogram(data: Array<IDataSourceObj>, field: string='value') {
+  return _.sortBy(flatternDoubleHistogram(data), field);
 }
