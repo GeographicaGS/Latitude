@@ -29,8 +29,11 @@ export class AuthenticationService {
     if (config.authHeaders && config.authHeaders.password) {
       this.passwordHeader = config.authHeaders.password;
     }
-    if (config.renewUrl && config.renewUrl) {
+    if (config.renewUrl) {
       this.renewUrl = config.renewUrl;
+    }
+    if (config.authUrl) {
+      this.authUrl = config.authUrl;
     }
     if (config.apiBaseUrl) {
       this.apiBaseUrl = config.apiBaseUrl;

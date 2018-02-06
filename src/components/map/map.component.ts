@@ -38,8 +38,10 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.customStyle) {
       this.mapStyle = this.customStyle;
+    }    
+    if (typeof this.mapStyle !== 'string') {
+      this.mapStyle['sprite'] = this.mapStyle['sprite'].indexOf('http') !== -1 ? this.mapStyle['sprite'] : window.location.origin + this.mapStyle['sprite']
     }
-    this.mapStyle['sprite'] = this.mapStyle['sprite'].indexOf('http') !== -1 ? this.mapStyle['sprite'] : window.location.origin + this.mapStyle['sprite']
     this.map = new mapboxgl.Map({
       container: this.mapContainer.nativeElement,
       style: this.mapStyle,
