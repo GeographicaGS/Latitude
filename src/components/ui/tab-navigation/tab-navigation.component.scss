@@ -8,14 +8,14 @@
     div{
         flex: $tabNavigationFlex;
         cursor: pointer;
-        color: $colorN20;
-        font-size: 14px;
-        line-height: 16px;
-        padding: 12px 0;
+        color: $tabNavigationColor;
+        font-size: $tabNavigationFontSize;
+        line-height: $tabNavigationLineHeight;
+        padding: $tabNavigationPadding;
         text-align: center;
         &.active{
-            color: $colorN80;
-            border-bottom: 4px solid $colorSecondary;
+            color: $tabNavigationActiveColor;
+            border-bottom: $tabNavigationActiveBorderBottom;
         }
     }
 }
