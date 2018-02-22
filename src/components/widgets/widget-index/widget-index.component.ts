@@ -11,6 +11,7 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
   @Input() defaultValues: any = false;
   @Input() width: number = 300;
   @Input() height: number = 300;
+  @Input() color = '#0066CC';
   @Input() readOnly = false;
   @Output() indexChanged: EventEmitter<any> = new EventEmitter<any>();
 
@@ -105,7 +106,7 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     const mask = defs.append('mask').attr('id', 'masking');
     const gradient = defs.append('radialGradient').attr('id', 'gradientPolygon').attr('gradientUnits', "userSpaceOnUse");
     gradient.append('stop').attr('offset', '0%').attr('stop-opacity', .1).attr('stop-color', 'white');
-    gradient.append('stop').attr('offset', '100%').attr('stop-opacity', 1).attr('stop-color', '#0066CC'); // TODO: color to be received by input or this one by default
+    gradient.append('stop').attr('offset', '100%').attr('stop-opacity', 1).attr('stop-color', this.color); // TODO: color to be received by input or this one by default
     // Append a polygon to the mask, this will be the one that gets the previously created gradient
     mask.append('polygon')
       .attr('points', `${(this.width/ 2) + this.resizePointHandlerSize}, ${this.resizePointHandlerSize} ${this.width + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${(this.width/ 2) + this.resizePointHandlerSize}, ${this.width + this.resizePointHandlerSize}, ${0 + this.resizePointHandlerSize} ${(this.width/ 2) + this.resizePointHandlerSize}`)
@@ -118,7 +119,7 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
       })
       .attr('fill', () => {
         if (this.readOnly) {
-          return '#0066CC';
+          return this.color;
         } else {
           return "url(#gradientPolygon)";
         }
@@ -127,7 +128,7 @@ export class WidgetIndexComponent implements OnInit, OnChanges {
     // Let's create the polygon (rhombus) that we will actually be dragging, it has the previously created mask
     this.draggablePolygon = this.newg.append('polygon')
       .attr('points', `${this.width / 2 + this.resizePointHandlerSize}, ${this.pointPositions.one} ${this.pointPositions.two}, ${this.width / 2 + this.resizePointHandlerSize}, ${this.width / 2 + this.resizePointHandlerSize}, ${this.pointPositions.three}, ${this.pointPositions.four} ${this.width / 2 + this.resizePointHandlerSize}`)
-      .attr('fill', '#0066CC') // TODO: color
+      .attr('fill', this.color) // TODO: color
       .attr('mask', 'url(#masking)');
 
     // Let's call the method that will drag the circles that will be used to drag the indexes
