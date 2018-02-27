@@ -9,7 +9,7 @@ export class FormatNumberPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   transform(value, _options = {}): any {
-    const options = {units: '', places: 2, compact: false, lang: (this.translateService.currentLang || 'en')};
+    const options = {units: '', tail: '', places: 2, compact: false, reversedUnit: false, lang: (this.translateService.currentLang || 'en')};
 
     (<any>Object).assign(options, _options);
 
@@ -32,12 +32,13 @@ export class FormatNumberPipe implements PipeTransform {
         tail: tail
       };
       value = compacted.number;
-      options.units = compacted.tail + ' ' + options.units;
+      options.tail = compacted.tail;
 
     } else {
       options.units = ' ' + options.units;
     }
 
+    options.tail = options.tail ? options.tail : '';
     options.units = options.units === ' ' ? '' : options.units;
 
     const i = parseInt(value = Math.abs(+value || 0).toFixed(options.places), 10) + '';
@@ -50,7 +51,11 @@ export class FormatNumberPipe implements PipeTransform {
       part_3 = '';
     }
 
-    return part_1 + part_2 + part_3 + options.units;
+    let final = part_1 + part_2 + part_3 + options.tail + options.units;
+    if (options.reversedUnit) {
+      final = options.units + part_1 + part_2 + part_3 + options.tail;
+    }
+    return final;
   }
 
 }
