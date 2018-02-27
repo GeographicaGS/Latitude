@@ -44,8 +44,14 @@ $widgetCategoryPadding: var(--widget-category-padding, 0);
 $widgetHighlightPadding: var(--widget-highlight-padding, 16px 0);
 
 // tab-navigation css custom variables
+$tabNavigationFontSize: var(--tab-navigation-font-size, 14px);
+$tabNavigationLineHeight: var(--tab-navigation-line-height, 16px);
+$tabNavigationPadding: var(--tab-navigation-padding, 12px 0);
 $tabNavigationBorder: var(--tab-navigation-border, 1px solid $colorN20);
 $tabNavigationFlex: var(--tab-navigation-flex, 1);
+$tabNavigationColor: var(--tab-navigation-color, $colorN20);
+$tabNavigationActiveColor: var(--tab-navigation-active-color, $colorN80);
+$tabNavigationActiveBorderBottom: var(--tab-navigation-active-border-bottom, 4px solid $colorSecondary);
 
 $animationTimeSlow: 2s;
 $animationTimeNormal: 1s;

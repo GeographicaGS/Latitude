@@ -94,6 +94,7 @@ export class AuthenticationService {
 
   setUser()  {
     this.data.expires = new Date().getTime() + (this.data.expires_in) * 1000;
+    this.data.user.moneyFormatOptions = this.getMoneyFormatOptions(this.data.user);
     localStorage.setItem('currentUser', JSON.stringify(this.data));
   }
 
@@ -135,5 +136,24 @@ export class AuthenticationService {
 
   logout() {
     localStorage.removeItem('currentUser');
+  }
+
+  private getUnits(user) {
+    let response = '€';
+    if (user.country === 'uk') {
+      response = '£';
+    } else if (user.country === 'us') {
+      response = '$';
+    }
+    return response;
+  }
+
+  private getMoneyFormatOptions(user) {
+    let options = {};
+    if (user.country === 'uk') {
+      options['reversedUnit'] = true;
+    }
+    options['units'] = this.getUnits(user);
+    return options;
   }
 }
