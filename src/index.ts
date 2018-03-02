@@ -12,6 +12,7 @@ export { AuthGuard } from './services/authentication/authentication.guard';
 export * from './datasources/data-source';
 export { MapComponent } from './components/map/map.component';
 export { MapService } from './components/map/map.service';
+export { MapboxMarkerHandler } from './components/map/marker.handler';
 export { WidgetStackedBarsComponent } from './components/widgets/widget-stacked-bars/widget-stacked-bars.component';
 
 export { FormatNumberPipe } from './pipes/format-number.pipe'
