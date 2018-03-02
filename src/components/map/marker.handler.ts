@@ -75,11 +75,11 @@ export class MapboxMarkerHandler {
 
   trash() {
     if (this.markers.find(m => m.properties.id === this.selected)) {
+      this.map.fire('latitudeMarkers:remove', this.markers.find(m => m.properties.id === this.selected));
       this.markers = this.markers.filter(m => m.properties.id !== this.selected);
       this.geojson.features = this.markers;
       this.selected = -1;
       this.updateData();
-
       // After a deletion
       if (!this.markers.length) {
         this.setMode('add');
