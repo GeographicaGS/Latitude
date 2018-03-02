@@ -1,5 +1,6 @@
 export class MapboxMarkerHandler {
 
+  private map: any;
   private mode = 'add';
   private modes = ['add', 'select', 'remove'];
   private source = 'point';
@@ -24,7 +25,10 @@ export class MapboxMarkerHandler {
   private clickEvent = true;
   private markerClickedFunc = this._markerClickedFunc.bind(this);
 
-  constructor(protected map: any, properties: any = false) {
+  constructor() {}
+
+  init(map: any, properties: any = false) {
+    this.map = map;
     if (properties) {
       for (let propName in properties) {
         if (
