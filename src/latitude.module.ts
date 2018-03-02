@@ -16,6 +16,7 @@ import {
 
 import {
   MapComponent,
+  MapboxMarkerHandler,
   AuthenticationService,
   AuthGuard,
   DataSource,
@@ -74,7 +75,7 @@ export class LatitudeModule {
   static forRoot(config: any): ModuleWithProviders {
     return {
       ngModule: LatitudeModule,
-      providers: [AuthenticationService, AuthGuard, D3Service, MapService, {provide: 'config', useValue: config}]
+      providers: [AuthenticationService, AuthGuard, MapboxMarkerHandler, D3Service, MapService, {provide: 'config', useValue: config}]
     };
   }
 }
