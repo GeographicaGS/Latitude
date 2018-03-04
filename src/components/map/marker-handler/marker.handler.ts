@@ -4,6 +4,19 @@ export class MapboxMarkerHandler {
   private mode = 'add';
   private modes = ['add', 'select', 'remove'];
   private source = 'point';
+  private customizableProperties = ['style'];
+  private geojson: any = false;
+  private isCursorOverPoint = false;
+  private isDragging = false;
+  private clickEvent = true;
+  private clickEventsReady = false;
+  private selectEventsReady = false;
+  private markers = [];
+  private selected: number;
+  private markerClickedFunc = this._markerClickedFunc.bind(this);
+  private mouseDownFunc = this._mouseDown.bind(this);
+  private mouseMoveFunc = this._onMove.bind(this);
+  private mouseUpFunc = this._onUp.bind(this);
   private style = {
     "id": "point",
     "type": "circle",
@@ -13,17 +26,6 @@ export class MapboxMarkerHandler {
       "circle-color": "#3887be"
     }
   };
-  private customizableProperties = ['style'];
-  private geojson: any = false;
-  private isCursorOverPoint = false;
-  private isDragging = false;
-  private clickEventsReady = false;
-  private selectEventsReady = false;
-  private canvas: any = false;
-  private markers = [];
-  private selected: number;
-  private clickEvent = true;
-  private markerClickedFunc = this._markerClickedFunc.bind(this);
 
   constructor() {}
 
@@ -97,7 +99,8 @@ export class MapboxMarkerHandler {
   }
 
   add(m) {
-    this._addMarker({lngLat: {lng: m[0], lat: m[1]}});
+    const geojson = this._addMarker({lngLat: {lng: m[0], lat: m[1]}});
+    return geojson;
   }
 
   remove(id: number) {
@@ -108,26 +111,9 @@ export class MapboxMarkerHandler {
     }
   }
 
-  _markerClickedFunc(e) {
-    if (
-      e.features &&
-      e.features[0] &&
-      e.features[0].properties &&
-      e.features[0].properties.id) {
-        const id = e.features[0].properties.id;
-        if (this.markers.find(m => m.properties.id === id)) {
-          if (this.getMode() === 'select') {
-            if (id === this.selected) {
-              this.selected = -1;
-            } else {
-              this.selected = id;
-            }
-          } else if (this.getMode() === 'remove') {
-            this.selected = id;
-            this.trash();
-          }
-        }
-      }
+  private getId() {
+    if (!this.markers.length) { return 1; }
+    return this.markers[this.markers.length - 1].properties.id + 1;
   }
 
   private customPropertiesConstraints() {
@@ -154,13 +140,15 @@ export class MapboxMarkerHandler {
   }
 
   private updateData() {
-    this.map.getSource(this.source).setData(this.geojson);
+    const source = this.map.getSource(this.source);
+    if (source) {
+      source.setData(this.geojson);
+    }
   }
 
   private handleAdd() {
     if (this.clickEventsReady) { return; }
     this.clickEventsReady = true;
-
     this.map.on('mouseenter', this.style.id, () => {
       this.map.getCanvas().style.cursor = 'pointer';
       this.isCursorOverPoint = true;
@@ -185,43 +173,63 @@ export class MapboxMarkerHandler {
 
   private handleSelect() {
     if (!this.selectEventsReady) {
-      this.map.on('mousedown', this.style.id, mouseDown);
+      this.map.on('mousedown', this.style.id, this.mouseDownFunc);
     }
     this.selectEventsReady = true;
     this.clickEvent = false;
-
-    const self = this;
-    function mouseDown(e) {
-      if (!self.isCursorOverPoint) {
-        return;
-      }
-      self.selected = e.features[0].properties.id;
-      self.isDragging = true;
-      // Mouse events
-      self.map.on('mousemove', onMove);
-      self.map.once('mouseup', onUp);
-    }
-    function onMove(e) {
-      if (!self.isDragging) return;
-      const coords = e.lngLat;
-      for (let m of self.markers) {
-        if (m.properties.id === self.selected) {
-          m.geometry.coordinates = [coords.lng, coords.lat];
-        }
-      }
-      self.updateData();
-    }
-    function onUp(e) {
-      if (!self.isDragging) return;
-      self.isDragging = false;
-      self.map.off('mousemove', onMove);
-      self.map.off('mousemove', mouseDown);
-    }
   }
 
-  private getId() {
-    if (!this.markers.length) { return 1; }
-    return this.markers[this.markers.length - 1].properties.id + 1;
+  private _mouseDown(e) {
+    if (!this.isCursorOverPoint) {
+      return;
+    }
+    this.selected = e.features[0].properties.id;
+    this.isDragging = true;
+    // Mouse events
+    this.map.on('mousemove', this.mouseMoveFunc);
+    this.map.once('mouseup', this.mouseUpFunc);
+  }
+
+  private _onMove(e) {
+    if (!this.isDragging) return;
+    const coords = e.lngLat;
+    for (let m of this.markers) {
+      if (m.properties.id === this.selected) {
+        m.geometry.coordinates = [coords.lng, coords.lat];
+      }
+    }
+    this.updateData();
+  }
+
+  private _onUp(e) {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    this.map.off('mousemove', this.mouseMoveFunc);
+    this.map.off('mouseup', this.mouseUpFunc);
+    this.map.off('mousedown', this.mouseDownFunc);
+    this.map.fire('latitudeMarkers:move', JSON.parse(JSON.stringify(this.markers.find(m => m.properties.id === this.selected))));
+  }
+
+  private _markerClickedFunc(e) {
+    if (
+      e.features &&
+      e.features[0] &&
+      e.features[0].properties &&
+      e.features[0].properties.id) {
+        const id = e.features[0].properties.id;
+        if (this.markers.find(m => m.properties.id === id)) {
+          if (this.getMode() === 'select') {
+            if (id === this.selected) {
+              this.selected = -1;
+            } else {
+              this.selected = id;
+            }
+          } else if (this.getMode() === 'remove') {
+            this.selected = id;
+            this.trash();
+          }
+        }
+      }
   }
 
   private _addMarker(e) {
@@ -256,12 +264,15 @@ export class MapboxMarkerHandler {
     // Select the last marker
     this.selected = geojson.properties.id;
     this.setMode('select', this.selected);
-    this.map.fire('latitudeMarkers:add', geojson);
+    this.map.fire('latitudeMarkers:add', JSON.parse(JSON.stringify(geojson)));
+    return geojson;
   }
 
   destroy() {
-    this.map.off('click', this.style.id, this.markerClickedFunc);
-    this.map.removeSource(this.source);
-    this.map.removeLayer(this.style.id);
+    if (this.map) {
+      this.map.off('click', this.style.id, this.markerClickedFunc);
+      this.map.removeSource(this.source);
+      this.map.removeLayer(this.style.id);
+    }
   }
 }
