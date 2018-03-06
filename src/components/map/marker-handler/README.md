@@ -134,3 +134,31 @@ The `mode` argument must be one of the mode names described below
 
 Change the style with the received array of map style objects.
 For more information check the official mapbox-gl-style spec https://www.mapbox.com/mapbox-gl-style-spec/
+
+
+
+## Events
+
+MarkerHandler fires a some map events. All of these events are namespaced with `latitudeMarkers:` and are emitted from the Mapbox GL JS map object. All events are all triggered by user interaction.
+
+```js
+map.on('latitudeMarkers:add', function (featurePoint) {
+  console.log(featurePoint);
+});
+```
+
+### `latitudeMarkers:add`
+
+Fired when a point feature is created.
+The event data is an object with the new feature GeoJSON.
+
+
+### `latitudeMarkers:remove`
+
+Fired when a point feature is removed.
+The event data is an object with the deleted feature GeoJSON.
+
+### `latitudeMarkers:move`
+
+Fired when one feature is moved.
+The event data is an object with the feature GeoJSON including the new coordinates.
