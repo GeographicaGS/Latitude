@@ -15,6 +15,7 @@ export class WidgetIndexComponent implements OnInit {
   @Input() color = '#0066CC';
   @Input() readOnly = false;
   @Output() indexChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Input() pointsColors: any = ['#EAC349', '#094FA4', '#F24440', '#B24DAE', '#6600cc', '#006600', '#00ccff', '#ff9900'];
 
   private _indexes: any;
   @Input('indexes')
@@ -22,9 +23,9 @@ export class WidgetIndexComponent implements OnInit {
     this._indexes = value;
   };
 
-  points;
-  limitPoints;
-  gridPoints;
+  points: any;
+  limitPoints: any;
+  gridPoints: any;
   handlers = [];
   draggingPoint: any;
   paths = [];
@@ -45,8 +46,8 @@ export class WidgetIndexComponent implements OnInit {
       this.resizePointHandlerSize = 0;
     }
 
-    this.points = this.polygon(this.width / 2 + (this.resizePointHandlerSize / 2), this.width / 2 + (this.resizePointHandlerSize / 2), this.width / 2 - (this.resizePointHandlerSize / 2), 3);
-    const limitPoints = this.polygon(this.width / 2 + (this.resizePointHandlerSize / 2), this.width / 2 + (this.resizePointHandlerSize / 2), ((this.width / 2 - (this.resizePointHandlerSize / 2)) / 10), 3);
+    this.points = this.polygon(this.width / 2 + (this.resizePointHandlerSize / 2), this.width / 2 + (this.resizePointHandlerSize / 2), this.width / 2 - (this.resizePointHandlerSize / 2), this._indexes.length);
+    const limitPoints = this.polygon(this.width / 2 + (this.resizePointHandlerSize / 2), this.width / 2 + (this.resizePointHandlerSize / 2), ((this.width / 2 - (this.resizePointHandlerSize / 2)) / 10), this._indexes.length);
     this.limitPoints = limitPoints;
 
     let steps = ((this.width / 2 - (this.resizePointHandlerSize / 2)) / 10);
@@ -276,7 +277,7 @@ export class WidgetIndexComponent implements OnInit {
         .attr('y', this.pointPositions[coordIndex][1] - (this.resizePointHandlerSize / 2))
         .attr('height', this.resizePointHandlerSize)
         .attr('width', this.resizePointHandlerSize)
-        .attr('fill', '#EAC349') // TODO: color
+        .attr('fill', this.pointsColors[coordIndex] ? this.pointsColors[coordIndex] : '#EAC349')
         .attr('fill-opacity', .9)
         .attr('stroke-width', 2)
         .attr('stroke', 'white')
