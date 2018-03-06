@@ -40,6 +40,8 @@ export class DataSource {
           resolve( {
             value: this.aggregator(data, agg)
           });
+        }else if(type === 'timeserie') {
+          resolve(this.groupByTimeSeries(data, agg));
         } else {
           reject(new Error(`Unknown type ${type}`));
         }
@@ -76,6 +78,24 @@ export class DataSource {
       }
     }
     return resp;
+  }
+
+  private groupByTimeSeries(data: Array <IDataSourceObj> , agg: any): Array <IDataSourceObj> {
+    const group = _.groupBy(data, f => {
+      const p = f.properties || f;
+      return p && p[agg.prop] ? p[agg.prop] : 'uncategorized';
+    });
+
+    const resp = [];
+    for (const i in group) {
+      if (i) {
+        resp.push({
+          time: i,
+          value: this.aggregator(group[i], agg)
+        });
+      }
+    }
+    return _.orderBy(resp, ['time'], ['asc']);
   }
 
   private aggregator(data: Array <IDataSourceObj> , agg: any) {
