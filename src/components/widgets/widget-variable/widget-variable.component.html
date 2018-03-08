@@ -9,7 +9,7 @@
   </div>
   <div class="text" *ngIf="text">{{ text | translate }}</div>
   <div class="novariableDataFound" *ngIf="loading === false && (!variableData || variableData === undefined)">
-    {{ 'No variableData found' | translate }}
+    {{ 'No data found' | translate }}
   </div>
 
   <latitude-loading

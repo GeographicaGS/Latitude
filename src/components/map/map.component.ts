@@ -20,10 +20,17 @@ export class MapComponent implements OnInit, OnDestroy {
   private isMapLoaded = false;
   private layersQueue: any[] = [];
 
+  private _disabled = false;
+  @Input('disabled')
+  set disabled(val) {
+    if (val !== this._disabled) {
+      this._disabled = val;
+      this.setMap();
+    }
+  }
   @Input() center: number[] = [0, 0];
   @Input() zoom = 0;
   @Input() customStyle: any = false;
-  @Input() disabled = false;
   @Output() mapLoaded = new EventEmitter();
   @Output() bboxChanged = new EventEmitter();
 
@@ -38,16 +45,26 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.customStyle) {
       this.mapStyle = this.customStyle;
-    }    
+    }
     if (typeof this.mapStyle !== 'string') {
       this.mapStyle['sprite'] = this.mapStyle['sprite'].indexOf('http') !== -1 ? this.mapStyle['sprite'] : window.location.origin + this.mapStyle['sprite']
     }
+
+    this.setMap();
+  }
+
+
+  private setMap() {
+    if (this.map) {
+      this.map.remove();
+    }
+
     this.map = new mapboxgl.Map({
       container: this.mapContainer.nativeElement,
       style: this.mapStyle,
       center: this.center,
       zoom: this.zoom,
-      interactive: !this.disabled
+      interactive: !this._disabled
     });
 
     this.map.on('load', () => {
