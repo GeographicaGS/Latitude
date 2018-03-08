@@ -271,9 +271,14 @@ export class MapboxMarkerHandler {
   destroy() {
     if (this.map) {
       this.map.off('click', this.style.id, this.markerClickedFunc);
+      this.markers = [];
+      this.geojson.features = this.markers;
+      this.selected = -1;
+      if (this.map.getLayer(this.style.id)) {
+        this.map.removeLayer(this.style.id);
+      }
       if (this.map.getSource(this.source)) {
         this.map.removeSource(this.source);
-        this.map.removeLayer(this.style.id);
       }
     }
   }
