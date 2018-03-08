@@ -43,6 +43,7 @@ export class MapboxMarkerHandler {
       }
       this.customPropertiesConstraints();
     }
+    this.setMode('add');
     this.handleMode();
   }
 
