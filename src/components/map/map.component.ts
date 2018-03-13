@@ -24,11 +24,6 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input('disabled')
   set disabled(val) {
     if (val !== this._disabled) {
-      // Since we are destroying and creating the map again,
-      // We need to make sure that the mapService set the map as false,
-      // So the application knows about it and we do not call any map function in the meantime
-      // (like map.getSource, map.getLayer, that will throw "cannot executa getSource of undefined"
-      this.mapService.setMap(false);
       this._disabled = val;
       this.setMap();
     }
@@ -58,11 +53,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.setMap();
   }
 
-
   private setMap() {
-    if (this.map) {
-      this.map.remove();
-    }
+    this.mapRemoval();
 
     this.map = new mapboxgl.Map({
       container: this.mapContainer.nativeElement,
@@ -300,10 +292,19 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.resize();
   }
 
-  ngOnDestroy() {
+  private mapRemoval() {
     if (this.map) {
+      // Since we are destroying and creating the map again,
+      // We need to make sure that the mapService set the map as false,
+      // So the application knows about it and we do not call any map function in the meantime
+      // (like map.getSource, map.getLayer, that will throw "cannot executa getSource of undefined"
+      this.mapService.setMap(false);
       this.map.remove();
     }
+  }
+
+  ngOnDestroy() {
+    this.mapRemoval();
   }
 
 }
