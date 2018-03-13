@@ -27,6 +27,8 @@ export class MapboxMarkerHandler {
     }
   };
 
+  initialized = false;
+
   constructor() {}
 
   init(map: any, properties: any = false) {
@@ -44,7 +46,23 @@ export class MapboxMarkerHandler {
       this.customPropertiesConstraints();
     }
     this.setMode('add');
+    this.initialized = true;
+    this.defaultValues();
     this.handleMode();
+  }
+
+  defaultValues() {
+    this.clickEvent = true;
+    this.clickEventsReady = false;
+    this.selectEventsReady = false;
+  }
+
+  setMap(map) {
+    if (this.map) {
+      this.map.off('click', this.style.id, this.markerClickedFunc);
+      this.map.off('click', this._addMarker);
+    }
+    this.map = map;
   }
 
   getMode() {
@@ -165,9 +183,6 @@ export class MapboxMarkerHandler {
     this.map.on('click', this.style.id, this.markerClickedFunc);
 
     this.map.on('click', (e) => {
-      if (!this.clickEvent) {
-        return;
-      }
       this._addMarker(e);
     });
   }
@@ -234,6 +249,9 @@ export class MapboxMarkerHandler {
   }
 
   private _addMarker(e) {
+    if (!this.clickEvent) {
+      return;
+    }
     let geojson = {
       "type": "Feature",
       "geometry": {
@@ -270,8 +288,10 @@ export class MapboxMarkerHandler {
   }
 
   destroy() {
+    this.initialized = false;
     if (this.map) {
       this.map.off('click', this.style.id, this.markerClickedFunc);
+      this.map.off('click');
       this.markers = [];
       if (this.geojson) {
         this.geojson.features = this.markers;
