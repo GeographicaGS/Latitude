@@ -24,6 +24,11 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input('disabled')
   set disabled(val) {
     if (val !== this._disabled) {
+      // Since we are destroying and creating the map again,
+      // We need to make sure that the mapService set the map as false,
+      // So the application knows about it and we do not call any map function in the meantime
+      // (like map.getSource, map.getLayer, that will throw "cannot executa getSource of undefined"
+      this.mapService.setMap(false);
       this._disabled = val;
       this.setMap();
     }
