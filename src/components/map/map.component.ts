@@ -31,7 +31,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() center: number[] = [0, 0];
   @Input() zoom = 0;
   @Input() customStyle: any = false;
-  @Input() zoomControl: any = false;
+  @Input() zoomControl = false;
   @Output() mapLoaded = new EventEmitter();
   @Output() bboxChanged = new EventEmitter();
 
