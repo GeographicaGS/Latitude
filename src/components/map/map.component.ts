@@ -31,6 +31,7 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() center: number[] = [0, 0];
   @Input() zoom = 0;
   @Input() customStyle: any = false;
+  @Input() zoomControl: any = false;
   @Output() mapLoaded = new EventEmitter();
   @Output() bboxChanged = new EventEmitter();
 
@@ -64,6 +65,10 @@ export class MapComponent implements OnInit, OnDestroy {
       interactive: !this._disabled
     });
 
+    if (this.zoomControl) {
+      this.map.addControl(new mapboxgl.NavigationControl())
+    }
+  
     this.map.on('load', () => {
       this.isMapLoaded = true;
       this.mapLoaded.emit(this.map);
