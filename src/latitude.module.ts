@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Http } from '@angular/http';
 import { CommonModule as NGCommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from 'ng2-translate';
+import { TranslateModule } from '@ngx-translate/core';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { D3Service } from 'd3-ng2-service';
 
