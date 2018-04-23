@@ -1,5 +1,5 @@
 # Latitude
-Angular 4 components - npm package
+Angular 5 components - npm package
 
 ## Develop
 Develop your components inside "src" folder
