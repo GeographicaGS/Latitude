@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output,
 // import { Colors } from '../../../common/cons';
 import { MapService } from '../../map/map.service';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 import { flatternDoubleHistogram } from '../../../datasources/data-source';

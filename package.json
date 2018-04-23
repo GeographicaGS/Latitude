@@ -1,6 +1,6 @@
 {
   "name": "@geographica/latitude",
-  "version": "2.0.0-beta1",
+  "version": "2.0.0-beta2",
   "description": "GeographicaGS Angular modules",
   "keywords": [
     "angular 5"
@@ -10,8 +10,8 @@
   "scripts": {
     "process-style": "gulp process-style",
     "inline": "gulp inline-latitude",
-    "build": "rm -rf inline-latitude && npm run inline && ngc -p ./tsconfig-latitude.json && npm run assets && cp package.json latitude && rm -rf inline-latitude",
-    "assets": "cp -R ./src/assets/icons distLib/assets/"
+    "build": "rm -rf inline-latitude && npm run inline && ngc -p ./tsconfig-latitude.json && npm run assets && cp package.json latitude && cp README.md latitude && rm -rf inline-latitude",
+    "assets": "cp -R ./src/assets/icons latitude/assets/"
   },
   "license": "MIT",
   "homepage": "https://github.com/GeographicaGS/latitude",
@@ -45,6 +45,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@ngx-translate/core": "^9.1.1",
     "@turf/boolean-disjoint": "^5.1.5",
     "@turf/turf": "^5.0.4",
     "@types/geojson": "^1.0.6",
@@ -55,7 +56,6 @@
     "mapbox-gl": "^0.44.1",
     "moment": "^2.19.1",
     "mydaterangepicker": "^4.1.11",
-    "ng2-translate": "^5.0.0",
     "rxjs": "^5.1.0",
     "ts-md5": "^1.2.2",
     "zone.js": "^0.8.4"
