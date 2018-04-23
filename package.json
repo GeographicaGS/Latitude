@@ -1,15 +1,17 @@
 {
   "name": "@geographica/latitude",
-  "version": "1.0.125",
+  "version": "2.0.0-beta1",
   "description": "GeographicaGS Angular modules",
   "keywords": [
-    "angular 4"
+    "angular 5"
   ],
   "main": "index.js",
   "types": "index.d.js",
   "scripts": {
-    "build": "nglb --rootDir src/ --outDir dist --tsconfig tsconfig.json && npm run assets",
-    "assets": "cp -R ./src/assets/* dist/assets"
+    "process-style": "gulp process-style",
+    "inline": "gulp inline-latitude",
+    "build": "rm -rf inline-latitude && npm run inline && ngc -p ./tsconfig-latitude.json && npm run assets && cp package.json latitude && rm -rf inline-latitude",
+    "assets": "cp -R ./src/assets/icons distLib/assets/"
   },
   "license": "MIT",
   "homepage": "https://github.com/GeographicaGS/latitude",
@@ -25,8 +27,8 @@
     "email": "npm@geographica.gs"
   },
   "devDependencies": {
-    "@angular/compiler": "^4.0.0",
-    "@angular/compiler-cli": "^4.0.0",
+    "@angular/compiler": "^5.2.0",
+    "@angular/compiler-cli": "^5.2.0",
     "angular-library-builder": "^1.6.3",
     "cpx": "^1.5.0",
     "renamer": "^0.6.1",
@@ -36,17 +38,20 @@
     "uglify-js": "^2.7.5"
   },
   "dependencies": {
-    "@angular/common": "^4.2.4",
-    "@angular/core": "^4.2.4",
-    "@angular/forms": "^4.2.4",
-    "@angular/http": "^4.2.4",
-    "@angular/platform-browser": "^4.2.4",
-    "@angular/platform-browser-dynamic": "^4.2.4",
-    "@angular/router": "^4.2.4",
+    "@angular/common": "^5.2.0",
+    "@angular/core": "^5.2.0",
+    "@angular/forms": "^5.2.0",
+    "@angular/http": "^5.2.0",
+    "@angular/platform-browser": "^5.2.0",
+    "@angular/platform-browser-dynamic": "^5.2.0",
+    "@angular/router": "^5.2.0",
     "@turf/boolean-disjoint": "^5.1.5",
     "@turf/turf": "^5.0.4",
     "@types/geojson": "^1.0.6",
     "d3-ng2-service": "^1.12.0",
+    "gulp": "^3.9.1",
+    "gulp-file": "^0.4.0",
+    "gulp-inline-ng2-template": "^4.1.0",
     "mapbox-gl": "^0.44.1",
     "moment": "^2.19.1",
     "mydaterangepicker": "^4.1.11",

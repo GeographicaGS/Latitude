@@ -9,7 +9,7 @@ export class FormatNumberPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   transform(value, _options = {}): any {
-    const options = {units: '', tail: '', places: 2, compact: false, reversedUnit: false, lang: (this.translateService.currentLang || 'en')};
+    const options = {tailStyle: '', units: '', tail: '', places: 2, compact: false, reversedUnit: false, lang: (this.translateService.currentLang || 'en')};
 
     (<any>Object).assign(options, _options);
 
@@ -20,12 +20,21 @@ export class FormatNumberPipe implements PipeTransform {
     if (options.compact) {
       value = parseFloat(value);
       let tail = '';
-      if (value > 1000000) {
+      if (value > 1000000000000) {
+        value = value / 1000000000000;
+        tail = 'T';
+      } else if (value > 1000000000) {
+        value = value  / 1000000000;
+        tail = 'B';
+      } else if (value > 1000000) {
         value = value / 1000000;
         tail = 'M';
       } else if (value > 1000) {
         value = value / 1000;
         tail = 'K';
+      }
+      if (tail && options.tailStyle) {
+        tail = `<span style="${options.tailStyle}">${tail}</span>`;
       }
       const compacted = {
         number: parseFloat(value.toFixed(options.places)),

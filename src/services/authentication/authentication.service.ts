@@ -152,6 +152,8 @@ export class AuthenticationService {
     let options = {};
     if (user.country === 'uk') {
       options['reversedUnit'] = true;
+    } else if (user.country === 'us') {
+      options['reversedUnit'] = true;
     }
     options['units'] = this.getUnits(user);
     return options;

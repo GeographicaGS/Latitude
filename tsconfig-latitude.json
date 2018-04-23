@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "target": "es5",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+		"outDir": "./latitude",
+    "lib": ["es2015", "dom"]
+	},
+	"files": [
+    "./inline-latitude/latitude.module.ts"
+	],
+  "angularCompilerOptions": {
+		"enableResourceInlining": true,
+    "skipTemplateCodegen": true
+  }
+}
