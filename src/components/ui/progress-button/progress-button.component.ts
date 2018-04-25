@@ -1,6 +1,10 @@
 import { Component, Input, Output, forwardRef, EventEmitter, OnInit } from '@angular/core';
 
-export type ProgressButtonState = 'loading' | 'success' | 'error'; 
+export enum ProgressButtonState {
+  LOADING,
+  SUCCESS,
+  ERROR
+}
 
 @Component({
   selector: 'latitude-progress-button',
@@ -15,6 +19,10 @@ export class ProgressButtonComponent implements OnInit {
   @Input() errorLabel: string;
   @Output() onClick = new EventEmitter();
 
+  get isLoading() {
+    return this.state === ProgressButtonState.LOADING;
+  }
+
   get currentLabel() {
     if(!this.state) {
       return this.label;
@@ -28,7 +36,7 @@ export class ProgressButtonComponent implements OnInit {
   }
 
   handleClick() {
-    this.state = 'loading';
+    this.state = ProgressButtonState.LOADING;
     this.onClick.emit();
   }
 }
