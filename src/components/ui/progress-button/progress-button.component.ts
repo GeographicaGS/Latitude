@@ -36,6 +36,7 @@ export class ProgressButtonComponent implements OnInit {
   }
 
   handleClick() {
+    // TODO: Hacer que "state" tenga un doble binding para informar de este cambio al componente padre
     this.state = ProgressButtonState.LOADING;
     this.onClick.emit();
   }
