@@ -1,43 +1,43 @@
 import { Component, Input, Output, forwardRef, EventEmitter, OnInit } from '@angular/core';
 
+export enum ProgressButtonState {
+  LOADING,
+  SUCCESS,
+  ERROR
+}
+
 @Component({
   selector: 'latitude-progress-button',
   templateUrl: './progress-button.component.html',
   styleUrls: ['./progress-button.component.scss']
 })
 export class ProgressButtonComponent implements OnInit {
-  isLoading: boolean;
-  message: string;
 
+  @Input() state: ProgressButtonState = null;
   @Input() label: string;
-  @Input() msgSuccess: string;
-  @Input() msgError: string;
-  @Output() click = new EventEmitter();
+  @Input() successLabel: string;
+  @Input() errorLabel: string;
+  @Output() onClick = new EventEmitter();
 
-  constructor() {
-    this.isLoading = false;
+  get isLoading() {
+    return this.state === ProgressButtonState.LOADING;
   }
 
-  ngOnInit() {
-    this.message = this.label;
+  get currentLabel() {
+    if(!this.state) {
+      return this.label;
+    }
+    const stateMap = {
+      loading: '',
+      error: this.errorLabel,
+      success: this.successLabel
+    }
+    return stateMap[this.state];
   }
 
-  onClick() {
-    // this.click.emit(); // Commented because double click event
-    this.isLoading = true;
-  }
-
-  showSuccess() {
-    this.isLoading = false;
-    this.message = this.msgSuccess;
-  }
-
-  showError() {
-    this.isLoading = false;
-    this.message = this.msgError;
-  }
-
-  reset() {
-    this.message = this.label;
+  handleClick() {
+    // TODO: Hacer que "state" tenga un doble binding para informar de este cambio al componente padre
+    this.state = ProgressButtonState.LOADING;
+    this.onClick.emit();
   }
 }
