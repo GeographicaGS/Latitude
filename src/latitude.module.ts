@@ -7,6 +7,7 @@ import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { D3Service } from 'd3-ng2-service';
 
 import {
+  WidgetBaseComponent,
   WidgetCategoryComponent,
   WidgetIndexComponent,
   WidgetVariableComponent,
@@ -54,6 +55,7 @@ const components = [
   ToggleComponent,
   SidebarComponent,
   ProgressButtonComponent,
+  WidgetBaseComponent,
   WidgetCategoryComponent,
   WidgetVariableComponent,
   WidgetIndexComponent,
