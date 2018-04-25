@@ -3,7 +3,7 @@ export { SelectfilterComponent } from './components/ui/selectfilter/selectfilter
 export { SwitcherComponent } from './components/ui/switcher/switcher.component';
 export { ToggleComponent } from './components/ui/toggle/toggle.component';
 export { SidebarComponent } from './components/ui/sidebar/sidebar.component';
-export { ProgressButtonComponent } from './components/ui/progress-button/progress-button.component';
+export { ProgressButtonComponent, ProgressButtonState } from './components/ui/progress-button/progress-button.component';
 export { TabNavigationComponent } from './components/ui/tab-navigation/tab-navigation.component';
 export { LoadingComponent } from './components/ui/loading/loading.component';
 
