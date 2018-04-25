@@ -1,4 +1,4 @@
-import { Component, Input, Output, forwardRef, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 export enum ProgressButtonState {
   LOADING,
@@ -11,7 +11,7 @@ export enum ProgressButtonState {
   templateUrl: './progress-button.component.html',
   styleUrls: ['./progress-button.component.scss']
 })
-export class ProgressButtonComponent implements OnInit {
+export class ProgressButtonComponent {
 
   @Input() state: ProgressButtonState = null;
   @Input() label: string;
@@ -34,6 +34,8 @@ export class ProgressButtonComponent implements OnInit {
     }
     return stateMap[this.state];
   }
+
+  constructor() {}
 
   handleClick() {
     // TODO: Hacer que "state" tenga un doble binding para informar de este cambio al componente padre
