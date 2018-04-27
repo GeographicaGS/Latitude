@@ -28,9 +28,9 @@ export class ProgressButtonComponent {
       return this.label;
     }
     const stateMap = {
-      loading: '',
-      error: this.errorLabel,
-      success: this.successLabel
+      [ProgressButtonState.LOADING]: '',
+      [ProgressButtonState.ERROR]: this.errorLabel,
+      [ProgressButtonState.SUCCESS]: this.successLabel
     }
     return stateMap[this.state];
   }
