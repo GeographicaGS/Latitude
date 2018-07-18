@@ -3,16 +3,16 @@ import { Headers, Response, RequestOptions, Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
-import { Md5 } from 'ts-md5/dist/md5';
+
+// TODO: Move money format related functions to its own service
 
 @Injectable()
 export class AuthenticationService {
 
   data;
-  password;
   _renewGapSeconds = 200;
   apiBaseUrl: string;
-  interval: any;
+  renewTimer: any;
   userHeader = 'x-auth-email';
   passwordHeader = 'x-auth-password';
   renewUrl = '/auth/token/renew';
@@ -46,14 +46,10 @@ export class AuthenticationService {
     }
   }
 
-  login(username: string, password: string, hashToMd5: boolean = true) {
-    if (hashToMd5) {
-      this.password = <string>Md5.hashStr(password);
-    }
-
+  login(username: string, password: string) {
     const headers = new Headers();
     headers.append(this.userHeader, username);
-    headers.append(this.passwordHeader, this.password);
+    headers.append(this.passwordHeader, password);
     const options = new RequestOptions({ headers: headers });
     return this.http.get(`${this.apiBaseUrl}${this.authUrl}`, options)
       .map((response: Response) => {
@@ -62,20 +58,20 @@ export class AuthenticationService {
   }
 
   renew() {
-    let environment:any = {};
     const headers = new Headers();
     const options = new RequestOptions({headers: headers});
-    options.headers.set('Authorization', this.getUser().token);
+    const token = this.getUser().token;
+    options.headers.set('Authorization', token);
     this.http.get(`${this.apiBaseUrl}${this.renewUrl}`, options)
       .map((res: Response) => res.json())
-        .subscribe(
-          (res) => {
-            return this.initUser(res);
-          },
-          (error) => {
-            this.router.navigate(['/login']);
-          }
-        );
+      .subscribe(
+        (json) => {
+          return this.initUser(json);
+        },
+        (error) => {
+          this.router.navigate(['/login']);
+        }
+      );
   }
 
   initUser(response: Response) {
@@ -99,11 +95,11 @@ export class AuthenticationService {
   }
 
   setRenewer() {
-    const diff = <any>new Date(this.data.expires) - <any>new Date();
-    if (this.interval) {
-      clearInterval(this.interval);
+    const diff = Number(new Date(this.data.expires)) - Number(new Date());
+    if (this.renewTimer) {
+      clearTimeout(this.renewTimer);
     }
-    this.interval = setTimeout(() => {
+    this.renewTimer = setTimeout(() => {
       this.renew();
     }, diff - this._renewGapSeconds * 1000);
   }
@@ -131,7 +127,7 @@ export class AuthenticationService {
     if (!data) {
       return false;
     }
-    return (<any>new Date(data.expires) - <any>new Date()) > 0;
+    return (Number(new Date(data.expires)) - Number(new Date())) > 0;
   }
 
   logout() {

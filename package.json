@@ -57,7 +57,6 @@
     "moment": "^2.19.1",
     "mydaterangepicker": "^4.1.11",
     "rxjs": "^5.1.0",
-    "ts-md5": "^1.2.2",
     "zone.js": "^0.8.4"
   }
 }

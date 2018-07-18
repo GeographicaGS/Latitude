@@ -45,9 +45,6 @@
 			"ng2-translate/*": [
 				"node_modules/ng2-translate/*"
 			],
-			"ts-md5/*": [
-				"node_modules/ts-md5/*"
-			],
 			"mapbox-gl/*": [
 				"node_modules/mapbox-gl/*"
 			]
