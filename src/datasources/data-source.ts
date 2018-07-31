@@ -63,7 +63,7 @@ export class DataSource {
   }
 
   private groupBy(data: Array <IDataSourceObj> , agg: any): Array <IDataSourceObj> {
-    const group = _.groupBy(data, f => {
+    const group: any = _.groupBy(data, f => {
       const p = f.properties || f;
       return p && p[agg.prop] ? p[agg.prop] : 'uncategorized';
     });
@@ -81,7 +81,7 @@ export class DataSource {
   }
 
   private groupByTimeSeries(data: Array <IDataSourceObj> , agg: any): Array <IDataSourceObj> {
-    const group = _.groupBy(data, f => {
+    const group: any = _.groupBy(data, f => {
       const p = f.properties || f;
       return p && p[agg.prop] ? p[agg.prop] : 'uncategorized';
     });
