@@ -1,3 +1,4 @@
+export * from './widget-base/widget-base.component';
 export * from './widget-category/widget-category.component';
 export * from './widget-index/widget-index.component';
 export * from './widget-variable/widget-variable.component';

@@ -8,7 +8,7 @@ import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 })
 export class WidgetVariableComponent extends WidgetBaseComponent {
 
-  private variableData = '--';
+  variableData = '--';
   @Input() title: string;
   @Input() text: string;
   @Input() units: string;
