@@ -22,6 +22,8 @@ export class ToggleComponent implements OnInit, ControlValueAccessor {
   get checked(): boolean { return this._checked; }
   set checked(value) { this._checked = value; this.onChangeCallback(this._checked); }
 
+  @Input() label: string;
+
   @Output() change = new EventEmitter();
 
   constructor() { }
