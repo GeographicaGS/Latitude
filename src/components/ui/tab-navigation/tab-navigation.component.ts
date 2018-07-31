@@ -7,7 +7,7 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
 })
 export class TabNavigationComponent implements OnInit, OnChanges {
   public activeTab = 0;
-  @Input() private tabs: string[];
+  @Input() tabs: string[];
   @Input() private selectedTab: number = 0;
   @Output() private change = new EventEmitter<number>();
 
