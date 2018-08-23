@@ -15,6 +15,7 @@ export class AuthenticationService {
   renewTimer: any;
   userHeader = 'x-auth-email';
   passwordHeader = 'x-auth-password';
+  tokenHeader = 'Authorization';
   renewUrl = '/auth/token/renew';
   authUrl = '/auth/token';
 
@@ -28,6 +29,9 @@ export class AuthenticationService {
     }
     if (config.authHeaders && config.authHeaders.password) {
       this.passwordHeader = config.authHeaders.password;
+    }
+    if (config.authHeaders && config.authHeaders.tokenHeader) {
+      this.tokenHeader = config.authHeaders.tokenHeader;
     }
     if (config.renewUrl) {
       this.renewUrl = config.renewUrl;
@@ -61,7 +65,7 @@ export class AuthenticationService {
     const headers = new Headers();
     const options = new RequestOptions({headers: headers});
     const token = this.getUser().token;
-    options.headers.set('Authorization', token);
+    options.headers.set(this.tokenHeader, token);
     this.http.get(`${this.apiBaseUrl}${this.renewUrl}`, options)
       .map((res: Response) => res.json())
       .subscribe(
