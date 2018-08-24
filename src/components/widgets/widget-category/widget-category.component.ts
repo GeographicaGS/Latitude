@@ -9,7 +9,7 @@ import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 export class WidgetCategoryComponent extends WidgetBaseComponent {
 
   disabledList = [];
-  private histogramData = [];
+  histogramData = [];
 
   @Input() colors: any = false;
   @Input() labels: any = false;
