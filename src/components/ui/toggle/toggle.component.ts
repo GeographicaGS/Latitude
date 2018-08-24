@@ -9,7 +9,6 @@ const CHECKBOX_VALUE_ACCESSOR = {
 
 @Component({
   selector: 'latitude-toggle',
-  inputs: ['label'],
   providers: [CHECKBOX_VALUE_ACCESSOR],
   templateUrl: './toggle.component.html',
   styleUrls: ['./toggle.component.scss']
@@ -23,6 +22,8 @@ export class ToggleComponent implements OnInit, ControlValueAccessor {
   set checked(value) { this._checked = value; this.onChangeCallback(this._checked); }
 
   @Output() change = new EventEmitter();
+
+  @Input() label: string;
 
   constructor() { }
 
