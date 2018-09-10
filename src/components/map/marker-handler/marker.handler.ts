@@ -17,7 +17,7 @@ export class MapboxMarkerHandler {
     private mouseDownFunc = this._mouseDown.bind(this);
     private mouseMoveFunc = this._onMove.bind(this);
     private mouseUpFunc = this._onUp.bind(this);
-    private addMarkerOnMap = this._addMarker.bind(this);
+    private addMarkerOnMapFunc = this._addMarker.bind(this);
     private style = {
       'id': 'point',
       'type': 'circle',
@@ -60,7 +60,7 @@ export class MapboxMarkerHandler {
     setMap(map) {
       if (this.map) {
         this.map.off('click', this.style.id, this.markerClickedFunc);
-        this.map.off('click', this.addMarkerOnMap);
+        this.map.off('click', this.addMarkerOnMapFunc);
       }
       this.map = map;
     }
@@ -181,7 +181,7 @@ export class MapboxMarkerHandler {
       });
   
       this.map.on('click', this.style.id, this.markerClickedFunc);
-      this.map.on('click', this.addMarkerOnMap);
+      this.map.on('click', this.addMarkerOnMapFunc);
     }
   
     private handleSelect() {
@@ -288,7 +288,7 @@ export class MapboxMarkerHandler {
       this.initialized = false;
       if (this.map) {
         this.map.off('click', this.style.id, this.markerClickedFunc);
-        this.map.off('click', this.addMarkerOnMap);
+        this.map.off('click', this.addMarkerOnMapFunc);
         this.markers = [];
         if (this.geojson) {
           this.geojson.features = this.markers;
