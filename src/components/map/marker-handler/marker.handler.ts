@@ -123,6 +123,8 @@ export class MapboxMarkerHandler {
     }
   
     remove(id: number) {
+      this.map.off('click', this.style.id, this.markerClickedFunc);
+      this.map.off('click', this.addMarkerOnMapFunc);
       if (this.markers.find(m => m.properties.id === id)) {
         this.markers = this.markers.filter(m => m.properties.id !== id);
         this.geojson.features = this.markers;
