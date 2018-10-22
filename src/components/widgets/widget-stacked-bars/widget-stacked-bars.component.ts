@@ -396,7 +396,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
   }
 
   private formatAgeRangeLabel(label) {
-    if (label.indexOf('>') !== -1) {
+    if (label.indexOf('<') !== -1) {
       label = label.replace('>', '&le;');
     } else if (label.indexOf('>') !== -1) {
       label = label.replace('>', '&ge;');
