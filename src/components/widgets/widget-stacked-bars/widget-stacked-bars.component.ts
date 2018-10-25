@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 // import { Colors } from '../../../common/cons';
-import { MapService } from '../../map/map.service';
-import { WidgetBaseComponent } from '../widget-base/widget-base.component';
+import { MapService } from '../../map/map.service';
+import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { TranslateService } from 'ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
@@ -92,7 +92,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
     const categories = this.categoriesColors.map((cat) => { return cat.category; });
     const colors = this.categoriesColors.map((cat) => { return cat.color; });
 
-    const margin = {top: 0, right: 0, bottom: 44, left: 0},
+    const margin = { top: 0, right: 0, bottom: 44, left: 0 },
       width = + this.svg.attr('width') - margin.left - margin.right,
       height = + this.svg.attr('height') - margin.top - margin.bottom;
 
@@ -107,18 +107,18 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
     this.svg.append('g')
       .attr('class', 'grid')
       .call(this.makeYGridlines()
-          .tickSize(-width)
-          .tickFormat(<any>''));
+        .tickSize(-width)
+        .tickFormat(<any>''));
 
     const marginStackChart = { top: 20, right: 20, bottom: 30, left: 20 },
-          widthStackChart = width - marginStackChart.left - marginStackChart.right,
-          heightStackChart = height - marginStackChart.top - marginStackChart.bottom;
+      widthStackChart = width - marginStackChart.left - marginStackChart.right,
+      heightStackChart = height - marginStackChart.top - marginStackChart.bottom;
 
     const xStackChart = this.d3.scaleBand()
-          .range([0, widthStackChart])
-          .padding(0.1);
+      .range([0, widthStackChart])
+      .padding(0.1);
     const yStackChart = this.d3.scaleLinear()
-              .range([heightStackChart, 0]);
+      .range([heightStackChart, 0]);
 
     const colorStackChart = this.d3.scaleOrdinal(colors);
 
@@ -131,8 +131,8 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
     colorStackChart.domain(categories);
 
     const sortedData = [];
-    for (const dat of this.dataFormatted) {
-      if (!dat) {
+    for (const dat of this.dataFormatted) {
+      if (!dat) {
         continue;
       }
       const arr = [];
@@ -145,7 +145,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
           value: this.hiddenCategories.indexOf(cat) !== -1 ? 0 : dat[cat]
         });
       }
-      arr.sort(function(a, b) { return a.value - b.value; });
+      arr.sort(function (a, b) { return a.value - b.value; });
       sortedData.push(arr);
     }
 
@@ -231,7 +231,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
       });
 
     const self = this;
-    this.svg.selectAll('.x.axis text').each(function(d, i) {
+    this.svg.selectAll('.x.axis text').each(function (d, i) {
       const thisText = <any>this;
       if (self.hiddenRanges.indexOf(d) !== -1) {
         thisText.classList.add('disabled');
@@ -252,46 +252,46 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
     state.selectAll('rect')
       .data((d: any) => { return d.ages; })
       .enter().append('rect')
-        .attr('width', xStackChart.bandwidth())
-        .attr('style', () => {
-          if (this.filter) {
-            return 'cursor: pointer;';
-          } else {
-            return 'cursor: default;'
-          }
-        })
-        .attr('y', (d: any) => { return yStackChart(d.y1); })
-        .attr('class', (d: any) => {
-          let className = d.name.toLowerCase();
-          if (d.hidden) {
-            className += ' hiddenBar';
-          }
-          return className;
-        })
-        .attr('rx', '2')
-        .attr('height', (d: any) => { return yStackChart(d.y0) - yStackChart(d.y1); })
-        .style('fill', (d: any) => {
-          if (d.hidden) {
-            return 'grey'; // TODO: make it dynamic -> Colors.colorN20;
-          } else {
-            return colorStackChart(d.name);
-          }
-        })
-        .style('fill-opacity', (d: any) => {
-          if (d.hidden) {
-            return 0.5;
-          } else {
-            return 1;
-          }
-        })
-      .on('mouseover', function(d) {
+      .attr('width', xStackChart.bandwidth())
+      .attr('style', () => {
+        if (this.filter) {
+          return 'cursor: pointer;';
+        } else {
+          return 'cursor: default;'
+        }
+      })
+      .attr('y', (d: any) => { return yStackChart(d.y1); })
+      .attr('class', (d: any) => {
+        let className = d.name.toLowerCase();
+        if (d.hidden) {
+          className += ' hiddenBar';
+        }
+        return className;
+      })
+      .attr('rx', '2')
+      .attr('height', (d: any) => { return yStackChart(d.y0) - yStackChart(d.y1); })
+      .style('fill', (d: any) => {
+        if (d.hidden) {
+          return 'grey'; // TODO: make it dynamic -> Colors.colorN20;
+        } else {
+          return colorStackChart(d.name);
+        }
+      })
+      .style('fill-opacity', (d: any) => {
+        if (d.hidden) {
+          return 0.5;
+        } else {
+          return 1;
+        }
+      })
+      .on('mouseover', function (d) {
         if (d.hidden) {
           return;
         }
         tooltip.style('opacity', '1');
       })
-      .on('mouseout', function() { tooltip.style('opacity', '0'); })
-      .on('mousemove', function(d) {
+      .on('mouseout', function () { tooltip.style('opacity', '0'); })
+      .on('mousemove', function (d) {
         if (d.hidden) {
           return;
         }
@@ -303,30 +303,30 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
           ${new FormatNumberPipe(self.translate).transform(d.actualValue, self.formatOptions)}${self.units}
         `);
       })
-      .on('click', function(d) {
+      .on('click', function (d) {
         if (self.filter) {
           self.hiddeRange(d.positionIndex);
         }
       });
 
-      this.svg.on('mousemove', function(d) {
-        const xPosition = d3.mouse(this)[0] + 10;
-        const yPosition = d3.mouse(this)[1] - 10;
+    this.svg.on('mousemove', function (d) {
+      const xPosition = d3.mouse(this)[0] + 10;
+      const yPosition = d3.mouse(this)[1] - 10;
 
-        tooltip.style('top', (d3.mouse(this)[1] + 10) + 'px')
-          .style('left', (d3.mouse(this)[0] + 10) + 'px');
+      tooltip.style('top', (d3.mouse(this)[1] + 10) + 'px')
+        .style('left', (d3.mouse(this)[0] + 10) + 'px');
 
-        const parentWidth = tooltip.node().parentElement.offsetWidth;
-        const tooltipWidth = tooltip.node().offsetWidth;
-        const tooltipLeft = tooltip.node().offsetLeft;
-        const dist = tooltipWidth + tooltipLeft;
-        if (dist >= parentWidth) {
-          const newLeftPosition = xPosition - (dist - parentWidth);
-          tooltip.style('left', newLeftPosition + 'px').style('top', yPosition + 'px');
-        } else {
-          tooltip.style('left', xPosition + 'px').style('top', yPosition + 'px');
-        }
-      });
+      const parentWidth = tooltip.node().parentElement.offsetWidth;
+      const tooltipWidth = tooltip.node().offsetWidth;
+      const tooltipLeft = tooltip.node().offsetLeft;
+      const dist = tooltipWidth + tooltipLeft;
+      if (dist >= parentWidth) {
+        const newLeftPosition = xPosition - (dist - parentWidth);
+        tooltip.style('left', newLeftPosition + 'px').style('top', yPosition + 'px');
+      } else {
+        tooltip.style('left', xPosition + 'px').style('top', yPosition + 'px');
+      }
+    });
   }
 
   hiddeCategory(category) {
@@ -339,7 +339,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
       this.hiddenCategories.splice(this.hiddenCategories.indexOf(category), 1);
     }
     this.updateHiddenCategories.emit(this.hiddenCategories);
-    this.fetch({bbox: this.getBBOX()});
+    this.fetch({ bbox: this.getBBOX() });
   }
 
   hiddeRange(index) {
@@ -355,7 +355,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
       }
     }
     this.updateHiddenRanges.emit(this.hiddenRanges);
-    this.fetch({bbox: this.getBBOX()});
+    this.fetch({ bbox: this.getBBOX() });
   }
 
   getSquareStyle(color) {
@@ -380,7 +380,7 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
       if (index !== -1) {
         resp[index][d.category_2] = d.value;
       } else {
-        let row: any = {Label: d.category_1};
+        let row: any = { Label: d.category_1 };
         row[d.category_2] = d.value;
         resp.push(row);
       }
@@ -396,10 +396,10 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
   }
 
   private formatAgeRangeLabel(label) {
-    if (label.indexOf('>') !== -1) {
-      label = label.replace('>', '&le;');
+    if (label.indexOf('<') !== -1) {
+      label = label.replace('<=', '&le;');
     } else if (label.indexOf('>') !== -1) {
-      label = label.replace('>', '&ge;');
+      label = label.replace('>=', '&ge;');
     } else if (label.indexOf('_') !== -1) {
       label = label.replace('_', '-');
     }
