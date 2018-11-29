@@ -145,7 +145,6 @@ export class WidgetStackedBarsComponent extends WidgetBaseComponent implements O
           value: this.hiddenCategories.indexOf(cat) !== -1 ? 0 : dat[cat]
         });
       }
-      arr.sort(function (a, b) { return a.value - b.value; });
       sortedData.push(arr);
     }
 
